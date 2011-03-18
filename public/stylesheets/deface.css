@@ -1,0 +1,143 @@
+html {
+  height: 100%;
+}
+body {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+}
+#themer {
+  clear: both;
+  background: #fff;
+  font: 12px Verdana, sans-serif;
+  height:100%;
+  margin: auto;
+}
+#themer h1 {
+  background-color: #DDDDEE;
+  color: #444488;
+  font-size: 21px;
+  margin:-5px;
+  padding:5px 10px;
+}
+#themer h1 a {
+  float: right;
+  font-size: 12px;
+}
+#themer label {
+  font-weight: bold;
+  clear: both;
+  display: block;
+}
+#themer .left{
+  float: left;
+  width: 33%;
+}
+#themer input[type='text']{
+  width: 98%;
+}
+#themer input[type='submit']{
+  float: right;
+  margin-top: 10px;
+  clear: both;
+}
+#themer textarea{
+  width: 98%;
+  height: 120px;
+}
+#themer .all_view_overrides{
+  float: right;
+  margin: 11px 5px 0 0;
+}
+#themer .all_view_overrides label{
+  float: left;
+  margin: 3px 5px 0 0;
+}
+#themer .all_view_overrides select{
+  width: 180px;
+}
+#themer label.error{
+  color: red;
+  float: right;
+  font-size: 90%;
+  font-style: italic;
+}
+#themer .required {
+  color: #000;
+  font-size: 100%;
+  font-weight: normal;
+}
+#themer #view_override_delete_link{
+  float: left;
+  padding: 8px 0 0 2px;
+}
+#themer #clearer {
+  clear: both;
+  line-height: 5px;
+}
+/* tabs */
+
+.tabberlive .tabbertabhide {
+  display:none;
+}
+.tabber {
+}
+.tabberlive {
+  margin: auto;
+  height:100%;
+}
+ul.tabbernav {
+  margin:14px 0 0;
+  padding: 3px 0;
+  border-bottom: 1px solid #778;
+  font: bold 12px Verdana, sans-serif;
+}
+
+ul.tabbernav li {
+  list-style: none;
+  margin: 0;
+  display: inline;
+}
+
+ul.tabbernav li a {
+  padding: 3px 0.5em;
+  margin-left: 3px;
+  border: 1px solid #778;
+  border-bottom: none;
+  background: #DDE;
+  text-decoration: none;
+}
+
+ul.tabbernav li a:link { color: #448; }
+ul.tabbernav li a:visited { color: #667; }
+
+ul.tabbernav li a:hover {
+  color: #000;
+  background: #AAE;
+  border-color: #227;
+}
+
+ul.tabbernav li.tabberactive a {
+  background-color: #fff;
+  border-bottom: 1px solid #fff;
+}
+
+ul.tabbernav li.tabberactive a:hover {
+  color: #000;
+  background: white;
+  border-bottom: 1px solid white;
+}
+.tabberlive .tabbertab {
+  padding: 8px;
+  border-top: 0;
+  height: 100%;
+}
+.tabberlive .tabbertab h2 {
+  display: none;
+}
+.tabberlive .tabbertab h3 {
+  display: none;
+}
+
+
+

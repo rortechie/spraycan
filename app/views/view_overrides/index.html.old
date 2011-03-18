@@ -1,0 +1,287 @@
+<% show_advanced = !params.key?(:hook) %>
+
+<% if params.key?(:reload) || flash.notice %>
+  <script type="text/javascript">
+    opener.location.reload(true);
+  </script>
+<% end %>
+
+<div id="themer">
+  <h1>Theme Editor <%= link_to("(show advanced)", view_overrides_url(params.reject {|k,v| k[0..6] != "deface-"})) unless show_advanced %></h1>
+  <% @templates =  DefaceEditor::Templates[params["deface-controller"], params["deface-action"]] %>
+  <div class="all_view_overrides">
+    <label>Overrides</label>
+    <% if show_advanced
+        overrides = ViewOverride.all.map { |vo| ["#{vo.name} (#{vo.virtual_path})", vo.id] if @templates.keys.include?(vo.virtual_path) }.compact
+       else
+        overrides = ViewOverride.all.map { |vo| ["#{vo.name} (#{vo.virtual_path})", vo.id] if vo.selector == "##{params[:hook]}" }.compact
+       end %>
+    <%= select_tag "all_view_overrides", options_for_select(overrides), {:include_blank => 'New'} %>
+  </div>
+
+  <div class="<%= show_advanced ? "tabber" : "basic" %>">
+
+    <div class="tabbertab" title="Options">
+      <%= form_for :view_override,  :url => view_overrides_url, :html => {:id => "view_override_form"} do |f| %>
+        <%= hidden_field_tag :transaction_id, params[:transaction_id] %>
+        <%= f.hidden_field :id %>
+
+        <%= f.label :name, t("name") %>
+        <%= f.text_field :name, :class => "required" %>
+
+        <div style="clear:both;">&nbsp;</div>
+
+        <% if show_advanced %>
+          <div class="left" style="width:40%;">
+            <%= f.label :virtual_path, t("virtual_path") %>
+            <%= f.select :virtual_path, options_for_select(@templates.keys.sort), {}, {:style => "width:90%;"} %>
+          </div>
+        <% else %>
+          <%= f.hidden_field :virtual_path, :value => @templates.detect {|virtual_path, hsh| hsh[:hooks].include? params[:hook] }.first %>
+        <% end %>
+
+        <div class="left" style="width:25%">
+          <%= f.label :action, t("action") %>
+          <%= f.select :action, options_for_select(Deface::Override.actions) %>
+        </div>
+
+        <div class="left" style="width:25%">
+          <%= f.label :replace_with, t("replace_with") %>
+          <%= f.select "replace_with", options_for_select(%w(text partial template)) %>
+        </div>
+
+        <div class="left" style="width:10%">
+          <%= f.label :disabled, t("disabled") %>
+          <%= f.check_box :disabled %>
+        </div>
+
+        <div style="clear:both;">&nbsp;</div>
+
+        <% if show_advanced %>
+          <div class="left" style="width:50%">
+            <%= f.label :selector, t("selector") %>
+            <%= f.text_field :selector, :class => "required", :style => "width: 90%" %>
+          </div>
+
+          <div id="closing_selector_wrapper" class="left" style="width:50%;">
+            <%= f.label :closing_selector, t("closing_selector") %>
+            <%= f.text_field :closing_selector, :style => "width: 90%" %>
+          </div>
+        <% else %>
+          <%= f.hidden_field :selector, :value =>  "##{params[:hook]}" %>
+        <% end %>
+
+        <div id="replace_withs">
+          <div id="replace_with_text">
+            <%= f.label :replace_text, t("replace_text") %>
+            <%= f.text_area :replace_text, :class => "required" %>
+          </div>
+
+          <div id="replace_with_partial" style="display:none;">
+            <%= f.label :replace_parital, t("replace_parital") %>
+            <%= f.text_field :replace_parital, :class => "required", :disabled => true  %>
+          </div>
+
+          <div id="replace_with_template" style="display:none;">
+            <%= f.label :replace_template, t("replace_template") %>
+            <%= f.text_field :replace_template, :class => "required", :disabled => true %>
+          </div>
+        </div>
+
+        <%= f.submit t("save") %>
+
+        <%= link_to "Delete", view_override_url(1),
+                              :confirm => "Are you sure you want to delete this override?",
+                              :method=> :delete,
+                              :id => "view_override_delete_link",
+                              :style => "display:none;" %>
+
+        <p style="clear:both;font-size:1px;">&nbsp;</p>
+      <% end %>
+    </div>
+
+    <div id="themer_source" class="tabbertab" title="Source" style="display:<%= show_advanced ? "" : "none" %>">
+      <% @templates.each do |key, markup| %>
+        <div id="source_<%= key.gsub("/", "") %>" style="height:100%;">
+          <label>Source for: <%= key %></label>
+          <pre id="test_<%= key.gsub("/", "") %>"><%= markup[:source] %></pre>
+        </div>
+      <% end %>
+    </div>
+
+
+    <div id="themer_escaped" class="tabbertab" title="Escaped" style="display:<%= show_advanced ? "" : "none" %>">
+      <% @templates.each do |key, markup| %>
+        <div id="escaped_<%= key.gsub("/", "") %>" style="height:100%;">
+          <label>Escaped Source for: <%= key %></label>
+          <pre ><%= markup[:escaped] %></pre>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+</div>
+
+
+<script>
+  var all_overrides = new Array();
+  <% ViewOverride.all.each do |override| %>
+    <% next unless @templates.keys.include?(override.virtual_path) %>
+    all_overrides[<%= override.id.to_s %>] = <%= raw override.to_json %>;
+  <% end %>
+  var show_advanced = <%= show_advanced %>;
+
+  function show_source(val){
+    var id = val.replace(/\//g, "");
+
+    $jQ("div#themer_source div").hide();
+    $jQ("#source_" + id).show();
+
+    $jQ("div#themer_escaped div").hide();
+    $jQ("#escaped_" + id).show();
+  }
+
+  function show_replacement(replace_with){
+    var id = "#replace_with_" + replace_with;
+
+    $jQ("#replace_withs div").hide();
+    $jQ("#replace_withs div input,textarea").attr("disabled" , "disabled");
+    $jQ("#replace_withs div input,textarea").removeClass("required");
+
+    if($jQ('#view_override_action').val()!="remove"){
+      $jQ(id).show();
+      $jQ(id + " input,textarea").removeAttr("disabled");
+      $jQ(id + " input,textarea").addClass("required");
+    }
+
+  }
+
+  function load_override(id){
+    if(all_overrides[id]!=undefined){
+      var details = all_overrides[id].view_override;
+
+      $jQ("#view_override_delete_link").show();
+      $jQ("#view_override_delete_link").attr('href', '/view_overrides/' + details.id);
+
+      $jQ("#view_override_id").val(details.id);
+
+      if(show_advanced){
+        $jQ("#view_override_virtual_path").val(details.virtual_path);
+      }
+      $jQ("#view_override_action").val(details.action);
+      $jQ("#view_override_replace_with").val(details.replace_with);
+      $jQ("#view_override_selector").val(details.selector);
+      $jQ("#view_override_closing_selector").val(details.closing_selector);
+
+      if(details.replace_with=="text"){
+        $jQ("#view_override_replace_text").val(details.replacement);
+      }else if(details.target=="partial"){
+        $jQ("#view_override_replace_parital").val(details.replacement);
+      }else if(details.target=="template"){
+        $jQ("#view_override_replace_template").val(details.replacement);
+      }
+
+      if(details.action=="replace"||details.action=="remove"){
+        $jQ('#closing_selector_wrapper').show();
+        $jQ('#view_override_closing_selector').removeAttr('disabled');
+      }else{
+        $jQ('#closing_selector_wrapper').hide();
+        $jQ('#view_override_closing_selector').attr('disabled', true);
+      }
+
+      show_replacement(details.replace_with);
+
+      $jQ("#view_override_name").val(details.name);
+      $jQ("#view_override_disabled").attr('checked', details.disabled);
+    }
+  }
+
+  //clears all form fields
+  function clear_override(){
+    $jQ("#view_override_delete_link").hide();
+
+    $jQ("#view_override_id").val('');
+
+    if(show_advanced){
+      $jQ("#view_override_virtual_path").val('');
+      $jQ("#view_override_selector").val('');
+    }
+
+    $jQ("#view_override_action").val('');
+    $jQ("#view_override_replace_with").val('');
+    $jQ("#view_override_closing_selector").val('');
+
+    if($jQ("#view_override_action").val()=="replace"||$jQ("#view_override_action").val()=="remove"){
+      $jQ('#closing_selector_wrapper').show();
+      $jQ('#view_override_closing_selector').removeAttr('disabled');
+    }else{
+      $jQ('#closing_selector_wrapper').hide();
+      $jQ('#view_override_closing_selector').attr('disabled', true);
+    }
+
+    $jQ("#view_override_replace_text").val('');
+    show_replacement('text');
+
+    $jQ("#view_override_name").val('');
+    $jQ("#view_override_disabled").attr('checked', false);
+  }
+
+	$jQ(function() {
+    $jQ("#view_override_form").validate();
+
+    <%- if session[:current_override_id].present? -%>
+      if($jQ("#all_view_overrides").find("option[value='<%= session[:current_override_id] %>']").length == 1){
+        $jQ("#all_view_overrides").val(<%= session[:current_override_id] %>);
+        load_override(<%= session[:current_override_id] %>);
+      }
+    <%- end -%>
+
+    //handle changing contents of source code tab
+    $jQ("#view_override_virtual_path").change(function(){
+      var virtual_path = $jQ(this).val();
+      show_source(virtual_path);
+    });
+
+    //handle changing replace_with field
+    $jQ("#view_override_replace_with").change(function(){
+      show_replacement($jQ(this).val());
+    });
+
+    //handle loading overrides
+    $jQ("#all_view_overrides").change(function(){
+      var id = $jQ(this).val();
+      if(id==""){
+        clear_override();
+      }else{
+        load_override(id);
+      }
+    });
+
+    //handling changing action
+    $jQ('#view_override_action').change(function(){
+      var val = $jQ(this).val();
+
+      if(val=="replace"||val=="remove"){
+        $jQ('#closing_selector_wrapper').show();
+        $jQ('#view_override_closing_selector').removeAttr('disabled');
+      }else{
+        $jQ('#closing_selector_wrapper').hide();
+        $jQ('#view_override_closing_selector').attr('disabled', true);
+      }
+
+      show_replacement($jQ("#view_override_replace_with").val());
+
+    });
+
+    show_source($jQ("#view_override_virtual_path").val()); //load initial source code
+    show_replacement($jQ("#view_override_replace_with").val());
+
+
+    var editor = ace.edit("test_layoutsspree_application");
+    editor.setTheme("ace/theme/textmate");
+    var html_mode = require("ace/mode/html").Mode;
+    editor.getSession().setMode(new html_mode());
+
+
+	});
+</script>
