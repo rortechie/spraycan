@@ -59,10 +59,10 @@ App.Views.ViewOverrides.Index = Backbone.View.extend({
     render: function() {
       var compiled = _.template(index);
 
-      $(this.el).html(compiled({ collection : this.view_overrides }));
+      $(this.el).html(compiled({ collection : App.view_overrides }));
       $('#nav').html(this.el);
 
-      new App.Views.ViewOverrides.List({ collection: this.view_overrides});
+      new App.Views.ViewOverrides.List({ collection: App.view_overrides});
 
       $('iframe').height($(window).height() - 50);
     },

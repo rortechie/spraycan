@@ -101,9 +101,18 @@ App.Views.ViewOverrides.Edit = Backbone.View.extend({
     attrs = $('form#view_override_form').serializeObject();
     attrs.replace_text = editor.getSession().getValue();
 
+    var isNew = this.model.isNew();
+
     this.model.save(attrs, {
       success: function(model, resp) {
         window.frames[0].location.reload();
+
+
+        if(App.view_overrides.get(1)!=undefined){
+          App.view_overrides.remove(App.view_overrides.get(1), {silent: true});
+        }
+
+        App.view_overrides.add(model);
       },
       error: function() {
         console.log('error');

@@ -7,12 +7,12 @@ App.Controllers.ViewOverrides = Backbone.Controller.extend({
 
   index: function() {
     App.view_overrides = new App.Collections.ViewOverrides();
+    App.view_overrides.bind("refresh", this.update_overrides);
+    App.view_overrides.bind("add", this.update_overrides);
+
     App.view_overrides.fetch({
-      success: function() {
-        App.view = new App.Views.ViewOverrides.Index({ view_overrides: App.view_overrides });
-      },
       error: function() {
-        new Error({ message: "Error loading documents." });
+        new Error({ message: "Error loading overrides." });
       }
     });
   },
@@ -25,7 +25,6 @@ App.Controllers.ViewOverrides = Backbone.Controller.extend({
                                                 selector: "[data-hook='" + hook + "']" })
 
     new top.App.Views.ViewOverrides.Edit({ model: view_override });
-
   },
 
   edit: function(hook) {
@@ -44,6 +43,11 @@ App.Controllers.ViewOverrides = Backbone.Controller.extend({
 
     new top.App.Views.ViewOverrides.Edit({ model: view_override });
 
+  },
+
+  update_overrides: function() {
+    console.log('update_overrides');
+    new App.Views.ViewOverrides.Index();
   }
 
 });
