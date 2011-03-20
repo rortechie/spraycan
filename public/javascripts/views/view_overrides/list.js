@@ -15,6 +15,8 @@ App.Views.ViewOverrides.List = Backbone.View.extend({
     },
 
     load: function() {
+      App.editor.visible = true;
+
       var name = $("#all_view_overrides").val();
 
       model = _.detect(App.view_overrides.models, function(vo) { return vo.get('name') == name} );
@@ -22,7 +24,7 @@ App.Views.ViewOverrides.List = Backbone.View.extend({
       if(name==""){
         //clear_override();
       }else{
-        new App.Views.ViewOverrides.Edit({ model: model });
+        App.view = new App.Views.ViewOverrides.Edit({ model: model });
       }
 
       $("div#deface_editor #load_override").fadeOut();

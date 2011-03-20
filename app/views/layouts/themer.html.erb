@@ -12,6 +12,8 @@
 
       view: null,
 
+      editor: {minimised: true, maximised: false, visible: false, advanced: false },
+
       init: function() {
         new App.Controllers.ViewOverrides();
         new App.Controllers.Templates();
@@ -23,15 +25,31 @@
     function animate_resize(height){
       var pre_height = $("div#deface_editor").height();
 
-      if(height==50){
-        $('#nav li#hide').addClass('disabled');
+      if(App.editor.visible){
+        if(App.editor.minimised){
+          $('#nav li#min').addClass('disabled');
+          $('#nav li#restore').removeClass('disabled');
+          $('#nav li#max').removeClass('disabled');
+        }else if(App.editor.maximised){
+          $('#nav li#min').removeClass('disabled');
+          $('#nav li#restore').removeClass('disabled');
+          $('#nav li#max').addClass('disabled');
+        }else{ //restore
+          $('#nav li#min').removeClass('disabled');
+          $('#nav li#restore').addClass('disabled');
+          $('#nav li#max').removeClass('disabled');
+        }
       }else{
-        $('#nav li#hide').removeClass('disabled');
+        $('#nav li#min').removeClass('disabled');
+        $('#nav li#restore').removeClass('disabled');
+        $('#nav li#max').removeClass('disabled');
       }
 
       var t = Math.abs((pre_height - height) * 5);
       if(t<400){
-        t = 400
+        t = 400;
+      }else if(t>1500){
+        t = 1500;
       }
 
       $("div#deface_editor").animate({height: height + 'px'}, t);
@@ -146,8 +164,6 @@
       }
 
       div#deface_editor .buttons li a{
-        text-decoration: none;
-        color: #fff;
         display: block;
       }
 
@@ -189,9 +205,14 @@
         width: 30px;
       }
 
-      div#deface_editor #nav .disabled a{
+      div#deface_editor .disabled a{
         color: #333;
         cursor: not-allowed;
+      }
+
+      div#deface_editor a{
+        color: #fff;
+        text-decoration: none;
       }
 
       div#deface_editor #main{

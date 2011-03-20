@@ -1,5 +1,13 @@
-var index = (<r><![CDATA[<ul class="buttons small">
-    <li class="last disabled" id="hide"><a rel="hide" href="#">_</a></li>
+var index = (<r><![CDATA[<ul class="buttons small toggle">
+    <li class="first <%= (App.editor.maximised || App.editor.visible) ? '' : 'disabled' %>" id="min">
+      <a rel="min" href="#">_</a>
+    </li>
+    <li class="<%= App.editor.maximised ? '' : 'disabled' %>" id="restore">
+      <a rel="restore" href="#">-</a>
+    </li>
+    <li class="last <%= (!App.editor.maximised && App.editor.visible) ? '' : 'disabled' %>" id="max">
+      <a rel="max" href="#">&oline;</a>
+    </li>
   </ul>
   <div id="load_override">
     <select id="all_view_overrides">
@@ -31,7 +39,9 @@ App.Views.ViewOverrides.Index = Backbone.View.extend({
 
     events: {
       "click a[rel='navigate']": "navigate",
-      "click a[rel='hide']": "hide",
+      "click a[rel='min']": "minimise",
+      "click a[rel='restore']": "restore",
+      "click a[rel='max']": "maximise",
       "click a[rel='zoom-in']": "zoom_in",
       "click a[rel='zoom-out']": "zoom_out",
       "click a[rel='load']": "show_load"
@@ -41,9 +51,43 @@ App.Views.ViewOverrides.Index = Backbone.View.extend({
       this.render();
     },
 
-    hide: function() {
-      this.last_editor_height = $("div#deface_editor").height();
-      animate_resize(50);
+    minimise: function() {
+      if(App.editor.visible){
+        this.last_editor_height = $("div#deface_editor").height();
+        App.editor.maximised = false;
+        App.editor.minimised = true;
+        animate_resize(50);
+      }
+      return false;
+    },
+
+    restore: function() {
+      if(App.editor.visible){
+        this.last_editor_height = $("div#deface_editor").height();
+        App.editor.maximised = false;
+        App.editor.minimised = false;
+
+        if(App.view!=undefined){
+          App.view = new App.Views.ViewOverrides.Edit({ model: App.view.model });
+        }
+      }
+
+      return false;
+    },
+
+    maximise: function() {
+      if(App.editor.visible){
+        this.last_editor_height = $("div#deface_editor").height();
+        App.editor.maximised = true;
+        App.editor.minimised = false;
+
+        if(App.view!=undefined){
+          App.view = new App.Views.ViewOverrides.Edit({ model: App.view.model });
+        }
+
+        animate_resize($(window).height());
+      }
+
       return false;
     },
 

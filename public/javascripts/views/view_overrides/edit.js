@@ -72,7 +72,7 @@ var edit = (<r><![CDATA[<form id="view_override_form">
         </ul>
 
         <ul class="buttons bottom">
-          <li class="last"><a rel="delete" href="#">Delete</a></li>
+          <li class="last <%= typeof(id)  == "undefined" ? 'disabled' : '' %>"><a rel="delete" href="#">Delete</a></li>
           <li class="last"><a rel="save" href="#">Save</a></li>
         </ul>
 
@@ -107,12 +107,13 @@ App.Views.ViewOverrides.Edit = Backbone.View.extend({
       success: function(model, resp) {
         window.frames[0].location.reload();
 
-
-        if(App.view_overrides.get(1)!=undefined){
-          App.view_overrides.remove(App.view_overrides.get(1), {silent: true});
+        if(App.view_overrides.get(model.get('id'))!=undefined){
+          App.view_overrides.remove(App.view_overrides.get(model.get('id')), {silent: true});
         }
 
         App.view_overrides.add(model);
+
+        $("a[rel='delete']").parent().removeClass('disabled');
       },
       error: function() {
         console.log('error');
@@ -123,35 +124,40 @@ App.Views.ViewOverrides.Edit = Backbone.View.extend({
   },
 
   delete: function() {
-    console.log('delete');
+    this.model.destroy();
+    App.view_overrides.remove(this.model);
+    return false;
   },
 
   advanced: function() {
-    this.show_advanced = !this.show_advanced;
+    App.editor.advanced = !App.editor.advanced;
     this.resize_editor();
     $('#view_override_form .advanced').toggle();
+    return false;
   },
 
   resize_editor: function() {
-    var height = 50;
+    if(!App.editor.maximised){
+      var height = 50;
 
-    if(this.show_form){
-      height += 50
+      if(this.show_form){
+        height += 50
+      }
+
+      if(this.show_text_editor){
+        height += 280
+      }
+
+      if(App.editor.advanced){
+        height += 30
+      }
+      animate_resize(height);
     }
-
-    if(this.show_text_editor){
-      height += 280
-    }
-
-    if(this.show_advanced){
-      height += 30
-    }
-
-    animate_resize(height);
-
   },
 
   render: function() {
+    App.editor.minimised = false;
+
     var compiled = _.template(edit);
 
     if(this.model.get('hook')!=undefined){
@@ -167,17 +173,24 @@ App.Views.ViewOverrides.Edit = Backbone.View.extend({
 
       this.model.set( {virtual_path: template.get('name'), replacement: hook.source } );
 
-
-      //todo finih this unset to remove hook attr
+      //todo finish this unset to remove hook attr
       this.model.unset('hook')
     }
-
 
     $(this.el).html(compiled(this.model.toJSON()));
     $('#main').html(this.el);
 
     if(this.model.get('replace_with')=="text"){
+      var editor_height = 190;
+      if(App.editor.maximised){
+        editor_height = $(window).height() - 150;
+      }else{
+
+      }
+
+      $("#view_override_replace_text").height(editor_height);
       editor = ace.edit("view_override_replace_text");
+
       editor.setTheme("ace/theme/twilight");
 
       var html_mode = require("ace/mode/html").Mode;
@@ -197,5 +210,7 @@ App.Views.ViewOverrides.Edit = Backbone.View.extend({
     }
 
     this.resize_editor();
+
+    return this;
   }
 });

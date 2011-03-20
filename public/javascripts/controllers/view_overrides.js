@@ -9,6 +9,7 @@ App.Controllers.ViewOverrides = Backbone.Controller.extend({
     App.view_overrides = new App.Collections.ViewOverrides();
     App.view_overrides.bind("refresh", this.update_overrides);
     App.view_overrides.bind("add", this.update_overrides);
+    App.view_overrides.bind("remove", this.update_overrides);
 
     App.view_overrides.fetch({
       error: function() {
@@ -24,7 +25,7 @@ App.Controllers.ViewOverrides = Backbone.Controller.extend({
                                                 replace_with: 'text',
                                                 selector: "[data-hook='" + hook + "']" })
 
-    new top.App.Views.ViewOverrides.Edit({ model: view_override });
+    App.view = new top.App.Views.ViewOverrides.Edit({ model: view_override });
   },
 
   edit: function(hook) {
@@ -41,12 +42,11 @@ App.Controllers.ViewOverrides = Backbone.Controller.extend({
                                                 selector: "[data-hook='" + hook + "']" })
     }
 
-    new top.App.Views.ViewOverrides.Edit({ model: view_override });
+    App.view = new top.App.Views.ViewOverrides.Edit({ model: view_override });
 
   },
 
   update_overrides: function() {
-    console.log('update_overrides');
     new App.Views.ViewOverrides.Index();
   }
 
