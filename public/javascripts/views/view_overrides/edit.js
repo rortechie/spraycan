@@ -89,6 +89,7 @@ App.Views.ViewOverrides.Edit = Backbone.View.extend({
     "click a[rel='save']": "save",
     "click a[rel='delete']": "delete",
     "click a[rel='advanced']": "advanced",
+    "change select[name='replace_with']": "set_replacement"
   },
 
   initialize: function() {
@@ -153,6 +154,13 @@ App.Views.ViewOverrides.Edit = Backbone.View.extend({
       }
       animate_resize(height);
     }
+  },
+
+  set_replacement: function() {
+    var replacement = $("select[name='replace_with']").val();
+
+    $('div#replace_withs div').hide();
+    $('div#replace_with_' + replacement).show();
   },
 
   render: function() {
