@@ -35,8 +35,6 @@ var index = (<r><![CDATA[<ul class="buttons small toggle">
 
 
 App.Views.ViewOverrides.Index = Backbone.View.extend({
-    last_editor_height: 50,
-
     events: {
       "click a[rel='navigate']": "navigate",
       "click a[rel='min']": "minimise",
@@ -53,23 +51,19 @@ App.Views.ViewOverrides.Index = Backbone.View.extend({
 
     minimise: function() {
       if(App.editor.visible){
-        this.last_editor_height = $("div#deface_editor").height();
         App.editor.maximised = false;
         App.editor.minimised = true;
-        animate_resize(50);
+        App.animate_resize();
       }
       return false;
     },
 
     restore: function() {
       if(App.editor.visible){
-        this.last_editor_height = $("div#deface_editor").height();
         App.editor.maximised = false;
         App.editor.minimised = false;
 
-        if(App.view!=undefined){
-          App.view = new App.Views.ViewOverrides.Edit({ model: App.view.model });
-        }
+        App.animate_resize();
       }
 
       return false;
@@ -77,15 +71,10 @@ App.Views.ViewOverrides.Index = Backbone.View.extend({
 
     maximise: function() {
       if(App.editor.visible){
-        this.last_editor_height = $("div#deface_editor").height();
         App.editor.maximised = true;
         App.editor.minimised = false;
 
-        if(App.view!=undefined){
-          App.view = new App.Views.ViewOverrides.Edit({ model: App.view.model });
-        }
-
-        animate_resize($(window).height());
+        App.animate_resize();
       }
 
       return false;

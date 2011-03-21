@@ -67,13 +67,13 @@ var edit = (<r><![CDATA[<form id="view_override_form">
       </div>
 
       <div id="actions">
-        <ul class="buttons top">
-          <li class="last"><a rel="advanced" href="#">Advanced</a></li>
+        <ul class="buttons ">
+          <li class="<%= typeof(id)  == "undefined" ? 'disabled' : '' %>"><a rel="delete" href="#">Delete</a></li>
+          <li class="last"><a rel="save" href="#">Save</a></li>
         </ul>
 
-        <ul class="buttons bottom">
-          <li class="last <%= typeof(id)  == "undefined" ? 'disabled' : '' %>"><a rel="delete" href="#">Delete</a></li>
-          <li class="last"><a rel="save" href="#">Save</a></li>
+        <ul class="buttons ">
+          <li class="last"><a rel="advanced" href="#">Advanced</a></li>
         </ul>
 
       </div>
@@ -84,6 +84,7 @@ App.Views.ViewOverrides.Edit = Backbone.View.extend({
   show_form: false,
   show_text_editor: false,
   show_advanced: false,
+  code_editor: null,
 
   events: {
     "click a[rel='save']": "save",
@@ -100,9 +101,11 @@ App.Views.ViewOverrides.Edit = Backbone.View.extend({
 
   save: function() {
     attrs = $('form#view_override_form').serializeObject();
-    attrs.replace_text = editor.getSession().getValue();
+    attrs.replace_text = this.code_editor.getSession().getValue();
 
     var isNew = this.model.isNew();
+
+    App.increment_activity();
 
     this.model.save(attrs, {
       success: function(model, resp) {
@@ -137,23 +140,38 @@ App.Views.ViewOverrides.Edit = Backbone.View.extend({
     return false;
   },
 
-  resize_editor: function() {
-    if(!App.editor.maximised){
-      var height = 50;
+  calculate_size: function() {
+    var height = 0;
+
+    if(App.editor.maximised){
+      if(this.code_editor!=null){
+        $(this.code_editor.container).height($(window).height() - 170)
+        this.code_editor.resize()
+      }
+
+      height = ($(window).height() - 50);
+
+    }else if(App.editor.minimised){
+      //leave it at defaul
+    }else{
 
       if(this.show_form){
         height += 50
       }
 
-      if(this.show_text_editor){
-        height += 280
+      if(this.code_editor!=null){
+        $(this.code_editor.container).height(170)
+        this.code_editor.resize()
+
+        height += 300
       }
 
       if(App.editor.advanced){
         height += 30
       }
-      animate_resize(height);
     }
+
+    return height;
   },
 
   set_replacement: function() {
@@ -165,6 +183,7 @@ App.Views.ViewOverrides.Edit = Backbone.View.extend({
 
   render: function() {
     App.editor.minimised = false;
+    App.view = this;
 
     var compiled = _.template(edit);
 
@@ -189,35 +208,32 @@ App.Views.ViewOverrides.Edit = Backbone.View.extend({
     $('#main').html(this.el);
 
     if(this.model.get('replace_with')=="text"){
-      var editor_height = 190;
-      if(App.editor.maximised){
-        editor_height = $(window).height() - 150;
-      }else{
+      var editor_height = 170;
 
+      if(App.editor.maximised){
+        editor_height = $(window).height() - 170;
       }
 
       $("#view_override_replace_text").height(editor_height);
-      editor = ace.edit("view_override_replace_text");
+      this.code_editor = ace.edit("view_override_replace_text");
 
-      editor.setTheme("ace/theme/twilight");
+      this.code_editor.setTheme("ace/theme/twilight");
 
       var html_mode = require("ace/mode/html").Mode;
-      editor.getSession().setMode(new html_mode());
+      this.code_editor.getSession().setMode(new html_mode());
       if(this.model.get('replacement')!=null){
-        editor.getSession().setValue(this.model.get('replacement'));
+        this.code_editor.getSession().setValue(this.model.get('replacement'));
       }
 
-      this.show_text_editor = true;
-
     }else if(this.model.get('target')=="partial"){
-      this.show_text_editor = false;
+      this.code_editor = null;
       $("#view_override_replace_parital").val(this.model.get('replacement'));
     }else if(this.model.get('target')=="template"){
-      this.show_text_editor = false;
+      this.code_editor = null;
       $("#view_override_replace_template").val(this.model.get('replacement'));
     }
 
-    this.resize_editor();
+    App.animate_resize();
 
     return this;
   }

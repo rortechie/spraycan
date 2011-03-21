@@ -1,6 +1,5 @@
 App.Controllers.ViewOverrides = Backbone.Controller.extend({
   routes: {
-    "": "index",
     "view_overrides/new/:hook": "new",
     "view_overrides/edit/:hook": "edit"
   },
@@ -11,6 +10,7 @@ App.Controllers.ViewOverrides = Backbone.Controller.extend({
     App.view_overrides.bind("add", this.update_overrides);
     App.view_overrides.bind("remove", this.update_overrides);
 
+    App.increment_activity();
     App.view_overrides.fetch({
       error: function() {
         new Error({ message: "Error loading overrides." });
@@ -47,6 +47,7 @@ App.Controllers.ViewOverrides = Backbone.Controller.extend({
   },
 
   update_overrides: function() {
+    App.decrement_activity();
     new App.Views.ViewOverrides.Index();
   }
 

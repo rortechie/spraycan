@@ -14,46 +14,75 @@
 
       editor: {minimised: true, maximised: false, visible: false, advanced: false },
 
+      activity: 0,
+
       init: function() {
-        new App.Controllers.ViewOverrides();
+        view_overrides_controller = new App.Controllers.ViewOverrides();
+        view_overrides_controller.index();
+
         new App.Controllers.Templates();
         Backbone.history.start();
+      },
+
+      increment_activity: function(){
+        App.activity = App.activity + 1;
+        $('img#busy').show();
+      },
+
+      decrement_activity: function(){
+        App.activity = App.activity - 1;
+
+        if(App.activity<=0){
+          $('img#busy').hide();
+          App.activity = 0;
+        }
+
+      },
+
+      animate_resize: function(){
+        var pre_height = $("div#deface_editor").height();
+
+        var height = 50;
+        if(App.view!=null){
+          height += App.view.calculate_size();
+        }
+
+        if(App.editor.visible){
+          if(App.editor.minimised){
+            $('#nav li#min').addClass('disabled');
+            $('#nav li#restore').removeClass('disabled');
+            $('#nav li#max').removeClass('disabled');
+          }else if(App.editor.maximised){
+            $('#nav li#min').removeClass('disabled');
+            $('#nav li#restore').removeClass('disabled');
+            $('#nav li#max').addClass('disabled');
+          }else{ //restore
+            $('#nav li#min').removeClass('disabled');
+            $('#nav li#restore').addClass('disabled');
+            $('#nav li#max').removeClass('disabled');
+          }
+        }else{
+          $('#nav li#min').removeClass('disabled');
+          $('#nav li#restore').removeClass('disabled');
+          $('#nav li#max').removeClass('disabled');
+        }
+
+        var t = Math.abs((pre_height - height) * 5);
+        if(t<400){
+          t = 400;
+        }else if(t>1500){
+          t = 1500;
+        }
+
+        $("div#deface_editor").animate({height: height + 'px'}, t);
       }
+
     };
 
 
-    function animate_resize(height){
-      var pre_height = $("div#deface_editor").height();
 
-      if(App.editor.visible){
-        if(App.editor.minimised){
-          $('#nav li#min').addClass('disabled');
-          $('#nav li#restore').removeClass('disabled');
-          $('#nav li#max').removeClass('disabled');
-        }else if(App.editor.maximised){
-          $('#nav li#min').removeClass('disabled');
-          $('#nav li#restore').removeClass('disabled');
-          $('#nav li#max').addClass('disabled');
-        }else{ //restore
-          $('#nav li#min').removeClass('disabled');
-          $('#nav li#restore').addClass('disabled');
-          $('#nav li#max').removeClass('disabled');
-        }
-      }else{
-        $('#nav li#min').removeClass('disabled');
-        $('#nav li#restore').removeClass('disabled');
-        $('#nav li#max').removeClass('disabled');
-      }
 
-      var t = Math.abs((pre_height - height) * 5);
-      if(t<400){
-        t = 400;
-      }else if(t>1500){
-        t = 1500;
-      }
 
-      $("div#deface_editor").animate({height: height + 'px'}, t);
-    }
   </script>
 
   <%= javascript_include_tag 'jquery-1.4.4.deface.min.js',
@@ -119,9 +148,9 @@
         color:#fff;
         background-color:#111;
         float:left;
-        opacity:0.9;
-        filter:alpha(opacity=90);
-        -moz-opacity:0.9;
+        opacity:0.96;
+        filter:alpha(opacity=96);
+        -moz-opacity:0.96;
         bottom: 0;
         height: 50px;
         position: absolute;
@@ -142,12 +171,20 @@
 
       div#deface_editor img#busy{
         margin: 10px;
-
-      }
-      div#deface_editor ul.buttons{
+        display: none;
         float: left;
-        margin: 5px;
       }
+
+     div#deface_editor .buttons{
+        margin: 0px;
+        float: right;
+      }
+
+      div#deface_editor .buttons li{
+        float: left;
+        margin-top: 0px;
+      }
+
 
       div#deface_editor .buttons li.last{
         border-right: 1px solid #999999;
@@ -170,14 +207,10 @@
         display: block;
       }
 
-      div#deface_editor #nav .buttons{
+      div#deface_editor #nav {
         float: right;
       }
 
-      div#deface_editor #nav .buttons li{
-        float: left;
-        margin-top: 0px;
-      }
 
       div#deface_editor #nav #load_override{
         float: right;
@@ -274,18 +307,7 @@
         display: none;
       }
 
-      div#deface_editor #replace_withs{
-        width: 88%;
-        float: left;
-      }
-
-
-      div#deface_editor #actions .top{
-        margin-top: 30px;
-      }
-
-      div#deface_editor #actions .bottom{
-        margin-top: 100px;
+      div#deface_editor #actions{
       }
 
       div#deface_editor .clear, .replacement{
