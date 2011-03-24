@@ -90,7 +90,8 @@ App.Views.ViewOverrides.Edit = Backbone.View.extend({
     "click a[rel='save']": "save",
     "click a[rel='delete']": "delete",
     "click a[rel='advanced']": "advanced",
-    "change select[name='replace_with']": "set_replacement"
+    "change select[name='replace_with']": "set_replacement",
+    "change select[name='target']": "set_target"
   },
 
   initialize: function() {
@@ -186,6 +187,32 @@ App.Views.ViewOverrides.Edit = Backbone.View.extend({
 
     this.show_text_editor = (replacement=='text');
     App.animate_resize();
+  },
+
+  set_target: function(){
+    var target = $("select[name='target']").val();
+    console.log("setting target", target);
+
+    if(target=='remove'){
+      this.show_text_editor = false;
+
+      $('#closing_selector_wrapper').hide();
+      $('div#replace_withs').hide();
+    }else{
+      var replacement = $("select[name='replace_with']").val();
+      if(replacement=='text'){
+        this.show_text_editor = true;
+      }
+
+      if(this.show_advanced){
+        $('#closing_selector_wrapper').show();
+      }
+
+      $('div#replace_withs').show();
+    }
+
+    App.animate_resize();
+
   },
 
   render: function() {
