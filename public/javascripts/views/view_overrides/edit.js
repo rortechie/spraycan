@@ -134,8 +134,8 @@ App.Views.ViewOverrides.Edit = Backbone.View.extend({
   },
 
   advanced: function() {
-    App.editor.advanced = !App.editor.advanced;
-    this.resize_editor();
+    this.show_advanced = !this.show_advanced ;
+    App.animate_resize();
     $('#view_override_form .advanced').toggle();
     return false;
   },
@@ -145,8 +145,8 @@ App.Views.ViewOverrides.Edit = Backbone.View.extend({
 
     if(App.editor.maximised){
       if(this.code_editor!=null){
-        $(this.code_editor.container).height($(window).height() - 170)
-        this.code_editor.resize()
+        $(this.code_editor.container).height($(window).height() - 170);
+        this.code_editor.resize();
       }
 
       height = ($(window).height() - 50);
@@ -156,18 +156,22 @@ App.Views.ViewOverrides.Edit = Backbone.View.extend({
     }else{
 
       if(this.show_form){
-        height += 50
+        height += 50;
       }
 
-      if(this.code_editor!=null){
-        $(this.code_editor.container).height(170)
-        this.code_editor.resize()
+      if(this.show_text_editor){
+        if(this.code_editor!=null){
+          $(this.code_editor.container).height(170);
+          this.code_editor.resize();
 
-        height += 300
+          height += 300;
+        }
+      }else{
+        height += 80;
       }
 
-      if(App.editor.advanced){
-        height += 30
+      if(this.show_advanced){
+        height += 30;
       }
     }
 
@@ -177,8 +181,11 @@ App.Views.ViewOverrides.Edit = Backbone.View.extend({
   set_replacement: function() {
     var replacement = $("select[name='replace_with']").val();
 
-    $('div#replace_withs div').hide();
+    $('div#replace_withs > div').hide();
     $('div#replace_with_' + replacement).show();
+
+    this.show_text_editor = (replacement=='text');
+    App.animate_resize();
   },
 
   render: function() {
@@ -208,6 +215,7 @@ App.Views.ViewOverrides.Edit = Backbone.View.extend({
     $('#main').html(this.el);
 
     if(this.model.get('replace_with')=="text"){
+      this.show_text_editor = true;
       var editor_height = 170;
 
       if(App.editor.maximised){
