@@ -12,7 +12,7 @@
 
       view: null,
 
-      editor: {minimised: true, maximised: false, visible: false, advanced: false },
+      editor: {minimised: true, maximised: false, visible: false },
 
       activity: 0,
 
@@ -24,21 +24,22 @@
         new App.Controllers.Stylesheets();
 
         Backbone.history.start();
+
+        App.increment_activity() //for iframe load
       },
 
       increment_activity: function(){
-        App.activity = App.activity + 1;
+        App.activity += 1;
         $('img#busy').show();
       },
 
       decrement_activity: function(){
-        App.activity = App.activity - 1;
+        App.activity -= 1;
 
         if(App.activity<=0){
           $('img#busy').hide();
           App.activity = 0;
         }
-
       },
 
       animate_resize: function(){
@@ -64,9 +65,9 @@
             $('#nav li#max').removeClass('disabled');
           }
         }else{
-          $('#nav li#min').removeClass('disabled');
-          $('#nav li#restore').removeClass('disabled');
-          $('#nav li#max').removeClass('disabled');
+          $('#nav li#min').addClass('disabled');
+          $('#nav li#restore').addClass('disabled');
+          $('#nav li#max').addClass('disabled');
         }
 
         var t = Math.abs((pre_height - height) * 5);
@@ -181,7 +182,7 @@
         float: left;
       }
 
-     div#deface_editor .buttons{
+      div#deface_editor .buttons{
         margin: 0px;
         float: right;
       }
@@ -204,7 +205,7 @@
         list-style: none outside none;
         padding: 4px 0;
         text-align: center;
-        width: 90px;
+        width: 70px;
         background-color: #222;
         margin-top: 5px;
       }
@@ -240,7 +241,15 @@
       }
 
       div#deface_editor #nav .toggle .last{
-        -moz-border-radius: 0 15px 15px 0;
+        -moz-border-radius: 0px 15px 15px 0px;
+      }
+
+      div#deface_editor #nav .toggle .first_last{
+        -moz-border-radius: 15px;
+      }
+
+      div#deface_editor .buttons li.big {
+        width: 70px!important;
       }
 
       div#deface_editor #nav .small li{
@@ -314,6 +323,7 @@
       }
 
       div#deface_editor #actions{
+        clear: both;
       }
 
       div#deface_editor .clear, .replacement{

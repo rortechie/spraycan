@@ -67,8 +67,9 @@ var edit = (<r><![CDATA[<form id="view_override_form">
       </div>
 
       <div id="actions">
-        <ul class="buttons ">
+        <ul class="buttons toggle">
           <li class="<%= typeof(id)  == "undefined" ? 'disabled' : '' %>"><a rel="delete" href="#">Delete</a></li>
+          <li><a rel="cancel" href="#">Cancel</a></li>
           <li class="last"><a rel="save" href="#">Save</a></li>
         </ul>
 
@@ -88,13 +89,16 @@ App.Views.ViewOverrides.Edit = Backbone.View.extend({
 
   events: {
     "click a[rel='save']": "save",
+    "click a[rel='cancel']": "cancel",
     "click a[rel='delete']": "delete",
     "click a[rel='advanced']": "advanced",
-    "change select[name='replace_with']": "set_replacement"
+    "change select[name='replace_with']": "set_replacement",
+    "change select[name='target']": "set_target"
   },
 
   initialize: function() {
     $(this.el).data('view', this);
+    this.show_form = true;
     this.model = this.options.model;
     this.render();
   },
@@ -130,12 +134,21 @@ App.Views.ViewOverrides.Edit = Backbone.View.extend({
   delete: function() {
     this.model.destroy();
     App.view_overrides.remove(this.model);
+
+    this.show_form = false;
+    App.animate_resize();
+    return false;
+  },
+
+  cancel: function() {
+    this.show_form = false;
+    App.animate_resize();
     return false;
   },
 
   advanced: function() {
-    App.editor.advanced = !App.editor.advanced;
-    this.resize_editor();
+    this.show_advanced = !this.show_advanced ;
+    App.animate_resize();
     $('#view_override_form .advanced').toggle();
     return false;
   },
@@ -145,29 +158,33 @@ App.Views.ViewOverrides.Edit = Backbone.View.extend({
 
     if(App.editor.maximised){
       if(this.code_editor!=null){
-        $(this.code_editor.container).height($(window).height() - 170)
-        this.code_editor.resize()
+        $(this.code_editor.container).height($(window).height() - 170);
+        this.code_editor.resize();
       }
 
       height = ($(window).height() - 50);
 
     }else if(App.editor.minimised){
-      //leave it at defaul
+      //leave it at default 0
     }else{
 
       if(this.show_form){
-        height += 50
-      }
+        //height += 50;
 
-      if(this.code_editor!=null){
-        $(this.code_editor.container).height(170)
-        this.code_editor.resize()
+        if(this.show_text_editor){
+          if(this.code_editor!=null){
+            $(this.code_editor.container).height(170);
+            this.code_editor.resize();
 
-        height += 300
-      }
+            height += 300;
+          }
+        }else{
+          height += 80;
+        }
 
-      if(App.editor.advanced){
-        height += 30
+        if(this.show_advanced){
+          height += 30;
+        }
       }
     }
 
@@ -177,12 +194,42 @@ App.Views.ViewOverrides.Edit = Backbone.View.extend({
   set_replacement: function() {
     var replacement = $("select[name='replace_with']").val();
 
-    $('div#replace_withs div').hide();
+    $('div#replace_withs > div').hide();
     $('div#replace_with_' + replacement).show();
+
+    this.show_text_editor = (replacement=='text');
+    App.animate_resize();
+  },
+
+  set_target: function(){
+    var target = $("select[name='target']").val();
+    console.log("setting target", target);
+
+    if(target=='remove'){
+      this.show_text_editor = false;
+
+      $('#closing_selector_wrapper').hide();
+      $('div#replace_withs').hide();
+    }else{
+      var replacement = $("select[name='replace_with']").val();
+      if(replacement=='text'){
+        this.show_text_editor = true;
+      }
+
+      if(this.show_advanced){
+        $('#closing_selector_wrapper').show();
+      }
+
+      $('div#replace_withs').show();
+    }
+
+    App.animate_resize();
+
   },
 
   render: function() {
     App.editor.minimised = false;
+    App.editor.visible = true;
     App.view = this;
 
     var compiled = _.template(edit);
@@ -208,6 +255,7 @@ App.Views.ViewOverrides.Edit = Backbone.View.extend({
     $('#main').html(this.el);
 
     if(this.model.get('replace_with')=="text"){
+      this.show_text_editor = true;
       var editor_height = 170;
 
       if(App.editor.maximised){
