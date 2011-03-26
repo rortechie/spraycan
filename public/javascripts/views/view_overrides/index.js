@@ -27,9 +27,9 @@ var index = (<r><![CDATA[<ul class="buttons small toggle">
     <li class="last"><a rel="zoom-out" href="#">-</a></li>
   </ul>
 
-  <ul class="buttons toggle" style="display:none;">
+  <ul class="buttons toggle">
     <li class="first active"><a rel="html" href="#">HTML</a></li>
-    <li><a rel="css" href="#">CSS</a></li>
+    <li><a rel="css" href="/deface#stylesheets/application">CSS</a></li>
     <li class="last"><a rel="layout" href="#">Layout</a></li>
   </ul> ]]></r>).toString();
 

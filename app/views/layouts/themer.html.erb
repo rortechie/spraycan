@@ -4,7 +4,7 @@
   <title>Deface Editor</title>
   <script type="text/javascript">
     var App = {
-      Views: {Shared: {}, ViewOverrides: {} },
+      Views: {Shared: {}, ViewOverrides: {}, Stylesheets: {} },
       Controllers: {},
       Collections: {},
 
@@ -21,6 +21,8 @@
         view_overrides_controller.index();
 
         new App.Controllers.Templates();
+        new App.Controllers.Stylesheets();
+
         Backbone.history.start();
       },
 
@@ -91,14 +93,18 @@
                              'backbone-min.js',
                              'models/view_override.js',
                              'models/template.js',
+                             'models/stylesheet.js',
                              'collections/view_overrides.js',
                              'collections/templates.js',
+                             'collections/stylesheets.js',
                              'controllers/view_overrides.js',
                              'controllers/templates.js',
+                             'controllers/stylesheets.js',
                              'views/view_overrides/index.js',
                              'views/view_overrides/edit.js',
                              'views/view_overrides/list.js',
                              'views/shared/navigate.js',
+                             'views/stylesheets/edit.js',
                              'rails.deface.js',
                              '/src/ace.js',
                              '/src/mode-html.js',

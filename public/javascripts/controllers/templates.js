@@ -10,5 +10,3 @@ App.Controllers.Templates = Backbone.Controller.extend({
   }
 
 });
-
-
