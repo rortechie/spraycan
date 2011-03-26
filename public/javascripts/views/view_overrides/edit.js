@@ -67,8 +67,9 @@ var edit = (<r><![CDATA[<form id="view_override_form">
       </div>
 
       <div id="actions">
-        <ul class="buttons ">
+        <ul class="buttons toggle">
           <li class="<%= typeof(id)  == "undefined" ? 'disabled' : '' %>"><a rel="delete" href="#">Delete</a></li>
+          <li><a rel="cancel" href="#">Cancel</a></li>
           <li class="last"><a rel="save" href="#">Save</a></li>
         </ul>
 
@@ -88,6 +89,7 @@ App.Views.ViewOverrides.Edit = Backbone.View.extend({
 
   events: {
     "click a[rel='save']": "save",
+    "click a[rel='cancel']": "cancel",
     "click a[rel='delete']": "delete",
     "click a[rel='advanced']": "advanced",
     "change select[name='replace_with']": "set_replacement",
@@ -96,6 +98,7 @@ App.Views.ViewOverrides.Edit = Backbone.View.extend({
 
   initialize: function() {
     $(this.el).data('view', this);
+    this.show_form = true;
     this.model = this.options.model;
     this.render();
   },
@@ -131,6 +134,15 @@ App.Views.ViewOverrides.Edit = Backbone.View.extend({
   delete: function() {
     this.model.destroy();
     App.view_overrides.remove(this.model);
+
+    this.show_form = false;
+    App.animate_resize();
+    return false;
+  },
+
+  cancel: function() {
+    this.show_form = false;
+    App.animate_resize();
     return false;
   },
 
@@ -153,26 +165,26 @@ App.Views.ViewOverrides.Edit = Backbone.View.extend({
       height = ($(window).height() - 50);
 
     }else if(App.editor.minimised){
-      //leave it at defaul
+      //leave it at default 0
     }else{
 
       if(this.show_form){
-        height += 50;
-      }
+        //height += 50;
 
-      if(this.show_text_editor){
-        if(this.code_editor!=null){
-          $(this.code_editor.container).height(170);
-          this.code_editor.resize();
+        if(this.show_text_editor){
+          if(this.code_editor!=null){
+            $(this.code_editor.container).height(170);
+            this.code_editor.resize();
 
-          height += 300;
+            height += 300;
+          }
+        }else{
+          height += 80;
         }
-      }else{
-        height += 80;
-      }
 
-      if(this.show_advanced){
-        height += 30;
+        if(this.show_advanced){
+          height += 30;
+        }
       }
     }
 
@@ -217,6 +229,7 @@ App.Views.ViewOverrides.Edit = Backbone.View.extend({
 
   render: function() {
     App.editor.minimised = false;
+    App.editor.visible = true;
     App.view = this;
 
     var compiled = _.template(edit);

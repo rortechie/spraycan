@@ -4,15 +4,20 @@ var frame_level = 1;
 var current_hooks = new Array;
 
 function show_hook_frames(){
-  $jQ.each($jQ("[data-layer='" + frame_level + "']"), function(i, hook){
-    var hook = $jQ(hook);
-    var layer = hook.attr('data-layer');
+  if(show_frames){
+    $jQ.each($jQ("[data-layer='" + frame_level + "']"), function(i, hook){
+      var hook = $jQ(hook);
+      var layer = hook.attr('data-layer');
 
-    hook.addClass('deface_hook_frame');
-  });
+      hook.addClass('deface_hook_frame');
+    });
+  }else{
+    $('.deface_hook_frame').removeClass('deface_hook_frame');
+  }
 }
 
 function hook_zoom(in_or_out){
+  show_frames = true;
   var current_level = frame_level;
 
   if(in_or_out=="in"){
@@ -36,9 +41,7 @@ function hook_zoom(in_or_out){
 
       $jQ('.deface_hook_frame').removeClass('deface_hook_frame');
 
-      if(show_frames){
-        show_hook_frames();
-      }
+      show_hook_frames();
     }
   }
 }
@@ -47,7 +50,7 @@ function create_tip(e){
   var hook = $jQ(e.currentTarget);
   var layer = hook.attr('data-layer');
 
-  if(frame_level==layer){
+  if(frame_level==layer && show_frames){
 
     if(hook.data('qtip')==undefined){
       hook_name = hook.attr('data-hook');
@@ -90,10 +93,17 @@ function kill_tip(e){
 
 $jQ(function() {
   if(top.App!=undefined){
+    top.App.decrement_activity();
+
     show_hook_frames();
 
+    //set handlers for tooltips
     $('[data-hook]').mousemove(create_tip).mouseleave(kill_tip);
 
   }
 });
 
+//show activity while iframe is loading
+window.onbeforeunload = function() {
+  top.App.increment_activity();
+}
