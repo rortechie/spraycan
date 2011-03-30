@@ -12,13 +12,15 @@
 
       view: null,
 
+      current: 'html',
+
       editor: {minimised: true, maximised: false, visible: false },
 
       activity: 0,
 
       init: function() {
         view_overrides_controller = new App.Controllers.ViewOverrides();
-        view_overrides_controller.index();
+        view_overrides_controller.load();
 
         new App.Controllers.Templates();
         new App.Controllers.Stylesheets();
@@ -26,6 +28,9 @@
         Backbone.history.start();
 
         App.increment_activity() //for iframe load
+
+        //render toolbar
+        new App.Views.Shared.Toolbar();
       },
 
       increment_activity: function(){
@@ -78,13 +83,34 @@
         }
 
         $("div#deface_editor").animate({height: height + 'px'}, t);
+      },
+
+      set_current: function(value){
+        App.current = value;
+        App.reset_editor();
+        $("div#nav ul#current li").removeClass("active");
+        $("div#nav ul#current li#" + value).addClass("active");
+      },
+
+      reset_editor: function(){
+        App.editor = {minimised: true, maximised: false, visible: false };
+        App.animate_resize();
+      },
+
+      handle_save_error: function(model, errors){
+        App.decrement_activity();
+
+        _.each(errors, function(message, field){
+          $("[name='" + field + "']").addClass('error');
+          $("[name='" + field + "']").after("<span title='" + message + "' class='error_icon'>E<span>")
+        });
+      },
+
+      clear_errors: function(){
+        $(".error").removeClass("error");
+        $(".error_icon").remove();
       }
-
     };
-
-
-
-
 
   </script>
 
@@ -101,14 +127,16 @@
                              'controllers/view_overrides.js',
                              'controllers/templates.js',
                              'controllers/stylesheets.js',
-                             'views/view_overrides/index.js',
+                             'views/shared/toolbar.js',
                              'views/view_overrides/edit.js',
                              'views/view_overrides/list.js',
                              'views/shared/navigate.js',
                              'views/stylesheets/edit.js',
+                             'views/stylesheets/list.js',
                              'rails.deface.js',
                              '/src/ace.js',
                              '/src/mode-html.js',
+                             '/src/mode-css.js',
                              '/src/theme-twilight.js' %>
 
   <script type="text/javascript">
@@ -166,6 +194,7 @@
       }
 
       div#deface_editor #top_bar{
+        border-top: 1px solid #fff;
         border-bottom: 1px solid #fff;
         padding: 8px 8px 6px 8px;
       }
@@ -214,18 +243,13 @@
         display: block;
       }
 
-      div#deface_editor #nav {
-        float: right;
-      }
-
-
-      div#deface_editor #nav #load_override{
+      div#deface_editor #nav #loadables{
         float: right;
         margin: 10px 10px 0;
         display: none;
       }
 
-      div#deface_editor #nav #load_override button{
+      div#deface_editor #nav #loadables button{
         vertical-align: top;
       }
 
@@ -233,7 +257,11 @@
         width: 60px;
       }
       div#deface_editor #nav .toggle .active{
-        background-color: red;
+        background-color: #ccc;
+      }
+
+      div#deface_editor #nav .toggle .active a{
+        color: #000;
       }
 
       div#deface_editor #nav .toggle .first{
@@ -301,7 +329,6 @@
       div#deface_editor .fields input{
         height: 12px;
         width: 180px;
-        margin-right: 20px;
       }
 
       div#deface_editor .fields input[type='checkbox']{
@@ -311,11 +338,25 @@
       div#deface_editor .fields select{
         padding: 2px;
         width: 180px;
-        margin-right: 20px;
       }
 
       div#deface_editor .fields label,input,select,button{
         vertical-align: super;
+      }
+
+      div#deface_editor .fields input.error{
+        border :1px solid red;
+      }
+
+      div#deface_editor .fields select.error{
+        border :1px solid red;
+      }
+
+      div#deface_editor .fields span.error_icon{
+        color: red;
+        vertical-align: super;
+        font-weight: bold;
+        margin-left: 4px;
       }
 
       div#deface_editor .advanced{
@@ -334,7 +375,7 @@
         width: auto;
       }
 
-      #view_override_replace_text {
+      .small_editor {
         height: 195px;
         width: 100%;
         position: relative;

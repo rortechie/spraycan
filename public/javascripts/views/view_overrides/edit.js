@@ -1,4 +1,4 @@
-var edit = (<r><![CDATA[<form id="view_override_form">
+var viewoverride_edit = (<r><![CDATA[<form id="view_override_form">
     <div>
       <div class="fields">
         <label>Name:</label>
@@ -52,7 +52,7 @@ var edit = (<r><![CDATA[<form id="view_override_form">
           <div class="fields">
             <label>Text:</label>
           </div>
-          <pre id="view_override_replace_text"><p>I'm a p</p></pre>
+          <pre id="view_override_replace_text" class="small_editor"><p>I'm a p</p></pre>
         </div>
 
         <div style="display: none;" class="fields replacement" id="replace_with_partial">
@@ -104,6 +104,8 @@ App.Views.ViewOverrides.Edit = Backbone.View.extend({
   },
 
   save: function() {
+    App.clear_errors();
+
     attrs = $('form#view_override_form').serializeObject();
     attrs.replace_text = this.code_editor.getSession().getValue();
 
@@ -123,9 +125,7 @@ App.Views.ViewOverrides.Edit = Backbone.View.extend({
 
         $("a[rel='delete']").parent().removeClass('disabled');
       },
-      error: function() {
-        console.log('error');
-      }
+      error: App.handle_save_error
     });
 
     return false;
@@ -135,14 +135,12 @@ App.Views.ViewOverrides.Edit = Backbone.View.extend({
     this.model.destroy();
     App.view_overrides.remove(this.model);
 
-    this.show_form = false;
-    App.animate_resize();
+    App.reset_editor();
     return false;
   },
 
   cancel: function() {
-    this.show_form = false;
-    App.animate_resize();
+    App.reset_editor();
     return false;
   },
 
@@ -203,7 +201,6 @@ App.Views.ViewOverrides.Edit = Backbone.View.extend({
 
   set_target: function(){
     var target = $("select[name='target']").val();
-    console.log("setting target", target);
 
     if(target=='remove'){
       this.show_text_editor = false;
@@ -232,7 +229,7 @@ App.Views.ViewOverrides.Edit = Backbone.View.extend({
     App.editor.visible = true;
     App.view = this;
 
-    var compiled = _.template(edit);
+    var compiled = _.template(viewoverride_edit);
 
     if(this.model.get('hook')!=undefined){
       hook_name = this.model.get('hook');

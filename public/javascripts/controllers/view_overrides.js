@@ -1,14 +1,23 @@
 App.Controllers.ViewOverrides = Backbone.Controller.extend({
   routes: {
+    "html": "load",
     "view_overrides/new/:hook": "new",
     "view_overrides/edit/:hook": "edit"
   },
 
-  index: function() {
-    App.view_overrides = new App.Collections.ViewOverrides();
-    App.view_overrides.bind("refresh", this.update_overrides);
-    App.view_overrides.bind("add", this.update_overrides);
-    App.view_overrides.bind("remove", this.update_overrides);
+  load: function() {
+    App.set_current('html');
+
+    if(App.view_overrides==undefined){
+      App.view_overrides = new App.Collections.ViewOverrides();
+
+      App.view_overrides.bind("refresh", this.update_overrides);
+      App.view_overrides.bind("add", this.update_overrides);
+      App.view_overrides.bind("remove", this.update_overrides);
+    }else{
+      //already have overrides loaded so can show drop down
+      $("#loadables").show();
+    }
 
     App.increment_activity();
     App.view_overrides.fetch({
@@ -47,9 +56,13 @@ App.Controllers.ViewOverrides = Backbone.Controller.extend({
   },
 
   update_overrides: function() {
+    $("#loadables").show();
     App.decrement_activity();
-    new App.Views.ViewOverrides.Index();
+
+    if(App.current == 'html'){
+      $('li#load_loadable').removeClass('disabled');
+      new App.Views.ViewOverrides.List();
+    }
   }
 
 });
-

@@ -1,9 +1,13 @@
-var list = (<r><![CDATA[<select id="all_view_overrides">
+var load_override = (<r><![CDATA[
+  <div id="load_override">
+    <select id="all_view_overrides">
+      <option value="add-new">Add New Override</option>
       <% collection.each(function(item) { %>
         <option><%= item.escape('name') %></option>
       <% }); %>
     </select>
-    <button>ok</button>]]></r>).toString();
+    <button>ok</button>
+  </div>]]></r>).toString();
 
 App.Views.ViewOverrides.List = Backbone.View.extend({
     events: {
@@ -18,28 +22,26 @@ App.Views.ViewOverrides.List = Backbone.View.extend({
       App.editor.visible = true;
 
       var name = $("#all_view_overrides").val();
-
       model = _.detect(App.view_overrides.models, function(vo) { return vo.get('name') == name} );
 
-      if(name==""){
-        //clear_override();
-      }else{
+      if(name!=""){
+        if(name=="add-new"){
+          var model = new top.ViewOverride({target: 'replace', disabled: false, replace_with: 'text', virtual_path: '', selector: '', replacement: ''});
+        }
+
         App.view = new App.Views.ViewOverrides.Edit({ model: model });
       }
 
-      $("div#deface_editor #load_override").fadeOut();
       return false;
     },
 
     render: function() {
-      var compiled = _.template(list);
+      var compiled = _.template(load_override);
 
-      $(this.el).html(compiled({ collection : this.collection }));
-      $('#load_override').html(this.el);
+      $(this.el).html(compiled({ collection : App.view_overrides }));
+      $('#loadables').html(this.el);
 
       $('iframe').height($(window).height() - 50);
     }
 
 });
-
-

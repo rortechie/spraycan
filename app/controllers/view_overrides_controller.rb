@@ -5,7 +5,6 @@ class ViewOverridesController < ActionController::Base
   before_filter :set_replacement, :only => [:create, :update]
 
   def index
-
     render :json => ViewOverride.all
   end
 
@@ -13,7 +12,6 @@ class ViewOverridesController < ActionController::Base
     @override = ViewOverride.create params
     render :json => @override
   end
-
 
   def update
     @override = ViewOverride.where(:id => params.delete(:id)).first

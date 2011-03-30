@@ -5,6 +5,10 @@ class CreateStylesheets < ActiveRecord::Migration
       t.text :css
       t.timestamps
     end
+
+    Stylesheet.reset_column_information
+
+    Stylesheet.create(:name => "application", :css => "body {}")
   end
 
   def self.down

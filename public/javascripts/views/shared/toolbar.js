@@ -1,4 +1,5 @@
-var index = (<r><![CDATA[<ul class="buttons small toggle">
+var toolbar = (<r><![CDATA[
+  <ul class="buttons small toggle">
     <li class="first <%= (App.editor.maximised || App.editor.visible) ? '' : 'disabled' %>" id="min">
       <a rel="min" href="#">_</a>
     </li>
@@ -9,18 +10,6 @@ var index = (<r><![CDATA[<ul class="buttons small toggle">
       <a rel="max" href="#">&oline;</a>
     </li>
   </ul>
-  <div id="load_override">
-    <select id="all_view_overrides">
-      <% collection.each(function(item) { %>
-        <option><%= item.escape('name') %></option>
-      <% }); %>
-    </select>
-    <button>ok</button>
-  </div>
-  <ul class="buttons toggle">
-    <li class="first"><a rel="navigate" href="#">Go</a></li>
-    <li class="last <%= collection.size() == 0 ? 'disabled' : '' %>"><a rel="load" href="#">Load</a></li>
-  </ul>
 
   <ul class="buttons small toggle">
     <li class="first"><a rel="zoom-in" href="#">+</a></li>
@@ -29,16 +18,19 @@ var index = (<r><![CDATA[<ul class="buttons small toggle">
   </ul>
 
   <ul class="buttons toggle">
-    <li class="first_last"><a rel="refresh" href="#">Refresh</a></li>
+    <li class="first"><a rel="navigate" href="#">Go</a></li>
+    <li class="last"><a rel="refresh" href="#">Refresh</a></li>
   </ul>
 
+  <div id="loadables">
+  </div>
+
   <ul id="current" class="buttons toggle">
-    <li id='html' class="first <%= App.current == 'html' ? 'active' : '' %>"><a rel="html" href="#">HTML</a></li>
-    <li id='css' class="last <%= App.current == 'css' ? 'active' : '' %>"><a rel="css" href="/deface#stylesheets/application">CSS</a></li>
+    <li id='html' class="first <%= App.current == 'html' ? 'active' : '' %>"><a rel="html" href="/deface#html">HTML</a></li>
+    <li id='css' class="last <%= App.current == 'css' ? 'active' : '' %>"><a rel="css" href="/deface#stylesheet/application">CSS</a></li>
   </ul> ]]></r>).toString();
 
-
-App.Views.ViewOverrides.Index = Backbone.View.extend({
+App.Views.Shared.Toolbar = Backbone.View.extend({
   events: {
     "click a[rel='navigate']": "navigate",
     "click a[rel='min']": "minimise",
@@ -68,7 +60,6 @@ App.Views.ViewOverrides.Index = Backbone.View.extend({
     if(App.editor.visible){
       App.editor.maximised = false;
       App.editor.minimised = false;
-
       App.animate_resize();
     }
 
@@ -79,29 +70,17 @@ App.Views.ViewOverrides.Index = Backbone.View.extend({
     if(App.editor.visible){
       App.editor.maximised = true;
       App.editor.minimised = false;
-
       App.animate_resize();
     }
 
     return false;
   },
 
-  show_load: function() {
-    if($("a[rel='load']").parent().hasClass('disabled')){
-      return false;
-    }
-
-    $("div#deface_editor #load_override").fadeIn();
-    return false;
-  },
-
   render: function() {
-    var compiled = _.template(index);
+    var compiled = _.template(toolbar);
 
     $(this.el).html(compiled({ collection : App.view_overrides }));
     $('#nav').html(this.el);
-
-    new App.Views.ViewOverrides.List({ collection: App.view_overrides});
 
     $('iframe').height($(window).height() - 50);
   },
@@ -132,6 +111,4 @@ App.Views.ViewOverrides.Index = Backbone.View.extend({
     return false;
   }
 
-
 });
-

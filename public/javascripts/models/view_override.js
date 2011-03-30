@@ -6,22 +6,32 @@ var ViewOverride = Backbone.Model.extend({
   },
 
   validate: function(attrs) {
+    var errors = new Object;
+    var has_errors = false;
+
     if(attrs.name==""){
-      return "Name cannot be blank"
+      errors['name'] = "Name cannot be blank";
+      has_errors = true;
     }
 
     if(attrs.virtual_path==""){
-      return "Virutal Path cannot be blank"
+      errors['virtual_path'] = "Virutal Path cannot be blank";
+      has_errors = true;
     }
 
     if(attrs.target==""){
-      return "Action cannot be blank"
+      errors['target'] = "Action cannot be blank";
+      has_errors = true;
     }
 
     if(attrs.selector==""){
-      return "Selector cannot be blank"
+      errors['selector'] = "Selector cannot be blank";
+      has_errors = true;
     }
 
+    if(has_errors){
+      return errors;
+    }
   }
 
 });
