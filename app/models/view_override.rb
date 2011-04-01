@@ -1,4 +1,7 @@
 class ViewOverride < ActiveRecord::Base
+  belongs_to :theme
+  after_save :initiate
+
   def initiate
     Deface::Override.new( :virtual_path => self.virtual_path,
                           :name => "_wip_#{self.name}",

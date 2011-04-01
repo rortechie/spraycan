@@ -1,0 +1,221 @@
+html {
+  height: 100%;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  font: 12px Verdana, sans-serif;
+}
+iframe{
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+div#deface_editor{
+  color:#fff;
+  background-color:#111;
+  float:left;
+  opacity:0.96;
+  filter:alpha(opacity=96);
+  -moz-opacity:0.96;
+  bottom: 0;
+  height: 50px;
+  position: absolute;
+  width: 100%;
+  z-index: 99999;
+}
+
+div#deface_editor #top_bar{
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+  padding: 8px 8px 6px 8px;
+}
+
+div#deface_editor h1{
+  float: left;
+  font-size: 1.4em;
+  margin: 7px 4px;
+}
+
+div#deface_editor img#busy{
+  margin: 10px;
+  display: none;
+  float: left;
+}
+
+div#deface_editor .buttons{
+  margin: 0px;
+  float: right;
+}
+
+div#deface_editor .buttons li{
+  float: left;
+  margin-top: 0px;
+}
+
+
+div#deface_editor .buttons li.last{
+  border-right: 1px solid #999999;
+}
+
+div#deface_editor .buttons li{
+  border-left: 1px solid #999999;
+  border-top: 1px solid #999999;
+  border-bottom: 1px solid #999999;
+  font-weight: bold;
+  list-style: none outside none;
+  padding: 4px 0;
+  text-align: center;
+  width: 70px;
+  background-color: #222;
+  margin-top: 5px;
+}
+
+div#deface_editor .buttons li a{
+  display: block;
+}
+
+div#deface_editor #nav #loadables{
+  float: right;
+  margin: 10px 10px 0;
+  display: none;
+}
+
+div#deface_editor #nav #loadables button{
+  vertical-align: top;
+}
+
+div#deface_editor #nav .toggle li{
+  width: 60px;
+}
+div#deface_editor #nav .toggle .active{
+  background-color: #ccc;
+}
+
+div#deface_editor #nav .toggle .active a{
+  color: #000;
+}
+
+div#deface_editor #nav .toggle .first{
+  -moz-border-radius: 15px 0px 0px 15px;
+}
+
+div#deface_editor #nav .toggle .last{
+  -moz-border-radius: 0px 15px 15px 0px;
+}
+
+div#deface_editor #nav .toggle .first_last{
+  -moz-border-radius: 15px;
+}
+
+div#deface_editor .buttons li.big {
+  width: 70px!important;
+}
+
+div#deface_editor #nav .small li{
+  width: 30px;
+}
+
+div#deface_editor .disabled a{
+  color: #333;
+  cursor: not-allowed;
+}
+
+div#deface_editor a{
+  color: #fff;
+  text-decoration: none;
+}
+
+div#deface_editor #main{
+  margin-top: 8px;
+  clear: both;
+  padding: 0 14px;
+}
+
+div#deface_editor .form{
+  display: none;
+  padding: 0px 12px;
+}
+
+div#deface_editor .fields{
+  float: left;
+  margin-right: 20px;
+  height: 30px;
+  width: 330px;
+}
+
+
+div#deface_editor .fields label{
+  font-weight: bold;
+  display: inline-block;
+  margin: 2px 0px;
+  width: 100px;
+}
+
+div#deface_editor .fields label.error{
+  font-weight: normal;
+  color: red;
+  margin: 2px 0px 2px -16px;
+}
+
+div#deface_editor .fields input{
+  height: 12px;
+  width: 180px;
+}
+
+div#deface_editor .fields input[type='checkbox']{
+  width: 20px;
+}
+
+div#deface_editor .fields select{
+  padding: 2px;
+  width: 180px;
+}
+
+div#deface_editor .fields label,input,select,button{
+  vertical-align: super;
+}
+
+div#deface_editor .fields input.error{
+  border :1px solid red;
+}
+
+div#deface_editor .fields select.error{
+  border :1px solid red;
+}
+
+div#deface_editor .fields span.error_icon{
+  color: red;
+  vertical-align: super;
+  font-weight: bold;
+  margin-left: 4px;
+}
+
+div#deface_editor .advanced{
+  display: none;
+}
+
+div#deface_editor #actions{
+  clear: both;
+}
+
+div#deface_editor .clear, .replacement{
+  clear: both;
+}
+
+.ace_editor .ace_print_margin_layer {
+  width: auto;
+}
+
+.small_editor {
+  height: 195px;
+  width: 100%;
+  position: relative;
+  border: 1px solid #fff;
+  background-color: #fff;
+  clear: both;
+}

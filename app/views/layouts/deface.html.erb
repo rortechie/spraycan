@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Deface Editor</title>
+  <script type="text/javascript">
+    var Deface = {
+      Views: {Shared: {}, ViewOverrides: {}, Stylesheets: {} },
+      Controllers: {},
+      Collections: {},
+
+      templates: [],
+
+      view: null,
+
+      current: 'html',
+
+      theme_id: 1,
+
+      editor: {minimised: true, maximised: false, visible: false },
+
+      activity: 0,
+
+      init: function() {
+        view_overrides_controller = new Deface.Controllers.ViewOverrides();
+        view_overrides_controller.load();
+
+        new Deface.Controllers.Templates();
+        new Deface.Controllers.Stylesheets();
+
+        Backbone.history.start();
+
+        Deface.increment_activity() //for iframe load
+
+        //render toolbar
+        new Deface.Views.Shared.Toolbar();
+      },
+
+      increment_activity: function(){
+        Deface.activity += 1;
+        $('img#busy').show();
+      },
+
+      decrement_activity: function(){
+        Deface.activity -= 1;
+
+        if(Deface.activity<=0){
+          $('img#busy').hide();
+          Deface.activity = 0;
+        }
+      },
+
+      animate_resize: function(){
+        var pre_height = $("div#deface_editor").height();
+
+        var height = 50;
+        if(Deface.view!=null){
+          height += Deface.view.calculate_size();
+        }
+
+        if(Deface.editor.visible){
+          if(Deface.editor.minimised){
+            $('#nav li#min').addClass('disabled');
+            $('#nav li#restore').removeClass('disabled');
+            $('#nav li#max').removeClass('disabled');
+          }else if(Deface.editor.maximised){
+            $('#nav li#min').removeClass('disabled');
+            $('#nav li#restore').removeClass('disabled');
+            $('#nav li#max').addClass('disabled');
+          }else{ //restore
+            $('#nav li#min').removeClass('disabled');
+            $('#nav li#restore').addClass('disabled');
+            $('#nav li#max').removeClass('disabled');
+          }
+        }else{
+          $('#nav li#min').addClass('disabled');
+          $('#nav li#restore').addClass('disabled');
+          $('#nav li#max').addClass('disabled');
+        }
+
+        var t = Math.abs((pre_height - height) * 5);
+        if(t<400){
+          t = 400;
+        }else if(t>1500){
+          t = 1500;
+        }
+
+        $("div#deface_editor").animate({height: height + 'px'}, t);
+      },
+
+      set_current: function(value){
+        Deface.current = value;
+        Deface.reset_editor();
+        $("div#nav ul#current li").removeClass("active");
+        $("div#nav ul#current li#" + value).addClass("active");
+      },
+
+      reset_editor: function(){
+        Deface.editor = {minimised: true, maximised: false, visible: false };
+        Deface.animate_resize();
+      },
+
+      handle_save_error: function(model, errors){
+        Deface.decrement_activity();
+
+        _.each(errors, function(message, field){
+          $("[name='" + field + "']").addClass('error');
+          $("[name='" + field + "']").after("<span title='" + message + "' class='error_icon'>E<span>")
+        });
+      },
+
+      clear_errors: function(){
+        $(".error").removeClass("error");
+        $(".error_icon").remove();
+      }
+    };
+
+  </script>
+
+  <%= javascript_include_tag 'deface/jquery-1.4.4.min.js',
+                             'deface/underscore-min.js',
+                             'deface/backbone-min.js',
+                             'deface/models/view_override.js',
+                             'deface/models/template.js',
+                             'deface/models/stylesheet.js',
+                             'deface/collections/view_overrides.js',
+                             'deface/collections/templates.js',
+                             'deface/collections/stylesheets.js',
+                             'deface/controllers/view_overrides.js',
+                             'deface/controllers/templates.js',
+                             'deface/controllers/stylesheets.js',
+                             'deface/views/shared/toolbar.js',
+                             'deface/views/view_overrides/edit.js',
+                             'deface/views/view_overrides/list.js',
+                             'deface/views/shared/navigate.js',
+                             'deface/views/stylesheets/edit.js',
+                             'deface/views/stylesheets/list.js',
+                             'deface/rails.deface.js',
+                             'deface/ace/ace.js',
+                             'deface/ace/mode-html.js',
+                             'deface/ace/mode-css.js',
+                             'deface/ace/theme-twilight.js' %>
+
+  <script type="text/javascript">
+    $(function() {
+        Deface.init();
+    });
+
+    $.fn.serializeObject = function()
+    {
+       var o = {};
+       var a = this.serializeArray();
+       $.each(a, function() {
+           if (o[this.name]) {
+               if (!o[this.name].push) {
+                   o[this.name] = [o[this.name]];
+               }
+               o[this.name].push(this.value || '');
+           } else {
+               o[this.name] = this.value || '';
+           }
+       });
+       return o;
+    };
+  </script>
+  <%= stylesheet_link_tag 'deface/deface.css' %>
+</head>
+<body>
+  <%= yield %>
+</body>
+</html>
