@@ -1,4 +1,4 @@
-class Deface::TemplatesController < ActionController::Base
+class Deface::TemplatesController < Deface::BaseController
   def index
 
     @templates =  DefaceEditor::Templates[params["deface_controller"], params["deface_action"]]

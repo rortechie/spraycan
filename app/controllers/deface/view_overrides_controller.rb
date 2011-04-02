@@ -1,4 +1,4 @@
-class Deface::ViewOverridesController < ActionController::Base
+class Deface::ViewOverridesController < Deface::BaseController
   ActiveRecord::Base.include_root_in_json = false
   layout 'deface'
 

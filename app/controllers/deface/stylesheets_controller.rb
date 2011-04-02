@@ -1,4 +1,4 @@
-class Deface::StylesheetsController < ActionController::Base
+class Deface::StylesheetsController < Deface::BaseController
   respond_to :css, :json
 
   before_filter :set_theme, :only => [:index, :create]
