@@ -47,7 +47,7 @@ var viewoverride_edit = (<r><![CDATA[<form id="view_override_form">
         <input type="text" size="30" name="closing_selector">
       </div>
 
-      <div class="clear" id="replace_withs">
+      <div style="display: <%= target!='remove' ? 'block' : 'none' %>;" class="clear" id="replace_withs">
         <div class="replacement" id="replace_with_text">
           <div class="fields">
             <label>Text:</label>
@@ -55,12 +55,12 @@ var viewoverride_edit = (<r><![CDATA[<form id="view_override_form">
           <pre id="view_override_replace_text" class="small_editor"><p>I'm a p</p></pre>
         </div>
 
-        <div style="display: none;" class="fields replacement" id="replace_with_partial">
+        <div class="fields replacement" id="replace_with_partial">
           <label>Partial:</label>
           <input type="text" size="30" name="replace_parital" disabled="disabled">
         </div>
 
-        <div style="display: none;" class="fields replacement" id="replace_with_template">
+        <div class="fields replacement" id="replace_with_template">
           <label>Template:</label>
           <input type="text" size="30" name="replace_template" disabled="disabled">
         </div>
@@ -93,7 +93,9 @@ Deface.Views.ViewOverrides.Edit = Backbone.View.extend({
     "click a[rel='delete']": "delete",
     "click a[rel='advanced']": "advanced",
     "change select[name='replace_with']": "set_replacement",
-    "change select[name='target']": "set_target"
+    "change select[name='target']": "set_replacement",
+    "change input" :"changed",
+    "change select" :"changed"
   },
 
   initialize: function() {
@@ -154,6 +156,29 @@ Deface.Views.ViewOverrides.Edit = Backbone.View.extend({
     return false;
   },
 
+  changed: function(evt) {
+    var field = $(evt.currentTarget);
+    var name = field.attr('name');
+
+    if(name=='disabled'){
+      this.set_change(name, field.is(":checked"));
+    }else{
+      this.set_change(name, field.val());
+    }
+
+  },
+
+  editor_changed: function(evt){
+    this.set_change("replacement", this.code_editor.getSession().getValue());
+  },
+
+  set_change: function(name, value){
+    var attrs = {};
+    attrs[name] = value;
+
+    this.model.set(attrs);
+  },
+
   calculate_size: function() {
     var height = 0;
 
@@ -170,15 +195,12 @@ Deface.Views.ViewOverrides.Edit = Backbone.View.extend({
     }else{
 
       if(this.show_form){
-        //height += 50;
 
-        if(this.show_text_editor){
-          if(this.code_editor!=null){
-            $(this.code_editor.container).height(170);
-            this.code_editor.resize();
+        if(this.show_text_editor && this.code_editor!=null){
+          $(this.code_editor.container).height(170);
+          this.code_editor.resize();
 
-            height += 300;
-          }
+          height += 300;
         }else{
           height += 80;
         }
@@ -194,33 +216,48 @@ Deface.Views.ViewOverrides.Edit = Backbone.View.extend({
 
   set_replacement: function() {
     var replacement = $("select[name='replace_with']").val();
+    var target = $("select[name='target']").val();
 
     $('div#replace_withs > div').hide();
     $('div#replace_with_' + replacement).show();
 
-    this.show_text_editor = (replacement=='text');
-    Deface.animate_resize();
-  },
-
-  set_target: function(){
-    var target = $("select[name='target']").val();
-
     if(target=='remove'){
-      this.show_text_editor = false;
-
-      $('#closing_selector_wrapper').hide();
       $('div#replace_withs').hide();
+      this.show_text_editor = false;
     }else{
-      var replacement = $("select[name='replace_with']").val();
-      if(replacement=='text'){
-        this.show_text_editor = true;
-      }
-
-      if(this.show_advanced){
-        $('#closing_selector_wrapper').show();
-      }
-
       $('div#replace_withs').show();
+
+      if(replacement=="text"){
+        this.show_text_editor = true;
+        var editor_height = 170;
+
+        if(Deface.editor.maximised){
+          editor_height = $(window).height() - 170;
+        }
+
+        $("#view_override_replace_text").height(editor_height);
+        this.code_editor = ace.edit("view_override_replace_text");
+
+        this.code_editor.setTheme("ace/theme/twilight");
+
+        var html_mode = require("ace/mode/html").Mode;
+        this.code_editor.getSession().setMode(new html_mode());
+        if(this.model.get('replacement')!=null){
+          this.code_editor.getSession().setValue(this.model.get('replacement'));
+        }
+
+        this.code_editor.getSession().doc.on('change', function(evt){
+          Deface.view.editor_changed();
+        });
+
+      }else if(target=="partial"){
+        this.code_editor = null;
+        $("#view_override_replace_parital").val(this.model.get('replacement'));
+      }else if(target=="template"){
+        this.code_editor = null;
+        $("#view_override_replace_template").val(this.model.get('replacement'));
+      }
+
     }
 
     Deface.animate_resize();
@@ -254,34 +291,8 @@ Deface.Views.ViewOverrides.Edit = Backbone.View.extend({
     $(this.el).html(compiled(this.model.toJSON()));
     $('#main').html(this.el);
 
-    if(this.model.get('replace_with')=="text"){
-      this.show_text_editor = true;
-      var editor_height = 170;
 
-      if(Deface.editor.maximised){
-        editor_height = $(window).height() - 170;
-      }
-
-      $("#view_override_replace_text").height(editor_height);
-      this.code_editor = ace.edit("view_override_replace_text");
-
-      this.code_editor.setTheme("ace/theme/twilight");
-
-      var html_mode = require("ace/mode/html").Mode;
-      this.code_editor.getSession().setMode(new html_mode());
-      if(this.model.get('replacement')!=null){
-        this.code_editor.getSession().setValue(this.model.get('replacement'));
-      }
-
-    }else if(this.model.get('target')=="partial"){
-      this.code_editor = null;
-      $("#view_override_replace_parital").val(this.model.get('replacement'));
-    }else if(this.model.get('target')=="template"){
-      this.code_editor = null;
-      $("#view_override_replace_template").val(this.model.get('replacement'));
-    }
-
-    Deface.animate_resize();
+    this.set_replacement();
 
     return this;
   }

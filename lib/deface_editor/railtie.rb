@@ -34,7 +34,7 @@ module DefaceEditor
         end
 
         #load all overrides from db
-        if ViewOverride.table_exists?
+        if Theme.table_exists?
           @active_theme = Theme.active.first
           @active_theme.view_overrides.map(&:initiate) if @active_theme.present?
         end

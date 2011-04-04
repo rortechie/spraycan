@@ -27,7 +27,9 @@ Deface.Views.Stylesheets.Edit = Backbone.View.extend({
   events: {
     "click a[rel='save']": "save",
     "click a[rel='cancel']": "cancel",
-    "click a[rel='delete']": "delete"
+    "click a[rel='delete']": "delete",
+    "change input" :"changed",
+    "change select" :"changed"
   },
 
   initialize: function() {
@@ -82,6 +84,29 @@ Deface.Views.Stylesheets.Edit = Backbone.View.extend({
     return false;
   },
 
+  changed: function(evt) {
+    var field = $(evt.currentTarget);
+    var name = field.attr('name');
+
+    if(name=='disabled'){
+      this.set_change(name, field.is(":checked"));
+    }else{
+      this.set_change(name, field.val());
+    }
+
+  },
+
+  editor_changed: function(evt){
+    this.set_change("css", this.code_editor.getSession().getValue());
+  },
+
+  set_change: function(name, value){
+    var attrs = {};
+    attrs[name] = value;
+
+    this.model.set(attrs);
+  },
+
   calculate_size: function() {
     var height = 0;
 
@@ -120,6 +145,8 @@ Deface.Views.Stylesheets.Edit = Backbone.View.extend({
   },
 
   apply_styles: function() {
+    Deface.view.editor_changed();
+
     var id = Deface.view.model.get('id')
 
     if(frames[0].$jQ("style#" + id).length==0){

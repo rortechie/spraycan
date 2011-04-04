@@ -6,25 +6,28 @@ Deface.Controllers.ViewOverrides = Backbone.Controller.extend({
   },
 
   load: function() {
-    Deface.set_current('html');
-
-    if(Deface.view_overrides==undefined){
-      Deface.view_overrides = new Deface.Collections.ViewOverrides();
-
-      Deface.view_overrides.bind("refresh", this.update_overrides);
-      Deface.view_overrides.bind("add", this.update_overrides);
-      Deface.view_overrides.bind("remove", this.update_overrides);
+    if(Deface.set_current('html')){
+      //already loaded
+      this.update_overrides();
     }else{
-      //already have overrides loaded so can show drop down
-      $("#loadables").show();
+
+      if(Deface.view_overrides==undefined){
+        Deface.view_overrides = new Deface.Collections.ViewOverrides();
+
+        Deface.view_overrides.bind("refresh", this.update_overrides);
+        Deface.view_overrides.bind("add", this.update_overrides);
+        Deface.view_overrides.bind("remove", this.update_overrides);
+
+        Deface.increment_activity();
+        Deface.view_overrides.fetch({
+          error: function() {
+            new Error({ message: "Error loading overrides." });
+          }
+        });
+      }
     }
 
-    Deface.increment_activity();
-    Deface.view_overrides.fetch({
-      error: function() {
-        new Error({ message: "Error loading overrides." });
-      }
-    });
+    window.location.href ="#";
   },
 
   new: function(hook) {
