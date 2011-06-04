@@ -1,4 +1,6 @@
 Deface.Collections.ViewOverrides = Backbone.Collection.extend({
   model: ViewOverride,
-  url: '/deface/themes/' + Deface.theme_id + '/view_overrides'
+  url: function(){
+    return '/deface/themes/' + Deface.theme_id + '/view_overrides';
+  }
 });

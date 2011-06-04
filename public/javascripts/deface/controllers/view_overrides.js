@@ -8,7 +8,6 @@ Deface.Controllers.ViewOverrides = Backbone.Controller.extend({
   load: function() {
     if(Deface.set_current('html')){
       //already loaded
-      this.update_overrides();
     }else{
 
       if(Deface.view_overrides==undefined){
@@ -20,6 +19,9 @@ Deface.Controllers.ViewOverrides = Backbone.Controller.extend({
 
         Deface.increment_activity();
         Deface.view_overrides.fetch({
+          success: function(){
+            Deface.decrement_activity();
+          },
           error: function() {
             new Error({ message: "Error loading overrides." });
           }
@@ -27,7 +29,8 @@ Deface.Controllers.ViewOverrides = Backbone.Controller.extend({
       }
     }
 
-    window.location.href ="#";
+    // $('li#load_loadable').removeClass('disabled');
+    this.update_overrides();
   },
 
   new: function(hook) {
@@ -59,13 +62,9 @@ Deface.Controllers.ViewOverrides = Backbone.Controller.extend({
   },
 
   update_overrides: function() {
-    $("#loadables").show();
-    Deface.decrement_activity();
-
-    if(Deface.current == 'html'){
-      $('li#load_loadable').removeClass('disabled');
-      new Deface.Views.ViewOverrides.List();
-    }
+    new Deface.Views.ViewOverrides.List();
+    $("#loadables").css("visibility", "visible");
+    window.location.href ="#";
   }
 
 });

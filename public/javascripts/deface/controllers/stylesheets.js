@@ -6,8 +6,7 @@ Deface.Controllers.Stylesheets = Backbone.Controller.extend({
   load: function(name) {
     if(Deface.set_current('css')){
       //already loaded
-      this.update_stylesheets();
-    }else{
+       }else{
       if(Deface.stylesheets==undefined){
         Deface.stylesheets = new Deface.Collections.Stylesheets();
 
@@ -17,6 +16,9 @@ Deface.Controllers.Stylesheets = Backbone.Controller.extend({
 
         Deface.increment_activity();
         Deface.stylesheets.fetch({
+          success: function(){
+            Deface.decrement_activity();
+          },
           error: function() {
             new Error({ message: "Error loading overrides." });
           }
@@ -24,17 +26,15 @@ Deface.Controllers.Stylesheets = Backbone.Controller.extend({
       }
     }
 
-    window.location.href ="#";
+    this.update_stylesheets();
+
+    // $('li#load_loadable').removeClass('disabled');
   },
 
   update_stylesheets: function() {
-    $("#loadables").show();
-    Deface.decrement_activity();
-
-    if(Deface.current == 'css'){
-      new Deface.Views.Stylesheets.List();
-      $('li#load_loadable').removeClass('disabled');
-    }
+    new Deface.Views.Stylesheets.List();
+    $("#loadables").css("visibility", "visible");
+    window.location.href ="#";
   }
 
 });

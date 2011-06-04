@@ -4,8 +4,8 @@
 
   var overrides_by_hook = new Array();
 
-  <% if @active_theme = Theme.active.first %>
-    <%- @active_theme.view_overrides.group_by(&:selector).each do |override| -%>
+  <% Theme.active.each do |theme| %>
+    <%- theme.view_overrides.group_by(&:selector).each do |override| -%>
       overrides_by_hook['<%= override[0].gsub("'", "") %>'] = <%= override[1].size %>;
     <%- end -%>
   <% end %>
@@ -17,8 +17,8 @@
   });
 <% end %>
 <%= javascript_include_tag 'deface/hooks.deface.js' %>
-<% if @active_theme.present? %>
-  <% @active_theme.stylesheets.each do |stylesheet| %>
+<% Theme.active.each do |theme| %>
+  <% theme.stylesheets.each do |stylesheet| %>
     <style id="<%= stylesheet.id %>">
       <%= stylesheet.css %>
     </style>

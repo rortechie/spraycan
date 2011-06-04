@@ -88,10 +88,10 @@ Deface.Views.ViewOverrides.Edit = Backbone.View.extend({
   code_editor: null,
 
   events: {
-    "click a[rel='save']": "save",
-    "click a[rel='cancel']": "cancel",
-    "click a[rel='delete']": "delete",
-    "click a[rel='advanced']": "advanced",
+    "click li:not(.disabled) a[rel='save']": "save",
+    "click li:not(.disabled) a[rel='cancel']": "cancel",
+    "click li:not(.disabled) a[rel='delete']": "delete",
+    "click li:not(.disabled) a[rel='advanced']": "advanced",
     "change select[name='replace_with']": "set_replacement",
     "change select[name='target']": "set_replacement",
     "change input" :"changed",

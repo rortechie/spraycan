@@ -27,8 +27,11 @@ var toolbar = (<r><![CDATA[
 
   <ul id="current" class="buttons toggle">
     <li id='html' class="first <%= Deface.current == 'html' ? 'active' : '' %>"><a rel="html" href="/deface#html">HTML</a></li>
-    <li id='css' class="last <%= Deface.current == 'css' ? 'active' : '' %>"><a rel="css" href="/deface#stylesheet/application">CSS</a></li>
-  </ul> ]]></r>).toString();
+    <li id='css' class="<%= Deface.current == 'css' ? 'active' : '' %>"><a rel="css" href="/deface#stylesheet/application">CSS</a></li>
+    <li id='files' class="last <%= Deface.current == 'files' ? 'active' : '' %>"><a rel="files" href="/deface#files">Files</a></li>
+  </ul>
+
+  <a href="/deface#themes" id="theme_name"><%= Deface.theme_name %></a>]]></r>).toString();
 
 Deface.Views.Shared.Toolbar = Backbone.View.extend({
   events: {

@@ -25,9 +25,9 @@ Deface.Views.Stylesheets.Edit = Backbone.View.extend({
   show_text_editor: false,
 
   events: {
-    "click a[rel='save']": "save",
-    "click a[rel='cancel']": "cancel",
-    "click a[rel='delete']": "delete",
+    "click li:not(.disabled) a[rel='save']": "save",
+    "click li:not(.disabled) a[rel='cancel']": "cancel",
+    "click li:not(.disabled) a[rel='delete']": "delete",
     "change input" :"changed",
     "change select" :"changed"
   },

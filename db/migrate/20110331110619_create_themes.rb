@@ -2,7 +2,9 @@ class CreateThemes < ActiveRecord::Migration
   def self.up
     create_table :themes do |t|
       t.string :name
-      t.boolean :active
+      t.string :guid
+      t.boolean :active, :default => false
+      t.integer :position, :default => 0
       t.timestamps
     end
     Theme.reset_column_information
@@ -23,6 +25,6 @@ class CreateThemes < ActiveRecord::Migration
     drop_table :themes
 
     remove_column :view_overrides, :theme_id
-    remove_column :stlyesheets, :theme_id
+    remove_column :stylesheets, :theme_id
   end
 end

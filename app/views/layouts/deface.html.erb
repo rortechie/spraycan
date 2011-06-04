@@ -4,7 +4,7 @@
   <title>Deface Editor</title>
   <script type="text/javascript">
     var Deface = {
-      Views: {Shared: {}, ViewOverrides: {}, Stylesheets: {} },
+      Views: {Shared: {}, Themes: {}, ViewOverrides: {}, Stylesheets: {}, Graphics: {} },
       Controllers: {},
       Collections: {},
 
@@ -14,9 +14,11 @@
 
       current: 'html',
 
-      previous: { html: null, css: null },
+      previous: { html: null, css: null, files: null },
 
-      theme_id: 1,
+      theme_id: <%= Theme.active.first.id %>,
+
+      theme_name: '<%= Theme.active.first.name %>',
 
       editor: {minimised: true, maximised: false, visible: false },
 
@@ -26,8 +28,10 @@
         view_overrides_controller = new Deface.Controllers.ViewOverrides();
         view_overrides_controller.load();
 
+        new Deface.Controllers.Themes();
         new Deface.Controllers.Templates();
         new Deface.Controllers.Stylesheets();
+        new Deface.Controllers.Graphics();
 
         Backbone.history.start();
 
@@ -39,14 +43,14 @@
 
       increment_activity: function(){
         Deface.activity += 1;
-        $('img#busy').show();
+        $('img#busy').css("visibility", "visible");
       },
 
       decrement_activity: function(){
         Deface.activity -= 1;
 
         if(Deface.activity<=0){
-          $('img#busy').hide();
+          $('img#busy').css("visibility", "hidden");
           Deface.activity = 0;
         }
       },
@@ -91,6 +95,7 @@
 
       set_current: function(value){
         Deface.previous[Deface.current] = Deface.view;
+        Deface.view = null;
         Deface.current = value;
 
         $("div#nav ul#current li").removeClass("active");
@@ -103,7 +108,7 @@
 
           return true;
         }else{
-          $("#loadables").hide();
+          $("#loadables").css("visibility", "hidden");
           $('#main').html('');
 
           return false;
@@ -113,6 +118,9 @@
       reset_editor: function(){
         Deface.editor = {minimised: true, maximised: false, visible: false };
         Deface.animate_resize();
+
+        Deface.previous[Deface.current] = null;
+        Deface.view = null;
       },
 
       handle_save_error: function(model, errors){
@@ -132,25 +140,34 @@
 
   </script>
 
-  <%= javascript_include_tag 'deface/jquery-1.4.4.min.js',
+  <%= javascript_include_tag 'deface/jquery-1.5.1.min.js',
+                             'deface/jquery-ui-1.8.13.custom.min',
+                             'deface/jquery.upload-1.0.2.min.js',
                              'deface/underscore-min.js',
                              'deface/backbone-min.js',
+                             'deface/models/theme.js',
                              'deface/models/view_override.js',
                              'deface/models/template.js',
                              'deface/models/stylesheet.js',
+                             'deface/models/graphic.js',
+                             'deface/collections/themes.js',
                              'deface/collections/view_overrides.js',
                              'deface/collections/templates.js',
                              'deface/collections/stylesheets.js',
+                             'deface/collections/graphics.js',
+                             'deface/controllers/themes.js',
                              'deface/controllers/view_overrides.js',
                              'deface/controllers/templates.js',
                              'deface/controllers/stylesheets.js',
+                             'deface/controllers/graphics.js',
                              'deface/views/shared/toolbar.js',
+                             'deface/views/themes/list.js',
                              'deface/views/view_overrides/edit.js',
                              'deface/views/view_overrides/list.js',
                              'deface/views/shared/navigate.js',
                              'deface/views/stylesheets/edit.js',
                              'deface/views/stylesheets/list.js',
-                             'deface/rails.deface.js',
+                             'deface/views/graphics/list.js',
                              'deface/ace/ace.js',
                              'deface/ace/mode-html.js',
                              'deface/ace/mode-css.js',

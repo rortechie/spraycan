@@ -1,3 +1,5 @@
+include DefaceHelper
+
 class Deface::StylesheetsController < Deface::BaseController
   respond_to :css, :json
 
@@ -10,26 +12,18 @@ class Deface::StylesheetsController < Deface::BaseController
   def show
     @stylesheet = Stylesheet.where(:name => params[:id]).first
 
-    respond_to do |format|
-      format.css { render :text => @stylesheet.css }
-      format.json { render :json => @stylesheet.to_json }
-    end
+    respond_with @stylesheet
   end
 
   def create
-    params.delete(:action)
-    params.delete(:controller)
+    @stylesheet = @theme.stylesheets.create pick(params, :name, :css)
 
-    @stylesheet = @theme.stylesheets.create params
     render :json => @stylesheet
   end
 
   def update
-    params.delete(:action)
-    params.delete(:controller)
-
     @stylesheet = Stylesheet.where(:id => params.delete(:id)).first
-    @stylesheet.update_attributes params
+    @stylesheet.update_attributes pick(params, :name, :css)
 
     render :json => @stylesheet
   end

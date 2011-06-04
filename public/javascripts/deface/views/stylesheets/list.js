@@ -22,7 +22,7 @@ Deface.Views.Stylesheets.List = Backbone.View.extend({
       Deface.editor.visible = true;
 
       var name = $("#all_stylesheets").val();
-      model = _.detect(Deface.stylesheets.models, function(vo) { return vo.get('name') == name} );
+      model = _.detect(Deface.stylesheets.models, function(vo) { return $.trim(vo.get('name')) == name} );
 
       if(name!=""){
         if(name=="add-new"){

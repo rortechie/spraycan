@@ -1,3 +1,5 @@
+require 'guid' 
+
 module DefaceEditor
   class Engine < Rails::Engine
     config.autoload_paths += %W(#{root}/lib)
@@ -35,8 +37,7 @@ module DefaceEditor
 
         #load all overrides from db
         if Theme.table_exists?
-          @active_theme = Theme.active.first
-          @active_theme.view_overrides.map(&:initiate) if @active_theme.present?
+          Theme.active.each { |theme| theme.view_overrides.map(&:initiate) }
         end
       end
     end
