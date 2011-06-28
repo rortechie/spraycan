@@ -2,6 +2,8 @@ require 'guid'
 
 module DefaceEditor
   class Engine < Rails::Engine
+    railtie_name "deface_editor"
+
     config.autoload_paths += %W(#{root}/lib)
 
     def self.activate
@@ -12,7 +14,7 @@ module DefaceEditor
         DefaceEditor::Config.editor_virtual_paths.each do |layout|
           Deface::Override.new(:virtual_path => layout,
                           :name => "_deface_editor_ui",
-                          :insert_top => "head",
+                          :insert_after => "title",
                           :partial => "deface/shared/layout_scripts")
 
         end

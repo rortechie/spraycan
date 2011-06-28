@@ -1,0 +1,43 @@
+.deface_hook_frame {
+  outline: 2px solid #505050;
+}
+
+#deface_hook_bar{
+  margin: -1px 0 0 -3px;
+  background-color: blue;
+  color: #fff;
+  font-size: 8pt;
+  position: absolute;
+  top: 0;
+  padding: 5px;
+}
+
+#deface_hook_bar a{
+  text-decoration: none;
+}
+
+.deface-clearfix:after {
+  clear:both;
+  content:".";
+  display:block;
+  height:0;
+  line-height:0;
+  visibility:hidden;
+}
+
+.deface-qtip  h4{
+  color: #fff;
+  font-family: lucida Grande;
+  font-size: 1.2em;
+  margin-bottom: 4px;
+}
+
+.deface-qtip a, .deface-qtip a:visited, .deface-qtip a:hover{
+  color: #fff;
+  font-family: lucida Grande;
+  font-size: 1.2em;
+}
+
+div.deface_source{
+  display: none;
+}

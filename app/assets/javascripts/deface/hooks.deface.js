@@ -1,18 +1,20 @@
 //set hook frame positions
 var show_frames = true;
-var frame_level = 1;
-var current_hooks = new Array;
+var frame_level = 0;
 
 function show_hook_frames(){
   if(show_frames){
-    $jQ.each($jQ("[data-layer='" + frame_level + "']"), function(i, hook){
-      var hook = $jQ(hook);
-      var layer = hook.attr('data-layer');
+    $jQ.each($("[data-hook]"), function(i, hook){
+      var hooks = $jQ(hook).parents().filter(function(i,p) { return $jQ(p).attr("data-hook")!=undefined });
+      if(hooks.length == frame_level){
+        var hook = $jQ(hook);
+        var layer = hook.attr('data-layer');
 
-      hook.addClass('deface_hook_frame');
+        hook.addClass('deface_hook_frame');
+      }
     });
   }else{
-    $('.deface_hook_frame').removeClass('deface_hook_frame');
+    $jQ('.deface_hook_frame').removeClass('deface_hook_frame');
   }
 }
 
@@ -21,25 +23,20 @@ function hook_zoom(in_or_out){
   var current_level = frame_level;
 
   if(in_or_out=="in"){
-    num = current_level + 1;
+    frame_level = current_level + 1;
   }else{
-    num = current_level - 1;
+    frame_level = current_level - 1;
   }
 
-  if(num>0 && num<10){
-    var count = $("[data-layer='" + num + "']").length;
-  }
+  if(frame_level!=current_level){
+    $jQ('.deface_hook_frame').removeClass('deface_hook_frame');
 
-  if(count>0){
-    frame_level = num;
-    if(frame_level!=current_level){
+    show_hook_frames();
 
-      $jQ.each(current_hooks, function(i, hook) {
-        hook.qtip('disable');
-      });
-      current_hooks = new Array;
-
-      $jQ('.deface_hook_frame').removeClass('deface_hook_frame');
+    //check we haven't zoomed to far in or out, 
+    //undo if we did
+    if($jQ('.deface_hook_frame').length==0){
+      frame_level = current_level;
 
       show_hook_frames();
     }
@@ -48,12 +45,15 @@ function hook_zoom(in_or_out){
 
 function create_tip(e){
   var hook = $jQ(e.currentTarget);
-  var layer = hook.attr('data-layer');
+  var layer = hook.parents().filter(function(i,p) { return $jQ(p).attr("data-hook")!=undefined }).length;
 
   if(frame_level==layer && show_frames){
 
     if(hook.data('qtip')==undefined){
-      hook_name = hook.attr('data-hook');
+      var hook_name = hook.attr('data-hook');
+      if(hook_name==""){
+        hook_name = hook.attr('id');
+      }
 
       hook.qtip({
         content: '<h4>' + hook_name+'</h4><a href="/deface#view_overrides/edit/' + hook_name + '" target="_top">Edit</a> | <a href="/deface#view_overrides/new/' + hook_name + '" target="_top">New</a>',
@@ -109,3 +109,4 @@ window.onbeforeunload = function() {
     top.Deface.increment_activity();
   }
 }
+

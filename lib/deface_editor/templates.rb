@@ -39,7 +39,8 @@ module DefaceEditor
           doc     = Deface::Parser.convert(escaped)
 
           doc.css("[data-hook]").each do |match|
-            hooks << { :name => match.attr("data-hook"), :source => Deface::Parser.undo_erb_markup!(match.to_s.dup) }
+            name = match.attr("data-hook") == "" ? match.attr("id") : match.attr("data-hook")
+            hooks << { :name => name, :source => Deface::Parser.undo_erb_markup!(match.to_s.dup) }
           end
         rescue
           source  ||= ""
