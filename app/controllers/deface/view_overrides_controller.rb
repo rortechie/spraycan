@@ -1,31 +1,32 @@
 class Deface::ViewOverridesController < Deface::BaseController
-  ActiveRecord::Base.include_root_in_json = false
   layout 'deface'
 
   before_filter :set_theme, :only => [:index, :create]
   before_filter :set_replacement, :only => [:create, :update]
   after_filter :clear_resolver_cache, :only => [:create, :update, :destroy]
 
+  respond_to :json
+
   def index
-    render :json => @theme.view_overrides
+    @view_overrides = @theme.view_overrides
+    respond_with @view_overrides
   end
 
   def create
-    @override = @theme.view_overrides.create params
-    render :json => @override
+    @view_override = @theme.view_overrides.create params[:view_override]
+
+    respond_with @view_override
   end
 
   def update
-    @override = ViewOverride.where(:id => params.delete(:id)).first
-    @override.update_attributes params
+    @view_override = ViewOverride.where(:id => params.delete(:id)).first
+    @view_override.update_attributes params[:view_override]
 
-    render :json => @override
+    respond_with @view_override
   end
 
   def destroy
-    ViewOverride.destroy(params[:id])
-
-    render :json => "true"
+    render :json => ViewOverride.destroy(params[:id])
   end
 
   private
@@ -34,19 +35,17 @@ class Deface::ViewOverridesController < Deface::BaseController
     end
 
     def set_replacement
-      puts(params[:replace_text])
-
-      params[:replacement] = case params[:replace_with].to_sym
-        when :text then params.delete(:replace_text)
-        when :partial then params.delete(:replace_parital)
-        when :template then params.delete(:replace_template)
+      params[:view_override][:replacement] = case params[:view_override][:replace_with].to_sym
+        when :text then params[:view_override].delete(:replace_text)
+        when :partial then params[:view_override].delete(:replace_parital)
+        when :template then params[:view_override].delete(:replace_template)
       end
 
-      [:replace_text, :replace_partial, :replace_template, :controller, :action].each {|replacement| params.delete(replacement) }
+      [:replace_text, :replace_partial, :replace_template].each {|replacement| params[:view_override].delete(replacement) }
     end
 
     # Clears all cached ActionView Templates, forcing re-compile
     def clear_resolver_cache
-      @lookup_context.view_paths.map(&:clear_cache)
+      # @lookup_context.view_paths.map(&:clear_cache)
     end
 end

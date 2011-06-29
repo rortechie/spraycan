@@ -3,7 +3,7 @@ var graphics_list = (<r><![CDATA[
     <ul id="all_graphics">
       <% collection.each(function(item) { %>
         <li>
-          <a href="#" data-graphic-id="<%= item.attributes.id %>"><%= _.last(item.attributes.file.url.split('/')) %></a>
+          <a href="#" data-graphic-id="<%= item.attributes.id %>"><%= _.last(item.attributes.url.split('/')) %></a>
         </li>
       <% }); %>
     </ul>
@@ -23,15 +23,15 @@ var graphics_list = (<r><![CDATA[
 
 var show_graphic = (<r><![CDATA[
     <div id="graphic_preview">
-      <img src="<%= model.attributes.file.url %>">
+      <img src="<%= model.attributes.url %>">
     </div>
     <div class="fields">
       <label>Name:</label>
-      <span><%= _.last(model.attributes.file.url.split('/')) %></span>
+      <span><%= _.last(model.attributes.url.split('/')) %></span>
     </div>
     <div class="fields">
       <label>Path:</label>
-      <span><%= model.attributes.file.url %></span>
+      <span><%= model.attributes.url %></span>
     </div>
   </div>
 ]]></r>).toString();

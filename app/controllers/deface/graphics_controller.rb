@@ -4,9 +4,10 @@ class Deface::GraphicsController < Deface::BaseController
   before_filter :set_theme, :only => [:index, :create]
 
   def index
-    respond_with @theme.graphics
-  end
+    @graphics = @theme.graphics
 
+    respond_with @graphics
+  end
 
   def create
     @graphic = @theme.graphics.create params[:graphic]
@@ -14,9 +15,7 @@ class Deface::GraphicsController < Deface::BaseController
   end
 
   def destroy
-    Graphic.destroy(params[:id])
-
-    render :json => "true"
+    render :json => Graphic.destroy(params[:id])
   end
 
   private

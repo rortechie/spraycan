@@ -1,4 +1,5 @@
 require 'guid' 
+require 'rabl'
 
 module DefaceEditor
   class Engine < Rails::Engine

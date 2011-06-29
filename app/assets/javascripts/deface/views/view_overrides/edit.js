@@ -52,7 +52,7 @@ var viewoverride_edit = (<r><![CDATA[<form id="view_override_form">
           <div class="fields">
             <label>Text:</label>
           </div>
-          <pre id="view_override_replace_text" class="small_editor"><p>I'm a p</p></pre>
+          <pre id="view_override_replace_text" class="small_editor"><p>I am a p.</p></pre>
         </div>
 
         <div class="fields replacement" id="replace_with_partial">
@@ -113,12 +113,14 @@ Deface.Views.ViewOverrides.Edit = Backbone.View.extend({
       attrs.disabled = false;
     }
     attrs.replace_text = this.code_editor.getSession().getValue();
+    save_attrs = new Object;
+    save_attrs.view_override = attrs;
 
     var isNew = this.model.isNew();
 
     Deface.increment_activity();
 
-    this.model.save(attrs, {
+    this.model.save(save_attrs, {
       success: function(model, resp) {
         window.frames[0].location.reload();
 

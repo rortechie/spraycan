@@ -6,7 +6,8 @@ class Deface::StylesheetsController < Deface::BaseController
   before_filter :set_theme, :only => [:index, :create]
 
   def index
-    respond_with @theme.stylesheets
+    @stylesheets = @theme.stylesheets
+    respond_with @stylesheets
   end
 
   def show
@@ -18,20 +19,18 @@ class Deface::StylesheetsController < Deface::BaseController
   def create
     @stylesheet = @theme.stylesheets.create pick(params, :name, :css)
 
-    render :json => @stylesheet
+    respond_with @stylesheet
   end
 
   def update
     @stylesheet = Stylesheet.where(:id => params.delete(:id)).first
     @stylesheet.update_attributes pick(params, :name, :css)
 
-    render :json => @stylesheet
+    respond_with @stylesheet
   end
 
   def destroy
-    Stylesheet.destroy(params[:id])
-
-    render :json => "true"
+    render :json => Stylesheet.destroy(params[:id])
   end
 
   private
