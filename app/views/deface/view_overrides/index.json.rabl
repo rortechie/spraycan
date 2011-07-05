@@ -1,3 +1,3 @@
 collection @view_overrides
 
-attributes :id, :name, :virtual_path, :selector, :end_selector, :replace_with, :replacement, :target, :disabled
+attributes :id, :name, :virtual_path, :selector, :end_selector, :replace_with, :replacement, :target, :disabled, :sequence, :sequence_target

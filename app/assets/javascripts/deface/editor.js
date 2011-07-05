@@ -3,7 +3,7 @@
 //= require deface/jquery-ui-1.8.13.custom.min
 //= require deface/jquery.upload-1.0.2.min
 //= require deface/underscore-min
-//= require deface/backbone-min
+//= require deface/backbone
 //= require deface/models/theme
 //= require deface/models/view_override
 //= require deface/models/template
@@ -14,11 +14,11 @@
 //= require deface/collections/templates
 //= require deface/collections/stylesheets
 //= require deface/collections/graphics
-//= require deface/controllers/themes
-//= require deface/controllers/view_overrides
-//= require deface/controllers/templates
-//= require deface/controllers/stylesheets
-//= require deface/controllers/graphics
+//= require deface/routers/themes
+//= require deface/routers/view_overrides
+//= require deface/routers/templates
+//= require deface/routers/stylesheets
+//= require deface/routers/graphics
 //= require deface/views/shared/toolbar
 //= require deface/views/themes/list
 //= require deface/views/view_overrides/edit

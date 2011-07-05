@@ -1,4 +1,4 @@
-Deface.Controllers.Themes = Backbone.Controller.extend({
+Deface.Routers.Themes = Backbone.Router.extend({
   routes: {
     "themes": "load_all",
     "switch_theme/:id": "switch_theme"

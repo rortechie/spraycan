@@ -1,4 +1,4 @@
-Deface.Controllers.Stylesheets = Backbone.Controller.extend({
+Deface.Routers.Stylesheets = Backbone.Router.extend({
   routes: {
     "stylesheet/:name": "load",
   },

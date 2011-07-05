@@ -1,4 +1,4 @@
-Deface.Controllers.Templates = Backbone.Controller.extend({
+Deface.Routers.Templates = Backbone.Router.extend({
   routes: {
     "templates/:controller/:action": "load",
   },

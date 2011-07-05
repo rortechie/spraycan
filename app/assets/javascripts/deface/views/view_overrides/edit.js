@@ -38,6 +38,22 @@ var viewoverride_edit = (<r><![CDATA[<form id="view_override_form">
       </div>
 
       <div class="fields advanced">
+        <label>Sequence:</label>
+        <select name="sequence" style="width:80px;">
+          <option <%= "before"==sequence ? 'selected' : '' %>>before</option>
+          <option <%= "after"==sequence ? 'selected' : '' %>>after</option>
+        </select>
+        <select name="sequence_target" style="width:120px;">
+          <option <%= ""==sequence_target ? 'selected' : '' %>> </option>
+          <% _.each(Deface.view_overrides.models, function(view_override) { %>
+            <% if(view_override.attributes.name!=name){ %>
+              <option <%= view_override.attributes.name==sequence_target ? 'selected' : '' %>><%= view_override.attributes.name %></option>
+            <% } %>
+          <% }); %>
+        </select>
+      </div>
+
+      <div class="fields advanced clear">
         <label>Selector:</label>
         <input type="text" size="30" name="selector" value="<%= selector %>">
       </div>
@@ -208,7 +224,7 @@ Deface.Views.ViewOverrides.Edit = Backbone.View.extend({
         }
 
         if(this.show_advanced){
-          height += 30;
+          height += 60;
         }
       }
     }

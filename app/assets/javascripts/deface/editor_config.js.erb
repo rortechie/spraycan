@@ -1,6 +1,6 @@
 var Deface = {
   Views: {Shared: {}, Themes: {}, ViewOverrides: {}, Stylesheets: {}, Graphics: {} },
-  Controllers: {},
+  Routers: {},
   Collections: {},
 
   templates: [],
@@ -20,13 +20,13 @@ var Deface = {
   activity: 0,
 
   init: function() {
-    view_overrides_controller = new Deface.Controllers.ViewOverrides();
+    view_overrides_controller = new Deface.Routers.ViewOverrides();
     view_overrides_controller.load();
 
-    new Deface.Controllers.Themes();
-    new Deface.Controllers.Templates();
-    new Deface.Controllers.Stylesheets();
-    new Deface.Controllers.Graphics();
+    new Deface.Routers.Themes();
+    new Deface.Routers.Templates();
+    new Deface.Routers.Stylesheets();
+    new Deface.Routers.Graphics();
 
     Backbone.history.start();
 

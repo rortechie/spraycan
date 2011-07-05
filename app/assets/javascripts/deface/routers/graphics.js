@@ -1,4 +1,4 @@
-Deface.Controllers.Graphics = Backbone.Controller.extend({
+Deface.Routers.Graphics = Backbone.Router.extend({
   routes: {
     "files": "load_all"
   },

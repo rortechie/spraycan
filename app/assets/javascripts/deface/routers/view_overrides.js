@@ -1,4 +1,4 @@
-Deface.Controllers.ViewOverrides = Backbone.Controller.extend({
+Deface.Routers.ViewOverrides = Backbone.Router.extend({
   routes: {
     "html": "load",
     "view_overrides/new/:hook": "new",
@@ -34,11 +34,7 @@ Deface.Controllers.ViewOverrides = Backbone.Controller.extend({
   },
 
   new: function(hook) {
-    var view_override  = new top.ViewOverride({ hook: hook,
-                                                target: 'replace',
-                                                disabled: false,
-                                                replace_with: 'text',
-                                                selector: "[data-hook='" + hook + "']" })
+    var view_override = new top.ViewOverride({ hook: hook, selector: "[data-hook='" + hook + "']"})
 
     Deface.view = new top.Deface.Views.ViewOverrides.Edit({ model: view_override });
   },
@@ -49,12 +45,7 @@ Deface.Controllers.ViewOverrides = Backbone.Controller.extend({
     });
 
     if(view_override==null){
-      var view_override  = new ViewOverride({ hook: hook,
-                                                target: 'replace',
-                                                disabled: false,
-                                                name: "replace_" + hook,
-                                                replace_with: 'text',
-                                                selector: "[data-hook='" + hook + "']" })
+      var view_override  = new ViewOverride({ hook: hook, name: "replace_" + hook, selector: "[data-hook='" + hook + "']"})
     }
 
     Deface.view = new Deface.Views.ViewOverrides.Edit({ model: view_override });

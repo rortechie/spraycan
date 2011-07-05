@@ -1,4 +1,14 @@
 var ViewOverride = Backbone.Model.extend({
+  defaults: {
+    virtual_path: '', 
+    target: 'replace', 
+    disabled: false, 
+    replace_with: 'text', 
+    selector: '',
+    sequence: 'before', 
+    sequence_target: ''
+  },
+
   url : function() {
     var base = '/deface/themes/' + Deface.theme_id + '/view_overrides';
     if (this.isNew()) return base;

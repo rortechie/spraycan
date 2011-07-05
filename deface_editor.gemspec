@@ -20,6 +20,6 @@ Gem::Specification.new do |s|
   #s.add_dependency('deface', '0.2.0')
   s.add_dependency('carrierwave', '0.5.4')
   s.add_dependency('guid', '0.1.1')
-  s.add_dependency('acts_as_list', '= 0.1.2')
+  s.add_dependency('acts_as_list', '>= 0.1.2')
   s.add_dependency('rabl', '0.2.8')
 end

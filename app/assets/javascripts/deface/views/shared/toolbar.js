@@ -42,8 +42,7 @@ Deface.Views.Shared.Toolbar = Backbone.View.extend({
     "click a[rel='zoom-in']": "zoom_in",
     "click a[rel='zoom-out']": "zoom_out",
     "click a[rel='toggle']": "toggle",
-    "click a[rel='refresh']": "refresh",
-    "click a[rel='load']": "show_load"
+    "click a[rel='refresh']": "refresh"
   },
 
   initialize: function() {

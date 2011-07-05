@@ -1,5 +1,5 @@
 //set hook frame positions
-var show_frames = true;
+var show_frames = false;
 var frame_level = 0;
 
 function show_hook_frames(){

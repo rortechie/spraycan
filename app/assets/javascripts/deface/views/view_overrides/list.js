@@ -26,7 +26,7 @@ Deface.Views.ViewOverrides.List = Backbone.View.extend({
 
     if(name!=""){
       if(name=="add-new"){
-        var model = new ViewOverride({target: 'replace', disabled: false, replace_with: 'text', virtual_path: '', selector: '', replacement: ''});
+        var model = new ViewOverride();
       }
 
       Deface.view = new Deface.Views.ViewOverrides.Edit({ model: model });
