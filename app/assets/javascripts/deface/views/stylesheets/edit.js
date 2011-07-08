@@ -1,25 +1,3 @@
-var stylesheet_edit = (<r><![CDATA[<form id="stylesheet_form">
-  <div>
-    <div class="fields">
-      <label>Name:</label>
-      <input type="text" size="30" name="name" value="<%= name %>">
-    </div>
-    <div class="clear">
-      <div class="fields">
-        <label>CSS:</label>
-      </div>
-      <pre id="stylesheet_css" class="small_editor">p {}</pre>
-    </div>
-  </div>
-  <div id="actions">
-    <ul class="buttons toggle">
-      <li class="<%= typeof(id)  == "undefined" ? 'disabled' : '' %>"><a rel="delete" href="#">Delete</a></li>
-      <li><a rel="cancel" href="#">Cancel</a></li>
-      <li class="last"><a rel="save" href="#">Save</a></li>
-    </ul>
-  </div>
-</form> ]]></r>).toString();
-
 Deface.Views.Stylesheets.Edit = Backbone.View.extend({
   show_form: false,
   show_text_editor: false,
@@ -161,7 +139,7 @@ Deface.Views.Stylesheets.Edit = Backbone.View.extend({
     Deface.editor.visible = true;
     Deface.view = this;
 
-    var compiled = _.template(stylesheet_edit);
+    var compiled = JST["deface/templates/stylesheets/edit"];
     $(this.el).html(compiled(this.model.toJSON()));
     $('#main').html(this.el);
 

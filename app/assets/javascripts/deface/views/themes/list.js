@@ -1,78 +1,3 @@
-var themes_list = (<r><![CDATA[
-  <div id="themes_list">
-    <table cellspacing="0" cellpadding="0">
-      <thead>
-        <tr>
-          <th style="width:5%;">&nbsp;</th>
-          <th style="width:45%;">Name</th>
-          <th style="width:23%;">Active</th>
-          <th style="width:25%;">&nbsp;</th>
-        </tr>
-      </thead>
-    </table>
-    <div class="scroller">
-      <table cellspacing="0" cellpadding="0">
-        <tbody>
-          <% collection.each(function(item) { %>
-            <tr id="<%= item.attributes.id %>">
-              <td class="handle" style="width:5%;">-</td>
-              <td style="width:46%;">
-                <%= item.attributes.name %>
-              </td>
-              <td style="width:25%;">
-                <%= item.attributes.active ? 'Yes' : 'No' %>
-              </td>
-              <td style="width:25%;">
-                <a class="edit" data-theme-id="<%= item.attributes.id %>" href="/deface#theme/<%= item.attributes.id %>">Edit</a>
-                <% if(Deface.theme_id != item.attributes.id){ %>
-                 | <a data-theme-id="<%= item.attributes.id %>" href="/deface#switch_theme/<%= item.attributes.id %>">Load</a>
-                <% } %>
-                | <a data-theme-id="<%= item.attributes.id %>" href="/deface/themes/<%= item.attributes.id %>/export">Export</a>
-              </td>
-            </tr>
-          <% }); %>
-        </tobdy>
-      </table>
-    </div>
-  </div>
-  <div id="edit_wrapper">
-    <div id="theme_details">
-    </div>
-    <div id="actions">
-      <ul class="buttons toggle">
-        <li class="disabled"><a href="#" rel="delete">Delete</a></li>
-        <li><a href="#" rel="new">New</a></li>
-        <li class="disabled last"><a href="#" rel="save">Save</a></li>
-      </ul>
-    </div>
-  </div>
-]]></r>).toString();
-
-var edit_theme = (<r><![CDATA[
-    <form id="theme_form">
-      <% if(model.attributes.id==undefined){ %>
-        <h3>Create New Theme</h3>
-      <% } %>
-      <div class="fields">
-        <label>Name:</label>
-        <input name="name" type="text" value="<%= model.attributes.name %>">
-      </div>
-      <div class="fields">
-        <label>Active:</label>
-        <input name="active" value="true" type="checkbox" <%= model.attributes.active ? 'checked="checked"' : '' %>>
-      </div>
-    </form>
-    <% if(model.attributes.id==undefined){ %>
-      <hr>
-      <h3>Import Existing Theme</h3>
-      <div class="fields">
-        <label>Import:</label>
-        <input type="file" name="import" id="file1">
-      </div>
-    <% } %>
-  </div>
-]]></r>).toString();
-
 Deface.Views.Themes.List = Backbone.View.extend({
   events: {
     "click #themes_list a.edit": "load_theme",
@@ -110,7 +35,7 @@ Deface.Views.Themes.List = Backbone.View.extend({
     Deface.editor.visible = true;
     Deface.view = this;
 
-    var compiled = _.template(themes_list);
+    var compiled = JST['deface/templates/themes/index'];
 
     $(this.el).html(compiled({ collection : Deface.themes }));
     $('#main').html(this.el);
@@ -128,8 +53,7 @@ Deface.Views.Themes.List = Backbone.View.extend({
         var new_position = ui.item.index('.scroller tbody tr')
         var theme = _.detect(Deface.themes.models, function(t) { return t.id == id });
 
-        Deface.view.save_theme_record(theme, {position: new_position}); 
-
+        Deface.view.save_theme_record(theme,{position: new_position}); 
       }
     });
 
@@ -144,7 +68,7 @@ Deface.Views.Themes.List = Backbone.View.extend({
 
     this.model = theme;
 
-    var compiled = _.template(edit_theme);
+    var compiled = JST['deface/templates/themes/edit'];
     $('#theme_details').html(compiled({ model : this.model }));
 
     $("a[rel='delete']").parent().removeClass('disabled');
@@ -154,8 +78,10 @@ Deface.Views.Themes.List = Backbone.View.extend({
   save_theme: function(e) {
     Deface.clear_errors();
 
-    attrs = $('form#theme_form').serializeObject();
-
+    attrs =  $('form#theme_form').serializeObject();
+    if(attrs.active==undefined){
+      attrs.active = false;
+    }
     this.save_theme_record(this.model, attrs)
 
     return false;
@@ -181,7 +107,7 @@ Deface.Views.Themes.List = Backbone.View.extend({
   new_theme: function(e) {
     this.model = new Theme();
 
-    var compiled = _.template(edit_theme);
+    var compiled = JST['deface/templates/themes/edit'];
 
     $("a[rel='delete']").parent().addClass('disabled');
     $("a[rel='save']").parent().removeClass('disabled');

@@ -1,102 +1,3 @@
-var viewoverride_edit = (<r><![CDATA[<form id="view_override_form">
-    <div>
-      <div class="fields">
-        <label>Name:</label>
-        <input type="text" size="30" name="name" value="<%= name %>">
-      </div>
-
-      <div class="fields">
-        <label>Action:</label>
-        <select name="target" id="view_override_target">
-          <% _.each(['remove', 'replace', 'insert_after', 'insert_before', 'insert_top', 'insert_bottom'], function(_target) { %>
-            <option <%= _target==target ? 'selected' : '' %>><%= _target %></option>
-          <% }); %>
-        </select>
-      </div>
-
-      <div class="fields">
-        <label>Disabled:</label>
-        <input type="checkbox" value="true" name="disabled" <%= disabled ? 'checked="checked"' : '' %>>
-      </div>
-
-      <div class="fields advanced clear">
-        <label>Replace With:</label>
-        <select name="replace_with">
-          <% _.each(['text', 'partial', 'template'], function(_replace_with) { %>
-            <option <%= _replace_with==replace_with ? 'selected' : '' %>><%= _replace_with %></option>
-          <% }); %>
-        </select>
-      </div>
-
-      <div class="fields advanced">
-        <label>Virtual Path:</label>
-        <select name="virtual_path">
-          <% _.each(Deface.templates.models, function(template) { %>
-            <option <%= template.attributes.name==virtual_path ? 'selected' : '' %>><%= template.attributes.name %></option>
-          <% }); %>
-        </select>
-      </div>
-
-      <div class="fields advanced">
-        <label>Sequence:</label>
-        <select name="sequence" style="width:80px;">
-          <option <%= "before"==sequence ? 'selected' : '' %>>before</option>
-          <option <%= "after"==sequence ? 'selected' : '' %>>after</option>
-        </select>
-        <select name="sequence_target" style="width:120px;">
-          <option <%= ""==sequence_target ? 'selected' : '' %>> </option>
-          <% _.each(Deface.view_overrides.models, function(view_override) { %>
-            <% if(view_override.attributes.name!=name){ %>
-              <option <%= view_override.attributes.name==sequence_target ? 'selected' : '' %>><%= view_override.attributes.name %></option>
-            <% } %>
-          <% }); %>
-        </select>
-      </div>
-
-      <div class="fields advanced clear">
-        <label>Selector:</label>
-        <input type="text" size="30" name="selector" value="<%= selector %>">
-      </div>
-
-      <div class="fields advanced" id="closing_selector_wrapper">
-        <label>End Selector:</label>
-        <input type="text" size="30" name="closing_selector">
-      </div>
-
-      <div style="display: <%= target!='remove' ? 'block' : 'none' %>;" class="clear" id="replace_withs">
-        <div class="replacement" id="replace_with_text">
-          <div class="fields">
-            <label>Text:</label>
-          </div>
-          <pre id="view_override_replace_text" class="small_editor"><p>I am a p.</p></pre>
-        </div>
-
-        <div class="fields replacement" id="replace_with_partial">
-          <label>Partial:</label>
-          <input type="text" size="30" name="replace_parital" disabled="disabled">
-        </div>
-
-        <div class="fields replacement" id="replace_with_template">
-          <label>Template:</label>
-          <input type="text" size="30" name="replace_template" disabled="disabled">
-        </div>
-      </div>
-
-      <div id="actions">
-        <ul class="buttons toggle">
-          <li class="<%= typeof(id)  == "undefined" ? 'disabled' : '' %>"><a rel="delete" href="#">Delete</a></li>
-          <li><a rel="cancel" href="#">Cancel</a></li>
-          <li class="last"><a rel="save" href="#">Save</a></li>
-        </ul>
-
-        <ul class="buttons ">
-          <li class="last"><a rel="advanced" href="#">Advanced</a></li>
-        </ul>
-
-      </div>
-
-  </form> ]]></r>).toString();
-
 Deface.Views.ViewOverrides.Edit = Backbone.View.extend({
   show_form: false,
   show_text_editor: false,
@@ -129,14 +30,12 @@ Deface.Views.ViewOverrides.Edit = Backbone.View.extend({
       attrs.disabled = false;
     }
     attrs.replace_text = this.code_editor.getSession().getValue();
-    save_attrs = new Object;
-    save_attrs.view_override = attrs;
 
     var isNew = this.model.isNew();
 
-    Deface.increment_activity();
+    // Deface.increment_activity();
 
-    this.model.save(save_attrs, {
+    this.model.save(attrs, {
       success: function(model, resp) {
         window.frames[0].location.reload();
 
@@ -202,7 +101,12 @@ Deface.Views.ViewOverrides.Edit = Backbone.View.extend({
 
     if(Deface.editor.maximised){
       if(this.code_editor!=null){
-        $(this.code_editor.container).height($(window).height() - 170);
+        if(this.show_advanced){
+          $(this.code_editor.container).height($(window).height() - 230);
+        }else{
+          $(this.code_editor.container).height($(window).height() - 170);
+        }
+
         this.code_editor.resize();
       }
 
@@ -287,7 +191,7 @@ Deface.Views.ViewOverrides.Edit = Backbone.View.extend({
     Deface.editor.visible = true;
     Deface.view = this;
 
-    var compiled = _.template(viewoverride_edit);
+    var compiled = JST['deface/templates/view_overrides/edit'];
 
     if(this.model.get('hook')!=undefined){
       hook_name = this.model.get('hook');
@@ -308,7 +212,6 @@ Deface.Views.ViewOverrides.Edit = Backbone.View.extend({
 
     $(this.el).html(compiled(this.model.toJSON()));
     $('#main').html(this.el);
-
 
     this.set_replacement();
 

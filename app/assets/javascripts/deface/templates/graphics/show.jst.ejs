@@ -1,0 +1,12 @@
+  <div id="graphic_preview">
+    <img src="<%= model.attributes.url %>">
+  </div>
+  <div class="fields">
+    <label>Name:</label>
+    <span><%= _.last(model.attributes.url.split('/')) %></span>
+  </div>
+  <div class="fields">
+    <label>Path:</label>
+    <span><%= model.attributes.url %></span>
+  </div>
+</div>

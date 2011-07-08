@@ -3,7 +3,8 @@ class ViewOverride < ActiveRecord::Base
   after_save :initiate
 
   def initiate
-    Deface::Override.new( :virtual_path => self.virtual_path,
+    Deface::Override.new( :from_editor => true,
+                          :virtual_path => self.virtual_path,
                           :name => self.name,
                           self.target.to_sym => self.selector,
                           :closing_selector => self.closing_selector,

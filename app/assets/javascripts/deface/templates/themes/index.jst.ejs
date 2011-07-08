@@ -1,0 +1,47 @@
+<div id="themes_list">
+  <table cellspacing="0" cellpadding="0">
+    <thead>
+      <tr>
+        <th style="width:5%;">&nbsp;</th>
+        <th style="width:45%;">Name</th>
+        <th style="width:23%;">Active</th>
+        <th style="width:25%;">&nbsp;</th>
+      </tr>
+    </thead>
+  </table>
+  <div class="scroller">
+    <table cellspacing="0" cellpadding="0">
+      <tbody>
+        <% collection.each(function(item) { %>
+          <tr id="<%= item.attributes.id %>">
+            <td class="handle" style="width:5%;">-</td>
+            <td style="width:46%;">
+              <%= item.attributes.name %>
+            </td>
+            <td style="width:25%;">
+              <%= item.attributes.active ? 'Yes' : 'No' %>
+            </td>
+            <td style="width:25%;">
+              <a class="edit" data-theme-id="<%= item.attributes.id %>" href="/deface#theme/<%= item.attributes.id %>">Edit</a>
+              <% if(Deface.theme_id != item.attributes.id){ %>
+               | <a data-theme-id="<%= item.attributes.id %>" href="/deface#switch_theme/<%= item.attributes.id %>">Load</a>
+              <% } %>
+              | <a data-theme-id="<%= item.attributes.id %>" href="/deface/themes/<%= item.attributes.id %>/export">Export</a>
+            </td>
+          </tr>
+        <% }); %>
+      </tobdy>
+    </table>
+  </div>
+</div>
+<div id="edit_wrapper">
+  <div id="theme_details">
+  </div>
+  <div id="actions">
+    <ul class="buttons toggle">
+      <li class="disabled"><a href="#" rel="delete">Delete</a></li>
+      <li><a href="#" rel="new">New</a></li>
+      <li class="disabled last"><a href="#" rel="save">Save</a></li>
+    </ul>
+  </div>
+</div>

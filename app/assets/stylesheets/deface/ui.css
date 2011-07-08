@@ -114,14 +114,17 @@ div#deface_editor #nav .toggle .active a{
 }
 
 div#deface_editor #nav .toggle .first{
+  -webkit-border-radius: 15px 0px 0px 15px;
   -moz-border-radius: 15px 0px 0px 15px;
 }
 
 div#deface_editor #nav .toggle .last{
+  -webkit-border-radius: 0px 15px 15px 0px;
   -moz-border-radius: 0px 15px 15px 0px;
 }
 
 div#deface_editor #nav .toggle .first_last{
+  -webkit-border-radius: 15px;
   -moz-border-radius: 15px;
 }
 
@@ -201,6 +204,7 @@ div#deface_editor #graphic_preview img {
   background-color: #FFFFFF;
   border: 1px solid #FFFFFF;
   max-width: 200px;
+  max-height: 150px;
   padding: 4px;
 }
 div#deface_editor #graphic_details{

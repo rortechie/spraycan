@@ -10,7 +10,7 @@ Deface.Routers.Graphics = Backbone.Router.extend({
       if(Deface.graphics==undefined){
         Deface.graphics = new Deface.Collections.Graphics();
 
-        Deface.graphics.bind("refresh", this.update_graphics);
+        Deface.graphics.bind("reset", this.update_graphics);
         Deface.graphics.bind("add", this.update_graphics);
         Deface.graphics.bind("remove", this.update_graphics);
 

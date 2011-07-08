@@ -1,4 +1,10 @@
 var Graphic = Backbone.Model.extend({
+  toJSON: function() {
+    var object = new Object;
+    object['graphic'] = _.clone(this.attributes);
+    return object;
+  },
+
   url : function() {
     var base = '/deface/themes/' + Deface.theme_id + '/graphics';
     if (this.isNew()) return base;

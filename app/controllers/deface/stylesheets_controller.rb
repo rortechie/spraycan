@@ -1,8 +1,7 @@
-include DefaceHelper
-
 class Deface::StylesheetsController < Deface::BaseController
   respond_to :css, :json
 
+  after_filter :clear_sprockets_assets, :only => [:create, :update, :destroy]
   before_filter :set_theme, :only => [:index, :create]
 
   def index
@@ -17,14 +16,13 @@ class Deface::StylesheetsController < Deface::BaseController
   end
 
   def create
-    @stylesheet = @theme.stylesheets.create pick(params, :name, :css)
-
+    @stylesheet = @theme.stylesheets.create params[:stylesheet]
     respond_with @stylesheet
   end
 
   def update
     @stylesheet = Stylesheet.where(:id => params.delete(:id)).first
-    @stylesheet.update_attributes pick(params, :name, :css)
+    @stylesheet.update_attributes params[:stylesheet]
 
     respond_with @stylesheet
   end

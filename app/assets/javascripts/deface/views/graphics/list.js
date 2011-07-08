@@ -1,49 +1,3 @@
-var graphics_list = (<r><![CDATA[
-  <div id="graphics_list" class="file_list scroller">
-    <ul id="all_graphics">
-      <% collection.each(function(item) { %>
-        <li>
-          <a href="#" data-graphic-id="<%= item.attributes.id %>"><%= _.last(item.attributes.url.split('/')) %></a>
-        </li>
-      <% }); %>
-    </ul>
-  </div>
-  <div id="edit_wrapper">
-    <div id="graphic_details">
-    </div>
-    <div id="actions">
-      <ul class="buttons toggle">
-        <li class="disabled"><a href="#" rel="delete">Delete</a></li>
-        <li class="last"><a href="#" rel="new">New</a></li>
-      </ul>
-    </div>
-  </div>
- 
-]]></r>).toString();
-
-var show_graphic = (<r><![CDATA[
-    <div id="graphic_preview">
-      <img src="<%= model.attributes.url %>">
-    </div>
-    <div class="fields">
-      <label>Name:</label>
-      <span><%= _.last(model.attributes.url.split('/')) %></span>
-    </div>
-    <div class="fields">
-      <label>Path:</label>
-      <span><%= model.attributes.url %></span>
-    </div>
-  </div>
-]]></r>).toString();
-
-var new_graphic = (<r><![CDATA[
-  <div class="fields">
-    <label>Upload:</label>
-    <input type="file" name="graphic[file]" id="file1">
-  </div>
-]]></r>).toString();
-
-
 Deface.Views.Graphics.List = Backbone.View.extend({
   events: {
     "click ul#all_graphics a": "load_graphic",
@@ -80,7 +34,7 @@ Deface.Views.Graphics.List = Backbone.View.extend({
     Deface.editor.visible = true;
     Deface.view = this;
 
-    var compiled = _.template(graphics_list);
+    var compiled = JST["deface/templates/graphics/index"];
 
     $(this.el).html(compiled({ collection : Deface.graphics }));
     $('#main').html(this.el);
@@ -96,14 +50,14 @@ Deface.Views.Graphics.List = Backbone.View.extend({
 
     this.model = graphic;
 
-    var compiled = _.template(show_graphic);
+    var compiled = JST["deface/templates/graphics/show"];
     $('#graphic_details').html(compiled({ model : graphic }));
 
     $("a[rel='delete']").parent().removeClass('disabled');
   },
 
   new_graphic: function(e) {
-    var compiled = _.template(new_graphic);
+    var compiled = JST["deface/templates/graphics/new"];
     $('#graphic_details').html(compiled());
 
     $("a[rel='delete']").parent().addClass('disabled');

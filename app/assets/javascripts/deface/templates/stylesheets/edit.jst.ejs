@@ -1,0 +1,21 @@
+<form id="stylesheet_form">
+  <div>
+    <div class="fields">
+      <label>Name:</label>
+      <input type="text" size="30" name="name" value="<%= stylesheet.name %>">
+    </div>
+    <div class="clear">
+      <div class="fields">
+        <label>CSS:</label>
+      </div>
+      <pre id="stylesheet_css" class="small_editor">p {}</pre>
+    </div>
+  </div>
+  <div id="actions">
+    <ul class="buttons toggle">
+      <li class="<%= typeof(stylesheet.id)  == "undefined" ? 'disabled' : '' %>"><a rel="delete" href="#">Delete</a></li>
+      <li><a rel="cancel" href="#">Cancel</a></li>
+      <li class="last"><a rel="save" href="#">Save</a></li>
+    </ul>
+  </div>
+</form>

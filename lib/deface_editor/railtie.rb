@@ -15,7 +15,7 @@ module DefaceEditor
         DefaceEditor::Config.editor_virtual_paths.each do |layout|
           Deface::Override.new(:virtual_path => layout,
                           :name => "_deface_editor_ui",
-                          :insert_after => "title",
+                          :insert_bottom => "head",
                           :partial => "deface/shared/layout_scripts")
 
         end
@@ -32,10 +32,14 @@ module DefaceEditor
 
       end
 
+      self.reset_overrides
+    end
+
+    def self.reset_overrides
       if DefaceEditor::Config.enable_overrides
         #clear all WIP overrides, they get reloaded below
         Deface::Override.all.each do |virtual_path, overrides|
-          overrides.reject! {|name, override| name[0..4] == "_wip_" }
+          overrides.reject! {|name, override| override.args[:from_editor] }
         end
 
         #load all overrides from db
@@ -43,6 +47,7 @@ module DefaceEditor
           Theme.active.each { |theme| theme.view_overrides.map(&:initiate) }
         end
       end
+
     end
 
     config.to_prepare &method(:activate).to_proc

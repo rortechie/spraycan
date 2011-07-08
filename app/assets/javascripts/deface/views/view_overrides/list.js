@@ -1,14 +1,3 @@
-var load_override = (<r><![CDATA[
-  <div id="load_override">
-    <select id="all_view_overrides">
-      <option value="add-new">Add New Override</option>
-      <% collection.each(function(item) { %>
-        <option><%= item.escape('name') %></option>
-      <% }); %>
-    </select>
-    <button>ok</button>
-  </div>]]></r>).toString();
-
 Deface.Views.ViewOverrides.List = Backbone.View.extend({
   events: {
     "click #load_override button": "load"
@@ -36,7 +25,7 @@ Deface.Views.ViewOverrides.List = Backbone.View.extend({
   },
 
   render: function() {
-    var compiled = _.template(load_override);
+    var compiled = JST['deface/templates/view_overrides/index'];
 
     $(this.el).html(compiled({ collection : Deface.view_overrides }));
     $('#loadables').html(this.el);

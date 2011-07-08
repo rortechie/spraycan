@@ -22,4 +22,5 @@ Gem::Specification.new do |s|
   s.add_dependency('guid', '0.1.1')
   s.add_dependency('acts_as_list', '>= 0.1.2')
   s.add_dependency('rabl', '0.2.8')
+  s.add_dependency('ejs', '1.0.0')
 end

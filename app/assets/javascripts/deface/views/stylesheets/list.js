@@ -1,14 +1,3 @@
-var load_stylesheet = (<r><![CDATA[
-  <div id="load_stylesheet">
-    <select id="all_stylesheets">
-      <option value="add-new">Add New Stylesheet</option>
-      <% collection.each(function(item) { %>
-        <option><%= item.escape('name') %></option>
-      <% }); %>
-    </select>
-    <button>ok</button>
-  </div> ]]></r>).toString();
-
 Deface.Views.Stylesheets.List = Backbone.View.extend({
     events: {
       "click #load_stylesheet button": "load"
@@ -36,7 +25,7 @@ Deface.Views.Stylesheets.List = Backbone.View.extend({
     },
 
     render: function() {
-      var compiled = _.template(load_stylesheet);
+      var compiled = JST['deface/templates/stylesheets/index'];
 
       $(this.el).html(compiled({ collection : Deface.stylesheets }));
       $('#loadables').html(this.el);

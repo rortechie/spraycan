@@ -1,11 +1,3 @@
-var navigate = (<r><![CDATA[
-  <div class="fields" style="width:500px;">
-    <label>Url:</label>
-    <input id="url" type="text" style="width:300px;" value="<%= url %>">
-    <button>Go</button>
-  </div>
-]]></r>).toString();
-
 Deface.Views.Shared.navigate = Backbone.View.extend({
   show_form: true,
 
@@ -22,7 +14,7 @@ Deface.Views.Shared.navigate = Backbone.View.extend({
     Deface.editor.maximised = false;
     Deface.editor.visible = true;
 
-    var compiled = _.template(navigate);
+    var compiled = JST["deface/templates/shared/navigate"];
     $(this.el).html(compiled({ url : frames[0].location.href }));
     $('#main').html(this.el);
 
@@ -47,4 +39,3 @@ Deface.Views.Shared.navigate = Backbone.View.extend({
     Deface.animate_resize();
   }
 });
-

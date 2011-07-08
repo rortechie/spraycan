@@ -1,4 +1,10 @@
 var ViewOverride = Backbone.Model.extend({
+  toJSON: function() {
+    var object = new Object;
+    object['view_override'] = _.clone(this.attributes);
+    return object;
+  },
+
   defaults: {
     virtual_path: '', 
     target: 'replace', 

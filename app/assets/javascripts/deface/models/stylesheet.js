@@ -1,4 +1,10 @@
 var Stylesheet = Backbone.Model.extend({
+  toJSON: function() {
+    var object = new Object;
+    object['stylesheet'] = _.clone(this.attributes);
+    return object;
+  },
+
   url : function() {
     var base = '/deface/themes/' + Deface.theme_id + '/stylesheets';
     if (this.isNew()) return base;

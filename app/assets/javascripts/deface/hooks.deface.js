@@ -8,9 +8,11 @@ function show_hook_frames(){
       var hooks = $jQ(hook).parents().filter(function(i,p) { return $jQ(p).attr("data-hook")!=undefined });
       if(hooks.length == frame_level){
         var hook = $jQ(hook);
-        hook.attr('data-layer', frame_level);
+        if(hook.attr('id')!="" || hook.attr('data-hook')!=""){
+          hook.attr('data-layer', frame_level);
 
-        hook.addClass('deface_hook_frame');
+          hook.addClass('deface_hook_frame');
+        }
       }
     });
   }else{
@@ -42,39 +44,6 @@ function hook_zoom(in_or_out){
     }
   }
 }
-
-
-    // if(hook.data('qtip')==undefined){
-    //   var hook_name = hook.attr('data-hook');
-    //   if(hook_name==""){
-    //     hook_name = hook.attr('id');
-    //   }
-
-    //   hook.qtip({
-    //     content: '<h4>' + hook_name+'</h4><a href="/deface#view_overrides/edit/' + hook_name + '" target="_top">Edit</a> | <a href="/deface#view_overrides/new/' + hook_name + '" target="_top">New</a>',
-    //     show: { ready: true, solo: true, delay: 0, effect: { type: 'none', length: 0 } },
-    //     hide: { fixed: true, when: { event: 'unfocus' }, delay: 2000, effect: { type: 'none', length: 0 } },
-    //     position: {
-    //       adjust: { screen: true },
-    //       corner: { tooltip: 'bottomMiddle', target: 'topMiddle' }
-    //     },
-    //     style: { border: { width: 4, radius: 6 },
-    //              padding: 6,
-    //              textAlign: 'center',
-    //              tip: true,
-    //              name: 'dark',
-    //              classes: { tooltip: 'deface-qtip' }
-    //     }
-
-    //   });
-    // }else{
-    //    hook.qtip("enable");
-    // }
-
-    // hook.qtip("show");
-    // hook.qtip("focus");
-    //
-
 
 $jQ(function() {
 

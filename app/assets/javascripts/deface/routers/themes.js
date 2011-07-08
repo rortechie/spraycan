@@ -10,7 +10,7 @@ Deface.Routers.Themes = Backbone.Router.extend({
     if(Deface.themes==undefined){
       Deface.themes = new Deface.Collections.Themes();
 
-      Deface.themes.bind("refresh", this.update_themes);
+      Deface.themes.bind("reset", this.update_themes);
       Deface.themes.bind("add", this.update_themes);
       Deface.themes.bind("remove", this.update_themes);
 
@@ -25,11 +25,9 @@ Deface.Routers.Themes = Backbone.Router.extend({
       });
     }
 
-    this.update_themes();
   },
 
   update_themes: function() {
-    Deface.decrement_activity();
     window.location.href ="#";
     new Deface.Views.Themes.List();
   },
@@ -37,7 +35,6 @@ Deface.Routers.Themes = Backbone.Router.extend({
   switch_theme: function(id) {
     var theme = _.detect(Deface.themes.models, function(t) { return t.id == id });
 
-    console.log("switcih");
     Deface.theme_id = id;
     Deface.theme_name = theme.attributes.name;
     $('#theme_name').text(theme.attributes.name); 
@@ -47,7 +44,7 @@ Deface.Routers.Themes = Backbone.Router.extend({
     Deface.stylesheets = undefined;
     Deface.files = undefined;
 
-    frames[0].location.href = frames[0].location.href;
+    // frames[0].location.href = frames[0].location.href;
 
     window.location.href ="#";
     new Deface.Views.Themes.List();

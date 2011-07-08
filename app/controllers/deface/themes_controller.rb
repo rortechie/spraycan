@@ -1,30 +1,31 @@
-include DefaceHelper
+class Deface::ThemesController < Deface::BaseController
+  after_filter :clear_resolver_cache, :only => [:create, :update, :destroy]
+  after_filter :clear_sprockets_assets, :only => [:create, :update, :destroy]
 
-class Deface::ThemesController < ActionController::Base
   respond_to :json
 
   def index
-    respond_with Theme.all
+    @themes = Theme.all
+
+    respond_with @themes
   end
 
   def create
-    @theme = Theme.create pick(params, :name, :active)
+    @theme = Theme.create params[:theme]
 
     render :json => @theme.to_json
   end
 
   def update
     @theme = Theme.where(:id => params.delete(:id)).first
-    @theme.insert_at params[:position] if params.key? :position
-    @theme.update_attributes pick(params, :name, :active)
+    @theme.insert_at params[:theme][:position] if params[:theme].key? :position
+    @theme.update_attributes params[:theme]
 
     respond_with @theme
   end
 
   def destroy
-    Theme.destroy(params[:id])
-
-    render :js => "true"
+    render :js => Theme.destroy(params[:id])
   end
 
   def export

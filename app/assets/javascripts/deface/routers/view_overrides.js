@@ -13,7 +13,7 @@ Deface.Routers.ViewOverrides = Backbone.Router.extend({
       if(Deface.view_overrides==undefined){
         Deface.view_overrides = new Deface.Collections.ViewOverrides();
 
-        Deface.view_overrides.bind("refresh", this.update_overrides);
+        Deface.view_overrides.bind("reset", this.update_overrides);
         Deface.view_overrides.bind("add", this.update_overrides);
         Deface.view_overrides.bind("remove", this.update_overrides);
 

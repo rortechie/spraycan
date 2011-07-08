@@ -10,7 +10,7 @@ Deface.Routers.Stylesheets = Backbone.Router.extend({
       if(Deface.stylesheets==undefined){
         Deface.stylesheets = new Deface.Collections.Stylesheets();
 
-        Deface.stylesheets.bind("refresh", this.update_stylesheets);
+        Deface.stylesheets.bind("reset", this.update_stylesheets);
         Deface.stylesheets.bind("add", this.update_stylesheets);
         Deface.stylesheets.bind("remove", this.update_stylesheets);
 

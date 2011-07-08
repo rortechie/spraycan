@@ -1,0 +1,22 @@
+  <form id="theme_form">
+    <% if(model.attributes.id==undefined){ %>
+      <h3>Create New Theme</h3>
+    <% } %>
+    <div class="fields">
+      <label>Name:</label>
+      <input name="name" type="text" value="<%= model.attributes.name %>">
+    </div>
+    <div class="fields">
+      <label>Active:</label>
+      <input name="active" value="true" type="checkbox" <%= model.attributes.active ? 'checked="checked"' : '' %>>
+    </div>
+  </form>
+  <% if(model.attributes.id==undefined){ %>
+    <hr>
+    <h3>Import Existing Theme</h3>
+    <div class="fields">
+      <label>Import:</label>
+      <input type="file" name="import" id="file1">
+    </div>
+  <% } %>
+</div>

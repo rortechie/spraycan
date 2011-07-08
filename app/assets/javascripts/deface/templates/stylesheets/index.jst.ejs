@@ -1,0 +1,9 @@
+<div id="load_stylesheet">
+  <select id="all_stylesheets">
+    <option value="add-new">Add New Stylesheet</option>
+    <% collection.each(function(item) { %>
+      <option><%= item.escape('name') %></option>
+    <% }); %>
+  </select>
+  <button>ok</button>
+</div>

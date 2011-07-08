@@ -44,8 +44,5 @@ class Deface::ViewOverridesController < Deface::BaseController
       [:replace_text, :replace_partial, :replace_template].each {|replacement| params[:view_override].delete(replacement) }
     end
 
-    # Clears all cached ActionView Templates, forcing re-compile
-    def clear_resolver_cache
-      # @lookup_context.view_paths.map(&:clear_cache)
-    end
+
 end
