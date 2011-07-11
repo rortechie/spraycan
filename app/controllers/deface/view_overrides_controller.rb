@@ -7,6 +7,17 @@ class Deface::ViewOverridesController < Deface::BaseController
 
   respond_to :json
 
+  def deface
+    #editor boot method
+    if Theme.active.empty?
+      if Theme.all.empty?
+        Theme.create(:name => "Site Theme", :active => true)
+      else
+        Theme.first.update_attribute(:active, true)
+      end
+    end
+  end
+
   def index
     @view_overrides = @theme.view_overrides
     respond_with @view_overrides

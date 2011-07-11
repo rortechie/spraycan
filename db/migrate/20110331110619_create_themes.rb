@@ -8,7 +8,7 @@ class CreateThemes < ActiveRecord::Migration
       t.timestamps
     end
     Theme.reset_column_information
-    theme = Theme.create(:name => "default", :active => true)
+    theme = Theme.create(:name => "Site Theme", :active => true)
 
     add_column :view_overrides, :theme_id, :integer
     add_column :stylesheets, :theme_id, :integer
