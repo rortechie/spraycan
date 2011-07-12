@@ -36,7 +36,7 @@ Deface.Views.Stylesheets.Edit = Backbone.View.extend({
         }
 
         Deface.stylesheets.add(model);
-
+        Deface.decrement_activity();
         $("a[rel='delete']").parent().removeClass('disabled');
       },
       error: Deface.handle_save_error
@@ -152,9 +152,13 @@ Deface.Views.Stylesheets.Edit = Backbone.View.extend({
     $("#stylesheet_css").height(editor_height);
     this.code_editor = ace.edit("stylesheet_css");
 
-    this.code_editor.setTheme("ace/theme/twilight");
+    this.code_editor.setTheme("ace/theme/vibrant_ink");
 
     var css_mode = require("ace/mode/css").Mode;
+    //disables lint check as it causes lots of errors in
+    //firefox 5 - should look at updating ACE and retesting
+    css_mode.prototype.createWorker=function() {};
+    this.code_editor.getSession().setTabSize(2);
     this.code_editor.getSession().setMode(new css_mode());
     this.code_editor.getSession().setValue(this.model.get('css'));
     this.code_editor.getSession().doc.on('change', this.apply_styles);

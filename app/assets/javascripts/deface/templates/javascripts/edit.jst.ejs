@@ -1,0 +1,21 @@
+<form id="javascript_form">
+  <div>
+    <div class="fields">
+      <label>Name:</label>
+      <input type="text" size="30" name="name" value="<%= javascript.name %>">
+    </div>
+    <div class="clear">
+      <div class="fields">
+        <label>Code:</label>
+      </div>
+      <pre id="javascriptc_js" class="small_editor">p {}</pre>
+    </div>
+  </div>
+  <div id="actions">
+    <ul class="buttons toggle">
+      <li class="<%= typeof(javascript.id)  == "undefined" ? 'disabled' : '' %>"><a rel="delete" href="#">Delete</a></li>
+      <li><a rel="cancel" href="#">Cancel</a></li>
+      <li class="last"><a rel="save" href="#">Save</a></li>
+    </ul>
+  </div>
+</form>

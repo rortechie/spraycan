@@ -6,6 +6,7 @@ require 'uri'
 class Theme < ActiveRecord::Base
   has_many :view_overrides, :dependent => :destroy
   has_many :stylesheets, :dependent => :destroy
+  has_many :javascripts, :dependent => :destroy
   has_many :graphics, :dependent => :destroy
 
   validates :name, :presence => true

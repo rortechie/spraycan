@@ -15,5 +15,10 @@
         <%= stylesheet.css %>
       </style>
     <% end %>
+    <% theme.javascripts.each do |javascript| %>
+      <script type="text/javascript" id="<%= javascript.id %>">
+        <%= javascript.js %>
+      </script>
+    <% end %>
   <% end %>
 <% end %>

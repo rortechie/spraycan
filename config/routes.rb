@@ -13,6 +13,7 @@ Rails.application.routes.draw do
       end
       resources :view_overrides, :only => [:index, :create, :update, :destroy]
       resources :stylesheets
+      resources :javascripts
       resources :graphics
     end
   end

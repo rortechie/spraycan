@@ -1,0 +1,9 @@
+<div id="load_javascript">
+  <select id="all_javascripts">
+    <option value="add-new">Add New Javascript</option>
+    <% collection.each(function(item) { %>
+      <option><%= item.escape('name') %></option>
+    <% }); %>
+  </select>
+  <button>ok</button>
+</div>

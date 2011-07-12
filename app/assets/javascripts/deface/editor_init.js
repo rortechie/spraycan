@@ -1,5 +1,6 @@
 $(function() {
-    Deface.init();
+    Deface.init(); //start backbone
+    require.aceBaseUrl = "/assets/deface/ace/"; //so ACE can find worker files
 });
 
 $.fn.serializeObject = function()

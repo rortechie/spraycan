@@ -160,9 +160,10 @@ Deface.Views.ViewOverrides.Edit = Backbone.View.extend({
         $("#view_override_replace_text").height(editor_height);
         this.code_editor = ace.edit("view_override_replace_text");
 
-        this.code_editor.setTheme("ace/theme/twilight");
+        this.code_editor.setTheme("ace/theme/vibrant_ink");
 
         var html_mode = require("ace/mode/html").Mode;
+        this.code_editor.getSession().setTabSize(2);
         this.code_editor.getSession().setMode(new html_mode());
         if(this.model.get('replacement')!=null){
           this.code_editor.getSession().setValue(this.model.get('replacement'));

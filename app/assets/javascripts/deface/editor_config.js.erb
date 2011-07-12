@@ -1,5 +1,5 @@
 var Deface = {
-  Views: {Shared: {}, Themes: {}, ViewOverrides: {}, Stylesheets: {}, Graphics: {} },
+  Views: {Shared: {}, Themes: {}, ViewOverrides: {}, Stylesheets: {}, Javascripts: {}, Graphics: {} },
   Routers: {},
   Collections: {},
 
@@ -9,7 +9,7 @@ var Deface = {
 
   current: 'html',
 
-  previous: { html: null, css: null, files: null },
+  previous: { html: null, css: null, js: null, files: null },
 
   theme_id: <%= Theme.active.first.id %>,
 
@@ -26,6 +26,7 @@ var Deface = {
     new Deface.Routers.Themes();
     new Deface.Routers.Templates();
     new Deface.Routers.Stylesheets();
+    new Deface.Routers.Javascripts();
     new Deface.Routers.Graphics();
 
     Backbone.history.start();
