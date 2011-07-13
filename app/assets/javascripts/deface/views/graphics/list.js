@@ -1,8 +1,7 @@
 Deface.Views.Graphics.List = Backbone.View.extend({
   events: {
     "click ul#all_graphics a": "load_graphic",
-    "click li:not(.disabled) a[rel='new']": "new_graphic",
-    "click li:not(.disabled) a[rel='delete']": "delete_graphic"
+    "click li:not(.disabled) a[rel='new']": "new_graphic"
   },
 
   initialize: function() {
@@ -54,6 +53,7 @@ Deface.Views.Graphics.List = Backbone.View.extend({
     $('#graphic_details').html(compiled({ model : graphic }));
 
     $("a[rel='delete']").parent().removeClass('disabled');
+    $("li:not(.disabled) a[rel='delete']").add_confirm_delete();
   },
 
   new_graphic: function(e) {
@@ -63,16 +63,11 @@ Deface.Views.Graphics.List = Backbone.View.extend({
     $("a[rel='delete']").parent().addClass('disabled');
 
     $('#file1').change(function() {
+      Deface.increment_activity();
       $(this).upload('/deface/themes/' + Deface.theme_id + '/graphics', function(res) {
+        Deface.decrement_activity();
         Deface.graphics.fetch();
       }, 'script');
     });
-  },
-
-  delete_graphic: function(e) {
-    this.model.destroy();
-    // Deface.graphics.remove(this.model);
   }
-
 });
-

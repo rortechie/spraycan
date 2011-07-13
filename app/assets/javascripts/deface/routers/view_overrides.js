@@ -2,7 +2,8 @@ Deface.Routers.ViewOverrides = Backbone.Router.extend({
   routes: {
     "html": "load",
     "view_overrides/new/:hook": "new",
-    "view_overrides/edit/:hook": "edit"
+    "view_overrides/edit/:hook": "edit",
+    "delete_view_override/:id": "delete_view_override"
   },
 
   load: function() {
@@ -56,6 +57,16 @@ Deface.Routers.ViewOverrides = Backbone.Router.extend({
     new Deface.Views.ViewOverrides.List();
     $("#loadables").css("visibility", "visible");
     window.location.href ="#";
+  },
+
+  delete_view_override: function(id) {
+    $('.qtip.ui-tooltip').qtip('hide');
+
+    var view_override = _.detect(Deface.view_overrides.models, function(t) { return t.id == id });
+    view_override.destroy();
+    Deface.view_overrides.remove(view_override);
+    Deface.reset_editor();
+    Deface.reload_frame();
   }
 
 });

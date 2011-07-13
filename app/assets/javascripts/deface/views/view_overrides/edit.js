@@ -7,7 +7,6 @@ Deface.Views.ViewOverrides.Edit = Backbone.View.extend({
   events: {
     "click li:not(.disabled) a[rel='save']": "save",
     "click li:not(.disabled) a[rel='cancel']": "cancel",
-    "click li:not(.disabled) a[rel='delete']": "delete",
     "click li:not(.disabled) a[rel='advanced']": "advanced",
     "change select[name='replace_with']": "set_replacement",
     "change select[name='target']": "set_replacement",
@@ -37,7 +36,7 @@ Deface.Views.ViewOverrides.Edit = Backbone.View.extend({
 
     this.model.save(attrs, {
       success: function(model, resp) {
-        window.frames[0].location.reload();
+        Deface.reload_frame();
 
         if(Deface.view_overrides.get(model.get('id'))!=undefined){
           Deface.view_overrides.remove(Deface.view_overrides.get(model.get('id')), {silent: true});
@@ -46,18 +45,11 @@ Deface.Views.ViewOverrides.Edit = Backbone.View.extend({
         Deface.view_overrides.add(model);
 
         $("a[rel='delete']").parent().removeClass('disabled');
+        $("li:not(.disabled) a[rel='delete']").add_confirm_delete();
       },
       error: Deface.handle_save_error
     });
 
-    return false;
-  },
-
-  delete: function() {
-    this.model.destroy();
-    Deface.view_overrides.remove(this.model);
-
-    Deface.reset_editor();
     return false;
   },
 
@@ -215,6 +207,7 @@ Deface.Views.ViewOverrides.Edit = Backbone.View.extend({
     $('#main').html(this.el);
 
     this.set_replacement();
+    $("li:not(.disabled) a[rel='delete']").add_confirm_delete();
 
     return this;
   }

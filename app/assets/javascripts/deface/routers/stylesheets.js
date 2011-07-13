@@ -1,6 +1,7 @@
 Deface.Routers.Stylesheets = Backbone.Router.extend({
   routes: {
     "stylesheet/:name": "load",
+    "delete_stylesheet/:id": "delete_stylesheet"
   },
 
   load: function(name) {
@@ -35,6 +36,20 @@ Deface.Routers.Stylesheets = Backbone.Router.extend({
     new Deface.Views.Stylesheets.List();
     $("#loadables").css("visibility", "visible");
     window.location.href ="#";
+  },
+
+  delete_stylesheet: function(id) {
+    $('.qtip.ui-tooltip').qtip('hide');
+
+    var stylesheet = _.detect(Deface.stylesheets.models, function(t) { return t.id == id });
+
+    if(frames[0].$jQ("style#" + stylesheet.get('name')).length==1){
+      frames[0].$jQ("style#" + stylesheet.get('name')).remove();
+    }
+
+    stylesheet.destroy();
+    Deface.stylesheets.remove(stylesheet);
+    Deface.reset_editor();
   }
 
 });

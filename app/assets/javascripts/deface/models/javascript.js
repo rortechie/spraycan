@@ -5,6 +5,11 @@ var Javascript = Backbone.Model.extend({
     return object;
   },
 
+  klass: function(){
+    return 'javascript'
+  },
+
+
   url : function() {
     var base = '/deface/themes/' + Deface.theme_id + '/javascripts';
     if (this.isNew()) return base;

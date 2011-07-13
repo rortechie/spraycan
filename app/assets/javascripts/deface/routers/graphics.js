@@ -1,6 +1,7 @@
 Deface.Routers.Graphics = Backbone.Router.extend({
   routes: {
-    "files": "load_all"
+    "files": "load_all",
+    "delete_graphic/:id": "delete_graphic"
   },
 
   load_all: function(name) {
@@ -36,6 +37,14 @@ Deface.Routers.Graphics = Backbone.Router.extend({
     if(Deface.current == 'files'){
       new Deface.Views.Graphics.List();
     }
+  },
+
+  delete_graphic: function(id) {
+    $('.qtip.ui-tooltip').qtip('hide');
+
+    var graphic = _.detect(Deface.graphics.models, function(t) { return t.id == id });
+    graphic.destroy();
+    Deface.graphics.remove(graphic);
   }
 
 });

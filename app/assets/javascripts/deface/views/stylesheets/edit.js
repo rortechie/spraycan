@@ -5,7 +5,6 @@ Deface.Views.Stylesheets.Edit = Backbone.View.extend({
   events: {
     "click li:not(.disabled) a[rel='save']": "save",
     "click li:not(.disabled) a[rel='cancel']": "cancel",
-    "click li:not(.disabled) a[rel='delete']": "delete",
     "change input" :"changed",
     "change select" :"changed"
   },
@@ -38,6 +37,7 @@ Deface.Views.Stylesheets.Edit = Backbone.View.extend({
         Deface.stylesheets.add(model);
         Deface.decrement_activity();
         $("a[rel='delete']").parent().removeClass('disabled');
+        $("li:not(.disabled) a[rel='delete']").add_confirm_delete();
       },
       error: Deface.handle_save_error
     });
@@ -46,18 +46,6 @@ Deface.Views.Stylesheets.Edit = Backbone.View.extend({
   },
 
   cancel: function() {
-    Deface.reset_editor();
-    return false;
-  },
-
-  delete: function() {
-    if(frames[0].$jQ("style#" + this.model.name).length==1){
-      frames[0].$jQ("style#" + this.model.name).remove();
-    }
-
-    this.model.destroy();
-    Deface.view_overrides.remove(this.model);
-
     Deface.reset_editor();
     return false;
   },
@@ -125,13 +113,17 @@ Deface.Views.Stylesheets.Edit = Backbone.View.extend({
   apply_styles: function() {
     Deface.view.editor_changed();
 
-    var id = Deface.view.model.get('id')
+    var name = Deface.view.model.get('name')
+    if(name==""){
+      //tell user to set name first
+    }else{
 
-    if(frames[0].$jQ("style#" + id).length==0){
-      frames[0].$jQ("head").append("<style id='" + id + "'></style>");
+      if(frames[0].$jQ("style#" + name).length==0){
+        frames[0].$jQ("head").append("<style id='" + name + "'></style>");
+      }
+
+      frames[0].$jQ("style#" + name).html(Deface.view.code_editor.getSession().getValue());
     }
-
-    frames[0].$jQ("style#" + id).html(Deface.view.code_editor.getSession().getValue());
   },
 
   render: function() {
@@ -163,6 +155,7 @@ Deface.Views.Stylesheets.Edit = Backbone.View.extend({
     this.code_editor.getSession().setValue(this.model.get('css'));
     this.code_editor.getSession().doc.on('change', this.apply_styles);
 
+    $("li:not(.disabled) a[rel='delete']").add_confirm_delete();
 
     Deface.animate_resize();
 

@@ -11,7 +11,7 @@
 <% if Rails.env.development? %>
   <% Theme.active.each do |theme| %>
     <% theme.stylesheets.each do |stylesheet| %>
-      <style id="<%= stylesheet.id %>">
+      <style id="<%= stylesheet.name %>">
         <%= stylesheet.css %>
       </style>
     <% end %>

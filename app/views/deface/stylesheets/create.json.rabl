@@ -1,4 +1,3 @@
 object @stylesheet
 
-attributes :id, :name, :css
-
+attributes :id

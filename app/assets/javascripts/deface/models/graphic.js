@@ -5,6 +5,10 @@ var Graphic = Backbone.Model.extend({
     return object;
   },
 
+  klass: function(){
+    return 'graphic'
+  },
+
   url : function() {
     var base = '/deface/themes/' + Deface.theme_id + '/graphics';
     if (this.isNew()) return base;

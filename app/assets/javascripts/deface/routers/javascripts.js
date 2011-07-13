@@ -1,6 +1,7 @@
 Deface.Routers.Javascripts = Backbone.Router.extend({
   routes: {
     "javascript/:name": "load",
+    "delete_javascript/:id": "delete_javascript"
   },
 
   load: function(name) {
@@ -33,7 +34,15 @@ Deface.Routers.Javascripts = Backbone.Router.extend({
     new Deface.Views.Javascripts.List();
     $("#loadables").css("visibility", "visible");
     window.location.href ="#";
+  },
+
+  delete_javascript: function(id) {
+    $('.qtip.ui-tooltip').qtip('hide');
+
+    var javascript = _.detect(Deface.javascripts.models, function(t) { return t.id == id });
+    javascript.destroy();
+    Deface.javascripts.remove(javascript);
+    Deface.reset_editor();
   }
 
 });
-

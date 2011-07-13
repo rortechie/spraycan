@@ -5,6 +5,10 @@ var Theme = Backbone.Model.extend({
     return object;
   },
 
+  klass: function(){
+    return 'theme'
+  },
+
   url: function() {
     var base = '/deface/themes';
     if (this.isNew()) return base;

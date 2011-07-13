@@ -13,7 +13,7 @@ class Deface::ThemesController < Deface::BaseController
   def create
     @theme = Theme.create params[:theme]
 
-    render :json => @theme.to_json
+    respond_with @theme
   end
 
   def update
@@ -25,13 +25,13 @@ class Deface::ThemesController < Deface::BaseController
   end
 
   def destroy
-    render :js => Theme.destroy(params[:id])
+    render :js => Theme.destroy(params[:id]).to_s
   end
 
   def export
     @theme = Theme.find(params[:id])
 
-    dump_path = File.join([Rails.root, "public", "downloads", "#{@theme.guid}.json"])
+    dump_path = File.join([Rails.root, "public", "#{@theme.guid}.json"])
     File.open(dump_path, 'w') {|f| f.write(@theme.export) }
 
     #redirect_to "/downloads/#{self.id}.json"

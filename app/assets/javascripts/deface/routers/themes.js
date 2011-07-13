@@ -1,7 +1,8 @@
 Deface.Routers.Themes = Backbone.Router.extend({
   routes: {
     "themes": "load_all",
-    "switch_theme/:id": "switch_theme"
+    "switch_theme/:id": "switch_theme",
+    "delete_theme/:id": "delete_theme"
   },
 
   load_all: function(name) {
@@ -48,6 +49,22 @@ Deface.Routers.Themes = Backbone.Router.extend({
 
     window.location.href ="#";
     new Deface.Views.Themes.List();
+  },
+
+  delete_theme: function(id) {
+    $('.qtip.ui-tooltip').qtip('hide');
+
+    if(Deface.themes.length==1){
+      $('img#busy').show_message("Whoops!", "Sorry you cannot delete the last theme, please add a new theme before deleting this one.");
+    }else{
+      var theme = _.detect(Deface.themes.models, function(t) { return t.id == id });
+      theme.destroy();
+      Deface.themes.remove(theme);
+
+      if(Deface.theme_id==id){
+        window.location.href ="deface#switch_theme/" + Deface.themes.models[0].get('id');
+      }
+    }
   }
 
 });

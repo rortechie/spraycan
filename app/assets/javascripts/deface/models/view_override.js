@@ -5,6 +5,10 @@ var ViewOverride = Backbone.Model.extend({
     return object;
   },
 
+  klass: function(){
+    return 'view_override'
+  },
+
   defaults: {
     virtual_path: '', 
     target: 'replace', 

@@ -23,6 +23,7 @@ var Deface = {
     view_overrides_controller = new Deface.Routers.ViewOverrides();
     view_overrides_controller.load();
 
+    new Deface.Routers.Common();
     new Deface.Routers.Themes();
     new Deface.Routers.Templates();
     new Deface.Routers.Stylesheets();
@@ -117,6 +118,10 @@ var Deface = {
 
     Deface.previous[Deface.current] = null;
     Deface.view = null;
+  },
+
+  reload_frame: function(){
+    window.frames[0].location.reload();
   },
 
   handle_save_error: function(model, errors){

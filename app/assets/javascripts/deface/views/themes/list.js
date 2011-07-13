@@ -2,8 +2,7 @@ Deface.Views.Themes.List = Backbone.View.extend({
   events: {
     "click #themes_list a.edit": "load_theme",
     "click li:not(.disabled) a[rel='new']": "new_theme",
-    "click li:not(.disabled) a[rel='save']": "save_theme",
-    "click li:not(.disabled) a[rel='delete']": "delete_theme"
+    "click li:not(.disabled) a[rel='save']": "save_theme"
   },
 
   initialize: function() {
@@ -73,6 +72,8 @@ Deface.Views.Themes.List = Backbone.View.extend({
 
     $("a[rel='delete']").parent().removeClass('disabled');
     $("a[rel='save']").parent().removeClass('disabled');
+
+    $("li:not(.disabled) a[rel='delete']").add_confirm_delete();
   },
 
   save_theme: function(e) {
@@ -125,14 +126,6 @@ Deface.Views.Themes.List = Backbone.View.extend({
         Deface.themes.fetch();
       }, 'script');
     });
-
-  },
-
-  delete_theme: function(e) {
-    this.model.destroy();
-    // Deface.graphics.remove(this.model);
   }
 
 });
-
-

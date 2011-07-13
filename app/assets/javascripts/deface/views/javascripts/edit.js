@@ -5,7 +5,6 @@ Deface.Views.Javascripts.Edit = Backbone.View.extend({
   events: {
     "click li:not(.disabled) a[rel='save']": "save",
     "click li:not(.disabled) a[rel='cancel']": "cancel",
-    "click li:not(.disabled) a[rel='delete']": "delete",
     "change input" :"changed",
     "change select" :"changed"
   },
@@ -41,6 +40,7 @@ Deface.Views.Javascripts.Edit = Backbone.View.extend({
         Deface.decrement_activity();
 
         $("a[rel='delete']").parent().removeClass('disabled');
+        $("li:not(.disabled) a[rel='delete']").add_confirm_delete();
       },
       error: Deface.handle_save_error
     });
@@ -49,14 +49,6 @@ Deface.Views.Javascripts.Edit = Backbone.View.extend({
   },
 
   cancel: function() {
-    Deface.reset_editor();
-    return false;
-  },
-
-  delete: function() {
-    this.model.destroy();
-    Deface.view_overrides.remove(this.model);
-
     Deface.reset_editor();
     return false;
   },
@@ -147,6 +139,8 @@ Deface.Views.Javascripts.Edit = Backbone.View.extend({
     this.code_editor.getSession().setValue(this.model.get('js'));
     this.code_editor.getSession().doc.on('change', this.editor_changed);
 
+
+    $("li:not(.disabled) a[rel='delete']").add_confirm_delete();
 
     Deface.animate_resize();
 

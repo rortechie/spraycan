@@ -26,7 +26,7 @@ div#deface_editor{
   height: 50px;
   position: absolute;
   width: 100%;
-  z-index: 99999;
+  z-index: 500;
 }
 
 div#deface_editor #top_bar{
@@ -336,4 +336,11 @@ div#deface_editor .clear, .replacement{
   border: 1px solid #fff;
   background-color: #fff;
   clear: both;
+}
+
+.confirm_links {
+  text-align: center;
+}
+.confirm_links a:visited {
+  color: blue;
 }

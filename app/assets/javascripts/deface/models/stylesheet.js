@@ -5,6 +5,10 @@ var Stylesheet = Backbone.Model.extend({
     return object;
   },
 
+  klass: function(){
+    return 'stylesheet'
+  },
+
   url : function() {
     var base = '/deface/themes/' + Deface.theme_id + '/stylesheets';
     if (this.isNew()) return base;
