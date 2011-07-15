@@ -1,5 +1,5 @@
 <% if Rails.env.production? %>
-  <% Theme.active.each do |theme| %>
+  <% DefaceEditor::Theme.active.each do |theme| %>
     <% theme.javascripts.each do |javascript| %>
       <%= javascript.js %>
     <% end %>

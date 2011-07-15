@@ -15,13 +15,13 @@ Deface.Routers.Graphics = Backbone.Router.extend({
         Deface.graphics.bind("add", this.update_graphics);
         Deface.graphics.bind("remove", this.update_graphics);
 
-        Deface.increment_activity();
+        Deface.increment_activity("Loading files");
         Deface.graphics.fetch({
           success: function(){
             Deface.decrement_activity();
           },
           error: function() {
-            new Error({ message: "Error loading graphics." });
+            new Error({ message: "Error loading files." });
           }
         });
       }
@@ -43,7 +43,8 @@ Deface.Routers.Graphics = Backbone.Router.extend({
     $('.qtip.ui-tooltip').qtip('hide');
 
     var graphic = _.detect(Deface.graphics.models, function(t) { return t.id == id });
-    graphic.destroy();
+    Deface.increment_activity("Deleting file");
+    graphic.destroy({success: function(model, resp){ Deface.decrement_activity(); }});
     Deface.graphics.remove(graphic);
   }
 

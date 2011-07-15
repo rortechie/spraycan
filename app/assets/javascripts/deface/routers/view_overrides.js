@@ -18,7 +18,7 @@ Deface.Routers.ViewOverrides = Backbone.Router.extend({
         Deface.view_overrides.bind("add", this.update_overrides);
         Deface.view_overrides.bind("remove", this.update_overrides);
 
-        Deface.increment_activity();
+        Deface.increment_activity("Loading view overrides");
         Deface.view_overrides.fetch({
           success: function(){
             Deface.decrement_activity();
@@ -63,7 +63,8 @@ Deface.Routers.ViewOverrides = Backbone.Router.extend({
     $('.qtip.ui-tooltip').qtip('hide');
 
     var view_override = _.detect(Deface.view_overrides.models, function(t) { return t.id == id });
-    view_override.destroy();
+    Deface.increment_activity("Deleting view override");
+    view_override.destroy({success: function(model, resp){ Deface.decrement_activity(); }});
     Deface.view_overrides.remove(view_override);
     Deface.reset_editor();
     Deface.reload_frame();

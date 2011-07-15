@@ -1,4 +1,4 @@
-class Deface::JavascriptsController < Deface::BaseController
+class DefaceEditor::JavascriptsController < DefaceEditor::BaseController
   respond_to :css, :json
 
   after_filter :clear_sprockets_assets, :only => [:create, :update, :destroy]
@@ -10,7 +10,7 @@ class Deface::JavascriptsController < Deface::BaseController
   end
 
   def show
-    @javascript = Javascript.where(:name => params[:id]).first
+    @javascript = DefaceEditor::Javascript.where(:name => params[:id]).first
 
     respond_with @javascript
   end
@@ -21,19 +21,19 @@ class Deface::JavascriptsController < Deface::BaseController
   end
 
   def update
-    @javascript = Javascript.where(:id => params.delete(:id)).first
+    @javascript = DefaceEditor::Javascript.where(:id => params.delete(:id)).first
     @javascript.update_attributes params[:javascript]
 
     respond_with @javascript
   end
 
   def destroy
-    render :json => Javascript.destroy(params[:id])
+    render :json => DefaceEditor::Javascript.destroy(params[:id])
   end
 
   private
     def set_theme
-      @theme = Theme.find(params[:theme_id])
+      @theme = DefaceEditor::Theme.find(params[:theme_id])
     end
 
 end

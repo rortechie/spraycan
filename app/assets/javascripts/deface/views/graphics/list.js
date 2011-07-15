@@ -63,8 +63,8 @@ Deface.Views.Graphics.List = Backbone.View.extend({
     $("a[rel='delete']").parent().addClass('disabled');
 
     $('#file1').change(function() {
-      Deface.increment_activity();
-      $(this).upload('/deface/themes/' + Deface.theme_id + '/graphics', function(res) {
+      Deface.increment_activity("Uploading file");
+      $(this).upload('/deface_editor/themes/' + Deface.theme_id + '/graphics', function(res) {
         Deface.decrement_activity();
         Deface.graphics.fetch();
       }, 'script');

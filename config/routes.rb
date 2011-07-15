@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
-  match "/deface" => "deface/view_overrides#deface"
+  match "/deface" => "deface_editor/view_overrides#deface"
 
-  namespace :deface do
+  namespace :deface_editor do
     resources :templates, :only => [:index]
 
     resources :themes do

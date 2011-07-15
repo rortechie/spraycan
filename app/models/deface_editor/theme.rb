@@ -3,7 +3,7 @@ require 'stringio'
 require 'net/http'
 require 'uri'
 
-class Theme < ActiveRecord::Base
+class DefaceEditor::Theme < ActiveRecord::Base
   has_many :view_overrides, :dependent => :destroy
   has_many :stylesheets, :dependent => :destroy
   has_many :javascripts, :dependent => :destroy
@@ -19,6 +19,10 @@ class Theme < ActiveRecord::Base
 
   acts_as_list
 
+  def asset_path
+    Rails.root.join("app", "theme_assets", self.guid)
+  end
+
   def export
     self.to_json(:methods => [:source], :only => [:name, :guid])
   end
@@ -33,8 +37,8 @@ class Theme < ActiveRecord::Base
       return false
     end
 
-    if Theme.exists?(:guid => data["guid"])
-      Theme.where(:guid => data["guid"])[0].destroy
+    if DefaceEditor::Theme.exists?(:guid => data["guid"])
+      DefaceEditor::TTheme.where(:guid => data["guid"])[0].destroy
     end
 
     self.name = data["name"]

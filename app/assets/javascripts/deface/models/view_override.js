@@ -20,7 +20,7 @@ var ViewOverride = Backbone.Model.extend({
   },
 
   url : function() {
-    var base = '/deface/themes/' + Deface.theme_id + '/view_overrides';
+    var base = '/deface_editor/themes/' + Deface.theme_id + '/view_overrides';
     if (this.isNew()) return base;
     return base + (base.charAt(base.length - 1) == '/' ? '' : '/') + this.id;
   },

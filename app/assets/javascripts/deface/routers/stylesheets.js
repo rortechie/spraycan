@@ -15,7 +15,7 @@ Deface.Routers.Stylesheets = Backbone.Router.extend({
         Deface.stylesheets.bind("add", this.update_stylesheets);
         Deface.stylesheets.bind("remove", this.update_stylesheets);
 
-        Deface.increment_activity();
+        Deface.increment_activity("Loading stylesheets");
         Deface.stylesheets.fetch({
           success: function(){
             Deface.decrement_activity();
@@ -46,8 +46,8 @@ Deface.Routers.Stylesheets = Backbone.Router.extend({
     if(frames[0].$jQ("style#" + stylesheet.get('name')).length==1){
       frames[0].$jQ("style#" + stylesheet.get('name')).remove();
     }
-
-    stylesheet.destroy();
+    Deface.increment_activity("Deleting stylesheet");
+    stylesheet.destroy({success: function(model, resp){ Deface.decrement_activity(); }});
     Deface.stylesheets.remove(stylesheet);
     Deface.reset_editor();
   }

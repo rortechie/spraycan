@@ -10,7 +10,7 @@ var Theme = Backbone.Model.extend({
   },
 
   url: function() {
-    var base = '/deface/themes';
+    var base = '/deface_editor/themes';
     if (this.isNew()) return base;
     return base + (base.charAt(base.length - 1) == '/' ? '' : '/') + this.id;
   },

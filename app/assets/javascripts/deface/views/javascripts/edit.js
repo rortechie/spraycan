@@ -26,7 +26,7 @@ Deface.Views.Javascripts.Edit = Backbone.View.extend({
 
     var isNew = this.model.isNew();
 
-    Deface.increment_activity();
+    Deface.increment_activity("Saving javascript");
 
     this.model.save(attrs, {
       success: function(model, resp) {

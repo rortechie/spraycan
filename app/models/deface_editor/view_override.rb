@@ -1,4 +1,4 @@
-class ViewOverride < ActiveRecord::Base
+class DefaceEditor::ViewOverride < ActiveRecord::Base
   belongs_to :theme
   after_save :initiate
 

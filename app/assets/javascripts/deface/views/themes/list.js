@@ -89,7 +89,7 @@ Deface.Views.Themes.List = Backbone.View.extend({
   },
 
   save_theme_record: function(theme, attrs){
-    Deface.increment_activity();
+    Deface.increment_activity("Saving theme");
 
     theme.save(attrs, {
       success: function(model, resp) {
@@ -116,10 +116,10 @@ Deface.Views.Themes.List = Backbone.View.extend({
     $('#theme_details').html(compiled({ model : this.model }));
 
     $('#file1').change(function() {
-      Deface.increment_activity();
+      Deface.increment_activity("Uploading theme");
       $("a[rel='save']").parent().addClass('disabled');
 
-      $(this).upload('/deface/themes/import.js', function(res) {
+      $(this).upload('/deface_editor/themes/import.js', function(res) {
         Deface.decrement_activity();
 
         frames[0].location.href = frames[0].location.href;

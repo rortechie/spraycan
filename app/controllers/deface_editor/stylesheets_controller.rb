@@ -1,4 +1,4 @@
-class Deface::StylesheetsController < Deface::BaseController
+class DefaceEditor::StylesheetsController < DefaceEditor::BaseController
   respond_to :css, :json
 
   after_filter :clear_sprockets_assets, :only => [:create, :update, :destroy]
@@ -10,7 +10,7 @@ class Deface::StylesheetsController < Deface::BaseController
   end
 
   def show
-    @stylesheet = Stylesheet.where(:name => params[:id]).first
+    @stylesheet = DefaceEditor::tylesheet.where(:name => params[:id]).first
 
     respond_with @stylesheet
   end
@@ -21,19 +21,19 @@ class Deface::StylesheetsController < Deface::BaseController
   end
 
   def update
-    @stylesheet = Stylesheet.where(:id => params.delete(:id)).first
+    @stylesheet = DefaceEditor::Stylesheet.where(:id => params.delete(:id)).first
     @stylesheet.update_attributes params[:stylesheet]
 
     respond_with @stylesheet
   end
 
   def destroy
-    render :json => Stylesheet.destroy(params[:id])
+    render :json => DefaceEditor::Stylesheet.destroy(params[:id])
   end
 
   private
     def set_theme
-      @theme = Theme.find(params[:theme_id])
+      @theme = DefaceEditor::Theme.find(params[:theme_id])
     end
 
 end

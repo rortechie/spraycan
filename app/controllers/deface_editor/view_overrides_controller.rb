@@ -1,4 +1,4 @@
-class Deface::ViewOverridesController < Deface::BaseController
+class DefaceEditor::ViewOverridesController < DefaceEditor::BaseController
   layout 'deface'
 
   before_filter :set_theme, :only => [:index, :create]
@@ -9,11 +9,11 @@ class Deface::ViewOverridesController < Deface::BaseController
 
   def deface
     #editor boot method
-    if Theme.active.empty?
-      if Theme.all.empty?
-        Theme.create(:name => "Site Theme", :active => true)
+    if DefaceEditor::Theme.active.empty?
+      if DefaceEditor::Theme.all.empty?
+        DefaceEditor::Theme.create(:name => "Site Theme", :active => true)
       else
-        Theme.first.update_attribute(:active, true)
+        DefaceEditor::Theme.first.update_attribute(:active, true)
       end
     end
   end
@@ -30,19 +30,19 @@ class Deface::ViewOverridesController < Deface::BaseController
   end
 
   def update
-    @view_override = ViewOverride.where(:id => params.delete(:id)).first
+    @view_override = DefaceEditor::ViewOverride.where(:id => params.delete(:id)).first
     @view_override.update_attributes params[:view_override]
 
     respond_with @view_override
   end
 
   def destroy
-    render :json => ViewOverride.destroy(params[:id])
+    render :json => DefaceEditor::ViewOverride.destroy(params[:id])
   end
 
   private
     def set_theme
-      @theme = Theme.find(params[:theme_id])
+      @theme = DefaceEditor::Theme.find(params[:theme_id])
     end
 
     def set_replacement

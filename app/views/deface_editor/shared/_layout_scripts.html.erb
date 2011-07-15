@@ -7,9 +7,8 @@
   });
 <% end %>
 <%= stylesheet_link_tag 'deface/embed' %>
-
 <% if Rails.env.development? %>
-  <% Theme.active.each do |theme| %>
+  <% DefaceEditor::Theme.active.each do |theme| %>
     <% theme.stylesheets.each do |stylesheet| %>
       <style id="<%= stylesheet.name %>">
         <%= stylesheet.css %>

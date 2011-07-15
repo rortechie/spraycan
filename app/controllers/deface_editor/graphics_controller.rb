@@ -1,4 +1,4 @@
-class Deface::GraphicsController < Deface::BaseController
+class DefaceEditor::GraphicsController < DefaceEditor::BaseController
   respond_to :json, :js
 
   before_filter :set_theme, :only => [:index, :create]
@@ -15,12 +15,12 @@ class Deface::GraphicsController < Deface::BaseController
   end
 
   def destroy
-    render :json => Graphic.destroy(params[:id])
+    render :json => DefaceEditor::Graphic.destroy(params[:id])
   end
 
   private
     def set_theme
-      @theme = Theme.find(params[:theme_id])
+      @theme = DefaceEditor::Theme.find(params[:theme_id])
     end
 
 end

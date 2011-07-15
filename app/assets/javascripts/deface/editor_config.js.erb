@@ -11,9 +11,9 @@ var Deface = {
 
   previous: { html: null, css: null, js: null, files: null },
 
-  theme_id: <%= Theme.active.first.id %>,
+  theme_id: <%= DefaceEditor::Theme.active.first.id %>,
 
-  theme_name: '<%= Theme.active.first.name %>',
+  theme_name: '<%= DefaceEditor::Theme.active.first.name %>',
 
   editor: {minimised: true, maximised: false, visible: false },
 
@@ -32,15 +32,17 @@ var Deface = {
 
     Backbone.history.start();
 
-    Deface.increment_activity() //for iframe load
+    Deface.increment_activity("Loading site") //for iframe load
 
     //render toolbar
     new Deface.Views.Shared.Toolbar();
   },
 
-  increment_activity: function(){
+  increment_activity: function(message){
     Deface.activity += 1;
     $('img#busy').css("visibility", "visible");
+    $('span#activity_message').text(message + "...");
+    $('span#activity_message').css("visibility", "visible");
   },
 
   decrement_activity: function(){
@@ -48,6 +50,7 @@ var Deface = {
 
     if(Deface.activity<=0){
       $('img#busy').css("visibility", "hidden");
+      $('span#activity_message').css("visibility", "hidden");
       Deface.activity = 0;
     }
   },

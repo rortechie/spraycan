@@ -2,7 +2,7 @@ var $jQ = jQuery.noConflict(true);
 
 var overrides_by_hook = new Array();
 
-<% Theme.active.each do |theme| %>
+<% DefaceEditor::Theme.active.each do |theme| %>
   <% theme.view_overrides.group_by(&:selector).each do |override| %>
     overrides_by_hook['<%= override[0].gsub("'", "") %>'] = <%= override[1].size %>;
   <% end %>

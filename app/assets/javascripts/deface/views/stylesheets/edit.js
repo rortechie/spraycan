@@ -26,7 +26,7 @@ Deface.Views.Stylesheets.Edit = Backbone.View.extend({
 
     var isNew = this.model.isNew();
 
-    Deface.increment_activity();
+    Deface.increment_activity("Saving stylesheet");
 
     this.model.save(attrs, {
       success: function(model, resp) {

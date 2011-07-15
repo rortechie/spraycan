@@ -10,7 +10,7 @@ var Stylesheet = Backbone.Model.extend({
   },
 
   url : function() {
-    var base = '/deface/themes/' + Deface.theme_id + '/stylesheets';
+    var base = '/deface_editor/themes/' + Deface.theme_id + '/stylesheets';
     if (this.isNew()) return base;
     return base + (base.charAt(base.length - 1) == '/' ? '' : '/') + this.id;
   },

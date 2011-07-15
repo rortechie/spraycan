@@ -1,4 +1,4 @@
-class Deface::BaseController < ActionController::Base
+class DefaceEditor::BaseController < ActionController::Base
   before_filter :authenticate_deface
 
   private

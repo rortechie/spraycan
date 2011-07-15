@@ -87,6 +87,6 @@ $jQ(function() {
 //show activity while iframe is loading
 window.onbeforeunload = function() {
   if(top.Deface!=undefined){
-    top.Deface.increment_activity();
+    top.Deface.increment_activity("Loading site");
   }
 }

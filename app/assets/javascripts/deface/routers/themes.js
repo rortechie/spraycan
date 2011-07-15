@@ -15,7 +15,7 @@ Deface.Routers.Themes = Backbone.Router.extend({
       Deface.themes.bind("add", this.update_themes);
       Deface.themes.bind("remove", this.update_themes);
 
-      Deface.increment_activity();
+      Deface.increment_activity("Loading themes");
       Deface.themes.fetch({
         success: function(){
           Deface.decrement_activity();
@@ -58,7 +58,8 @@ Deface.Routers.Themes = Backbone.Router.extend({
       $('img#busy').show_message("Whoops!", "Sorry you cannot delete the last theme, please add a new theme before deleting this one.");
     }else{
       var theme = _.detect(Deface.themes.models, function(t) { return t.id == id });
-      theme.destroy();
+      Deface.increment_activity("Deleting theme");
+      theme.destroy({success: function(model, resp){ Deface.decrement_activity(); }});
       Deface.themes.remove(theme);
 
       if(Deface.theme_id==id){

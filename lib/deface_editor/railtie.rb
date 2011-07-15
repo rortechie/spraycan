@@ -16,7 +16,7 @@ module DefaceEditor
           Deface::Override.new(:virtual_path => layout,
                           :name => "_deface_editor_ui",
                           :insert_bottom => "head",
-                          :partial => "deface/shared/layout_scripts")
+                          :partial => "deface_editor/shared/layout_scripts")
 
         end
 
@@ -43,8 +43,8 @@ module DefaceEditor
         end
 
         #load all overrides from db
-        if Theme.table_exists?
-          Theme.active.each { |theme| theme.view_overrides.map(&:initiate) }
+        if DefaceEditor::Theme.table_exists?
+          DefaceEditor::Theme.active.each { |theme| theme.view_overrides.map(&:initiate) }
         end
       end
 

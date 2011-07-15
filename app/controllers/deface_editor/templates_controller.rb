@@ -1,4 +1,4 @@
-class Deface::TemplatesController < Deface::BaseController
+class DefaceEditor::TemplatesController < DefaceEditor::BaseController
   respond_to :json
 
   def index

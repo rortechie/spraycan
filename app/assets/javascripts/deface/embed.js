@@ -2,4 +2,3 @@
 //= require deface/jquery.qtip
 //= require deface/variables
 //= require deface/hooks.deface
-//= require deface/themes

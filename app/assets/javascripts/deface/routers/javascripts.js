@@ -15,7 +15,7 @@ Deface.Routers.Javascripts = Backbone.Router.extend({
         Deface.javascripts.bind("add", this.update_javascripts);
         Deface.javascripts.bind("remove", this.update_javascripts);
 
-        Deface.increment_activity();
+        Deface.increment_activity("Loading javascripts");
         Deface.javascripts.fetch({
           success: function(){
             Deface.decrement_activity();
@@ -40,7 +40,8 @@ Deface.Routers.Javascripts = Backbone.Router.extend({
     $('.qtip.ui-tooltip').qtip('hide');
 
     var javascript = _.detect(Deface.javascripts.models, function(t) { return t.id == id });
-    javascript.destroy();
+    Deface.increment_activity("Deleting javascript");
+    javascript.destroy({success: function(model, resp){ Deface.decrement_activity(); }});
     Deface.javascripts.remove(javascript);
     Deface.reset_editor();
   }

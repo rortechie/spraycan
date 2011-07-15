@@ -46,6 +46,11 @@ div#deface_editor img#busy{
   visibility: hidden;
   float: left;
 }
+div#deface_editor span#activity_message{
+  visibility: hidden;
+  margin: 10px -3px;
+  float: left;
+}
 
 div#deface_editor .buttons{
   margin: 0px;
