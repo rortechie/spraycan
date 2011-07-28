@@ -7,6 +7,19 @@ module DefaceEditor
 
     config.autoload_paths += %W(#{root}/lib)
 
+    #needs to be done here, as other sprockets stuff
+    #migt not be initialized yet
+    initializer "deface_editor.set_paths" do |app|
+      if DefaceEditor::Theme.table_exists?
+        DefaceEditor::Theme.active.each do |theme|
+          theme.sprockets_dump_asset_directories.each do |path|
+            app.config.assets.paths.unshift path.to_s
+          end
+        end
+
+      end
+    end
+
     def self.activate
 
       if DefaceEditor::Config.enable_editor
@@ -32,10 +45,10 @@ module DefaceEditor
 
       end
 
-      self.reset_overrides
+      self.initialize_themes
     end
 
-    def self.reset_overrides
+    def self.initialize_themes
       if DefaceEditor::Config.enable_overrides
         #clear all WIP overrides, they get reloaded below
         Deface::Override.all.each do |virtual_path, overrides|

@@ -12,7 +12,7 @@ class DefaceEditor::BaseController < ActionController::Base
     # Clears all cached ActionView Templates, forcing re-compile
     def clear_resolver_cache
       return unless Rails.env.production?
-      DefaceEditor::Engine.reset_overrides
+      DefaceEditor::Engine.initialize_themes
       @_lookup_context.view_paths.map(&:clear_cache)
     end
 

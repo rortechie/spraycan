@@ -6,53 +6,91 @@ module DefaceEditor
       @theme ||= DefaceEditor::Theme.create(:name => name, :active => true)
       @theme.update_attribute(:imported_from, name)
 
-      [:javascripts, :stylesheets, :graphics].each {|association| @theme.send(association).delete_all }
+      [:javascripts, :stylesheets, :graphics, :view_overrides].each {|association| @theme.send(association).delete_all }
 
-      editable_config_file = File.join(engine.root, "config" , "editable_assets.yml")
+      assets_path = engine.root.join(engine.paths["app/assets"].to_s) #might be custom, so need to get it this way
 
-      if File.exists?(editable_config_file)
-        begin
-          editable = YAML::load(IO.read(editable_config_file))
+      enumerate_and_import(assets_path.join("javascripts"), :javascripts, :js)
+      enumerate_and_import(assets_path.join("stylesheets"), :stylesheets, :css)
+      enumerate_and_import(assets_path.join("images"), :graphics, :file, 'images', true)
 
-          editable.each do |path, directories|
-            next unless engine.paths.key?(path)
-
-            enumerate_and_import(engine.root, engine.paths[path], directories["javascripts"], :javascripts, :js) if directories.key?("javascripts")
-            enumerate_and_import(engine.root, engine.paths[path], directories["stylesheets"], :stylesheets, :css) if directories.key?("stylesheets")
-            enumerate_and_import(engine.root, engine.paths[path], directories["images"], :graphics, :file, 'images', true) if directories.key?("images")
-          end
-
-        rescue Exception => e
-          puts e.message, e.backtrace
-          #bad things happen to good people
-        end
-      end
-
+      import_overrides(engine.root.join("app/overrides"))
     end
 
     private
 
-      def self.enumerate_and_import(engine_root, paths, files, association, attr, source=nil, binary=false)
+      def self.enumerate_and_import(base_path, association, attr, source=nil, binary=false)
         source ||= association.to_s
 
-        paths.each do |path|
-          base_path = File.join(engine_root, path, source)
+        search_path = binary ? base_path.join("**/*.*") : base_path.join("**/*.#{attr}")
 
-          files.each do |file|
-            full_path = File.join(base_path, file)
-            next unless File.file? full_path
+        Dir.glob(search_path) do |file|
+          next unless File.file? file
 
-            relative_path = full_path.to_s.gsub(base_path, "")
-            relative_path = relative_path[1..-1] if relative_path.first == "/"
+          relative_path = file.gsub(base_path, "")
+          relative_path = relative_path[1..-1] if relative_path.first == "/"
 
-            if binary
-              @theme.send(association).create(:name => relative_path, attr => File.open(full_path, "r"))
-            else
-              @theme.send(association).create(:name => relative_path, attr => IO.read(full_path))
-            end
-          end 
+          if binary
+            @theme.send(association).create(:name => relative_path, attr => File.open(file, "r"))
+          else
+            @theme.send(association).create(:name => relative_path, attr => IO.read(file))
+          end
         end
+      end
 
+      def self.import_overrides(base_path)
+        search_path = base_path.join("**/*.rb")
+
+        Dir.glob(search_path) do |file|
+          next unless File.file? file
+
+          Deface::Override.all.clear
+          load(file)
+
+          Deface::Override.all.values.each do |virtual_path|
+            virtual_path.each do |name, override|
+              new_override = @theme.view_overrides.new(:name          => name,
+                                              :virtual_path  => override.args[:virtual_path],
+                                              :target        => override.action,
+                                              :selector      => override.args[override.action],
+                                              :disabled      => override.args[:diabled])
+
+              if override.args[:closing_selector].present?
+                new_override.closing_selector = override.args[:closing_selector]
+              end 
+
+              if override.args.key? :text
+                new_override.replace_with = "text"
+                new_override.replacement  = override.args[:text]
+              elsif override.args.key? :partial
+                new_override.replace_with = "partial"
+                new_override.replacement  = override.args[:partial]
+              elsif override.args.key? :partial
+                new_override.replace_with = "partial"
+                new_override.replacement  = override.args[:template]
+              else
+                new_override.replace_with = "text"
+              end
+
+              if sequence = override.args[:sequence]
+                if sequence.is_a? Hash
+                  if sequence.key? :before
+                    new_override.sequence = "before"
+                  elsif sequence.key? :after
+                    new_override.sequence = "after"
+                  end
+
+                  new_override.sequence_target = sequence[:before] || sequence[:after]
+                else
+                  new_override.sequence = sequence
+                end
+              end
+
+              new_override.save!
+            end
+          end
+
+        end
       end
   end
 end

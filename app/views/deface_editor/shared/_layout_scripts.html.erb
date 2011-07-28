@@ -11,13 +11,8 @@
   <% DefaceEditor::Theme.active.each do |theme| %>
     <% theme.stylesheets.each do |stylesheet| %>
       <style id="<%= stylesheet.name %>">
-        <%= stylesheet.css %>
+        <%#= stylesheet.css %>
       </style>
-    <% end %>
-    <% theme.javascripts.each do |javascript| %>
-      <script type="text/javascript" id="<%= javascript.id %>">
-        <%= javascript.js %>
-      </script>
     <% end %>
   <% end %>
 <% end %>

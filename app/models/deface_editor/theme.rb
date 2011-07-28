@@ -16,11 +16,41 @@ class DefaceEditor::Theme < ActiveRecord::Base
   scope :active, where(:active => true)
 
   before_validation :set_guid
+  before_save :check_name_change
+  after_create :reset_asset_paths
 
   acts_as_list
 
-  def asset_path
-    Rails.root.join("app", "theme_assets", self.guid)
+  def sprockets_dump_root
+    return @theme_dump_root if @theme_dump_root.present?
+
+    dump_root = Rails.root.join "tmp/deface"
+    Dir.mkdir(dump_root) unless File.exist?(dump_root)
+
+    @theme_dump_root = dump_root.join(self.name.parameterize.underscore)
+    Dir.mkdir(@theme_dump_root) unless File.exist?(@theme_dump_root)
+
+    @theme_dump_root
+  end
+
+  def sprockets_dump_asset_directories
+    return @sprockets_dump_asset_directories if @sprockets_dump_asset_directories.present?
+
+    @sprockets_dump_asset_directories = []
+
+    %w{stylesheets javascripts images}.each do |directory|
+      Dir.mkdir(sprockets_dump_root.join(directory)) unless File.exist?(sprockets_dump_root.join(directory))
+      @sprockets_dump_asset_directories << sprockets_dump_root.join(directory)
+    end
+
+    @sprockets_dump_asset_directories
+  end
+
+
+  def sprockets_dump
+    self.stylesheets.each {|s| s.sprockets_dump(sprockets_dump_root) }
+    self.javascripts.each {|j| j.sprockets_dump(sprockets_dump_root) }
+    self.graphics.each {|g| g.sprockets_dump(sprockets_dump_root) }
   end
 
   def export
@@ -94,6 +124,36 @@ class DefaceEditor::Theme < ActiveRecord::Base
   private
     def set_guid
       self.guid ||= Guid.new.to_s
+    end
+
+    def check_name_change
+      return if self.new_record?
+
+      if self.changed.include? "name"
+        #don't remove old version (it won't be included in asset paths anyway).
+        self.sprockets_dump
+
+        Rails.application.assets.send(:trail).paths.map! do |path|
+          path.gsub File.join("tmp/deface", self.changes["name"].first, "/"), File.join("tmp/deface", self.name, "/")
+        end
+
+        Rails.application.assets.send(:expire_index!)
+      end
+    end
+
+    def reset_asset_paths
+      #remove all tmp/deface asset_paths
+      Rails.application.assets.send(:trail).paths.reject!{ |path| path.include? "tmp/deface/" }
+
+      #add active themes again - in correct sequence
+      self.class.active.each do |theme|
+        theme.sprockets_dump_asset_directories.each do |path|
+          Rails.application.assets.send(:trail).paths.unshift path.to_s
+        end
+      end
+
+      #force sprockets to dump it's cache
+      Rails.application.assets.send(:expire_index!)
     end
 
 end
