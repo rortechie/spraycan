@@ -1,8 +1,0 @@
-require 'deface'
-require 'deface_editor/config'
-require 'deface_editor/railtie'
-require 'deface_editor/templates'
-require 'deface_editor/import'
-require 'deface_editor/export'
-require 'guid' 
-require 'carrierwave'

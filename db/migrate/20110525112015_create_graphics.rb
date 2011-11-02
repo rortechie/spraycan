@@ -1,6 +1,6 @@
 class CreateGraphics < ActiveRecord::Migration
   def self.up
-    create_table :graphics do |t|
+    create_table :spraycan_graphics do |t|
       t.string :file
       t.references :theme
       t.timestamps
@@ -8,6 +8,6 @@ class CreateGraphics < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :graphics
+    drop_table :spraycan_graphics
   end
 end

@@ -1,7 +1,0 @@
-<% if Rails.env.production? %>
-  <% DefaceEditor::Theme.active.each do |theme| %>
-    <% theme.stylesheets.each do |stylesheet| %>
-      <%= stylesheet.css %>
-    <% end %>
-  <% end %>
-<% end %>

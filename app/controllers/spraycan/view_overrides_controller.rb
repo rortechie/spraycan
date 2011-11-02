@@ -1,0 +1,59 @@
+class Spraycan::ViewOverridesController < Spraycan::BaseController
+  layout 'spraycan/editor'
+
+  before_filter :set_theme, :only => [:index, :create]
+  before_filter :set_replacement, :only => [:create, :update]
+  after_filter :clear_resolver_cache, :only => [:create, :update, :destroy]
+
+  respond_to :json
+
+  def spraycan
+    #editor boot method
+    if Spraycan::Theme.active.empty?
+      if Spraycan::Theme.all.empty?
+        Spraycan::Theme.create(:name => "Site Theme", :active => true)
+      else
+        Spraycan::Theme.first.update_attribute(:active, true)
+      end
+    end
+  end
+
+  def index
+    @view_overrides = @theme.view_overrides
+    respond_with @view_overrides
+  end
+
+  def create
+    @view_override = @theme.view_overrides.create params[:view_override]
+
+    respond_with @view_override
+  end
+
+  def update
+    @view_override = Spraycan::ViewOverride.where(:id => params.delete(:id)).first
+    @view_override.update_attributes params[:view_override]
+
+    respond_with @view_override
+  end
+
+  def destroy
+    render :json => Spraycan::ViewOverride.destroy(params[:id])
+  end
+
+  private
+    def set_theme
+      @theme = Spraycan::Theme.find(params[:theme_id])
+    end
+
+    def set_replacement
+      params[:view_override][:replacement] = case params[:view_override][:replace_with].to_sym
+        when :text then params[:view_override].delete(:replace_text)
+        when :partial then params[:view_override].delete(:replace_parital)
+        when :template then params[:view_override].delete(:replace_template)
+      end
+
+      [:replace_text, :replace_partial, :replace_template].each {|replacement| params[:view_override].delete(replacement) }
+    end
+
+
+end

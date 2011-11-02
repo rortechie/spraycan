@@ -1,0 +1,34 @@
+<ul class="buttons small toggle">
+  <li class="first <%= (Spraycan.editor.maximised || Spraycan.editor.visible) ? '' : 'disabled' %>" id="min">
+    <a rel="min" href="#">_</a>
+  </li>
+  <li class="<%= Spraycan.editor.maximised ? '' : 'disabled' %>" id="restore">
+    <a rel="restore" href="#">-</a>
+  </li>
+  <li class="last <%= (!Spraycan.editor.maximised && Spraycan.editor.visible) ? '' : 'disabled' %>" id="max">
+    <a rel="max" href="#">&oline;</a>
+  </li>
+</ul>
+
+<ul class="buttons small toggle">
+  <li class="first"><a rel="zoom-in" href="#">+</a></li>
+  <li class="big"><a rel="toggle" href="#">Toggle</a></li>
+  <li class="last"><a rel="zoom-out" href="#">-</a></li>
+</ul>
+
+<ul class="buttons toggle">
+  <li class="first"><a rel="navigate" href="#">Go</a></li>
+  <li class="last"><a rel="refresh" href="#">Refresh</a></li>
+</ul>
+
+<div id="loadables">
+</div>
+
+<ul id="current" class="buttons toggle">
+  <li id='html' class="first <%= Spraycan.current == 'html' ? 'active' : '' %>"><a rel="html" href="/spraycan#html">HTML</a></li>
+  <li id='css' class="<%= Spraycan.current == 'css' ? 'active' : '' %>"><a rel="css" href="/spraycan#stylesheet/application">CSS</a></li>
+  <li id='js' class="<%= Spraycan.current == 'js' ? 'active' : '' %>"><a rel="js" href="/spraycan#javascript/application">JS</a></li>
+  <li id='files' class="last <%= Spraycan.current == 'files' ? 'active' : '' %>"><a rel="files" href="/spraycan#files">Files</a></li>
+</ul>
+
+<a href="/spraycan#themes" id="theme_name"><%= Spraycan.theme_name %></a>

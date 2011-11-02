@@ -1,17 +1,18 @@
 class CreateStylesheets < ActiveRecord::Migration
   def self.up
-    create_table :stylesheets do |t|
+    create_table :spraycan_stylesheets do |t|
+      t.references :theme
       t.string :name
       t.text :css
       t.timestamps
     end
 
-    Stylesheet.reset_column_information
+    Spraycan::Stylesheet.reset_column_information
 
-    Stylesheet.create(:name => "application", :css => "body {}")
+    Spraycan::Stylesheet.create(:name => "application", :css => "body {}", :theme => Spraycan::Theme.first)
   end
 
   def self.down
-    drop_table :stylesheets
+    drop_table :sspraycan_tylesheets
   end
 end

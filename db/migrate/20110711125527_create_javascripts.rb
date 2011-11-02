@@ -1,14 +1,14 @@
 class CreateJavascripts < ActiveRecord::Migration
   def change
-    create_table :javascripts do |t|
+    create_table :spraycan_javascripts do |t|
       t.string :name
       t.text :js
       t.integer :theme_id
       t.timestamps
     end
 
-    Javascript.reset_column_information
+    Spraycan::Javascript.reset_column_information
 
-    Javascript.create(:name => "application", :js => "", :theme => Theme.active.first)
+    Spraycan::Javascript.create(:name => "application", :js => "", :theme => Spraycan::Theme.active.first)
   end
 end

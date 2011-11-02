@@ -1,20 +1,18 @@
-Rails.application.routes.draw do
-  match "/deface" => "deface_editor/view_overrides#deface"
+Spraycan::Engine.routes.draw do
+  root :to => "view_overrides#spraycan"
 
-  namespace :deface_editor do
-    resources :templates, :only => [:index]
+  resources :templates, :only => [:index]
 
-    resources :themes do
-      member do
-        get :export
-      end
-      collection do
-        post :import
-      end
-      resources :view_overrides, :only => [:index, :create, :update, :destroy]
-      resources :stylesheets
-      resources :javascripts
-      resources :graphics
+  resources :themes do
+    member do
+      get :export
     end
+    collection do
+      post :import
+    end
+    resources :view_overrides, :only => [:index, :create, :update, :destroy]
+    resources :stylesheets
+    resources :javascripts
+    resources :graphics
   end
 end

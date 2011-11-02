@@ -1,6 +1,7 @@
 class CreateViewOverrides < ActiveRecord::Migration
   def self.up
-    create_table :view_overrides do |t|
+    create_table :spraycan_view_overrides do |t|
+      t.references :theme
       t.string :virtual_path
       t.string :name
       t.string :replace_with
@@ -15,6 +16,6 @@ class CreateViewOverrides < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :view_overrides
+    drop_table :spraycan_view_overrides
   end
 end

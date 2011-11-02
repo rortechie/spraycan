@@ -1,0 +1,145 @@
+var Spraycan = {
+  Views: {Shared: {}, Themes: {}, ViewOverrides: {}, Stylesheets: {}, Javascripts: {}, Graphics: {} },
+  Routers: {},
+  Collections: {},
+
+  templates: [],
+
+  view: null,
+
+  current: 'html',
+
+  previous: { html: null, css: null, js: null, files: null },
+
+  theme_id: <%= Spraycan::Theme.active.first.id %>,
+
+  theme_name: '<%= Spraycan::Theme.active.first.name %>',
+
+  editor: {minimised: true, maximised: false, visible: false },
+
+  activity: 0,
+
+  init: function() {
+    view_overrides_controller = new Spraycan.Routers.ViewOverrides();
+    view_overrides_controller.load();
+
+    new Spraycan.Routers.Common();
+    new Spraycan.Routers.Themes();
+    new Spraycan.Routers.Templates();
+    new Spraycan.Routers.Stylesheets();
+    new Spraycan.Routers.Javascripts();
+    new Spraycan.Routers.Graphics();
+
+    Backbone.history.start();
+
+    Spraycan.increment_activity("Loading site") //for iframe load
+
+    //render toolbar
+    new Spraycan.Views.Shared.Toolbar();
+  },
+
+  increment_activity: function(message){
+    Spraycan.activity += 1;
+    $('img#busy').css("visibility", "visible");
+    $('span#activity_message').text(message + "...");
+    $('span#activity_message').css("visibility", "visible");
+  },
+
+  decrement_activity: function(){
+    Spraycan.activity -= 1;
+
+    if(Spraycan.activity<=0){
+      $('img#busy').css("visibility", "hidden");
+      $('span#activity_message').css("visibility", "hidden");
+      Spraycan.activity = 0;
+    }
+  },
+
+  animate_resize: function(){
+    var pre_height = $("div#spraycan").height();
+
+    var height = 50;
+    if(Spraycan.view!=null){
+      height += Spraycan.view.calculate_size();
+    }
+
+    if(Spraycan.editor.visible){
+      if(Spraycan.editor.minimised){
+        $('#nav li#min').addClass('disabled');
+        $('#nav li#restore').removeClass('disabled');
+        $('#nav li#max').removeClass('disabled');
+      }else if(Spraycan.editor.maximised){
+        $('#nav li#min').removeClass('disabled');
+        $('#nav li#restore').removeClass('disabled');
+        $('#nav li#max').addClass('disabled');
+      }else{ //restore
+        $('#nav li#min').removeClass('disabled');
+        $('#nav li#restore').addClass('disabled');
+        $('#nav li#max').removeClass('disabled');
+      }
+    }else{
+      $('#nav li#min').addClass('disabled');
+      $('#nav li#restore').addClass('disabled');
+      $('#nav li#max').addClass('disabled');
+    }
+
+    var t = Math.abs((pre_height - height) * 5);
+    if(t<400){
+      t = 400;
+    }else if(t>1500){
+      t = 1500;
+    }
+
+    $("div#spraycan").animate({height: height + 'px'}, t);
+  },
+
+  set_current: function(value){
+    Spraycan.previous[Spraycan.current] = Spraycan.view;
+    Spraycan.view = null;
+    Spraycan.current = value;
+
+    $("div#nav ul#current li").removeClass("active");
+    $("div#nav ul#current li#" + value).addClass("active");
+
+    if(Spraycan.previous[value]!=undefined){
+      Spraycan.view = Spraycan.previous[value];
+      Spraycan.view.render();
+      Spraycan.view.delegateEvents();
+
+      return true;
+    }else{
+      $("#loadables").css("visibility", "hidden");
+      $('#main').html('');
+
+      return false;
+    }
+  },
+
+  reset_editor: function(){
+    Spraycan.editor = {minimised: true, maximised: false, visible: false };
+    Spraycan.animate_resize();
+
+    Spraycan.previous[Spraycan.current] = null;
+    Spraycan.view = null;
+  },
+
+  reload_frame: function(){
+    window.frames[0].location.reload();
+  },
+
+  handle_save_error: function(model, errors){
+    Spraycan.decrement_activity();
+
+    _.each(errors, function(message, field){
+      $("[name='" + field + "']").addClass('error');
+      $("[name='" + field + "']").after("<span title='" + message + "' class='error_icon'>E<span>")
+    });
+  },
+
+  clear_errors: function(){
+    $(".error").removeClass("error");
+    $(".error_icon").remove();
+  }
+};
+
+

@@ -1,0 +1,8 @@
+require 'deface'
+require 'spraycan/config'
+require 'spraycan/railtie'
+require 'spraycan/templates'
+require 'spraycan/import'
+require 'spraycan/export'
+require 'guid' 
+require 'carrierwave'
