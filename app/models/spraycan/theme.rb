@@ -142,18 +142,20 @@ class Spraycan::Theme < ActiveRecord::Base
     end
 
     def reset_asset_paths
+      paths = Rails.application.assets.paths
+
       #remove all tmp/spraycan asset_paths
-      Rails.application.assets.send(:trail).paths.reject!{ |path| path.include? "tmp/spraycan/" }
+      paths.reject!{ |path| path.include? "tmp/spraycan/" }
 
       #add active themes again - in correct sequence
       self.class.active.each do |theme|
         theme.sprockets_dump_asset_directories.each do |path|
-          Rails.application.assets.send(:trail).paths.unshift path.to_s
+          paths.unshift path.to_s
         end
       end
 
       #force sprockets to dump it's cache
-      Rails.application.assets.send(:expire_index!)
+      Rails.application.config.assets.version = Time.now.to_i
     end
 
 end
