@@ -188,16 +188,27 @@ Spraycan.Views.ViewOverrides.Edit = Backbone.View.extend({
 
     if(this.model.get('hook')!=undefined){
       hook_name = this.model.get('hook');
+      var template;
+      var hook;
 
-      var template = _.detect(Spraycan.templates.models, function(t) {
-        return _.include(_.pluck(t.get('hooks'), 'name'), hook_name)
+      _.each(window.frames[0].all_templates, function(t) {
+        template = t;
+        hooks = window.frames[0].hooks_by_template[t];
+
+        if(hooks!=undefined){
+          if(_.include(_.pluck(hooks,0), hook_name)){
+            hook = _.detect(hooks, function(hook){
+              return hook[0] == hook_name;
+            })
+
+            if(hook!=undefined){
+              return _.breaker;
+            }
+          }
+        }
       } );
 
-      var hook = _.detect(template.get('hooks'), function(h){
-        return h.name == hook_name;
-      });
-
-      this.model.set( {virtual_path: template.get('name'), replacement: hook.source } );
+      this.model.set( {virtual_path: template, replacement: Base64.decode(hook[1]) } );
 
       //todo finish this unset to remove hook attr
       this.model.unset('hook')

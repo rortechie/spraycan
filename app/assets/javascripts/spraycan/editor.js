@@ -5,6 +5,7 @@
 //= require spraycan/jquery.qtip
 //= require spraycan/underscore-min
 //= require spraycan/backbone
+//= require spraycan/base64
 //= require spraycan/models/theme
 //= require spraycan/models/view_override
 //= require spraycan/models/template

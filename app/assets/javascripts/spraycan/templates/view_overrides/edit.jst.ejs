@@ -31,8 +31,8 @@
     <div class="fields advanced">
       <label>Virtual Path:</label>
       <select name="virtual_path">
-        <% _.each(Spraycan.templates.models, function(template) { %>
-          <option <%= template.attributes.name==view_override.virtual_path ? 'selected' : '' %>><%= template.attributes.name %></option>
+        <% _.each(window.frames[0].all_templates, function(template) { %>
+          <option <%= template==view_override.virtual_path ? 'selected' : '' %>><%= template %></option>
         <% }); %>
       </select>
     </div>

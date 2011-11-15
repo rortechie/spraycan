@@ -23,10 +23,10 @@ module Spraycan
 
     def self.activate
 
-      if Spraycan::Config.enable_editor
+      if Rails.application.config.spraycan.enable_editor
 
         #define overrides needed for theming UI
-        Spraycan::Config.editor_virtual_paths.each do |layout|
+        Rails.application.config.spraycan.editor_virtual_paths.each do |layout|
           Deface::Override.new(:virtual_path => layout,
                           :name => "_spraycan_ui",
                           :insert_bottom => "head",
@@ -34,15 +34,15 @@ module Spraycan
 
         end
 
-        # #catch all template renders for use in dropdown
-        ActiveSupport::Notifications.subscribe(/render/) do |*args|
-          Spraycan::Templates.add_template(args[3], args[4])
-        end
+        # # #catch all template renders for use in dropdown
+        # ActiveSupport::Notifications.subscribe(/render/) do |*args|
+        #   Spraycan::Templates.add_template(args[3], args[4])
+        # end
 
-        #catch all controller action processing
-        ActiveSupport::Notifications.subscribe(/start_processing.action_controller/) do |*args|
-          Spraycan::Templates.add_action(args[3], args[4])
-        end
+        # #catch all controller action processing
+        # ActiveSupport::Notifications.subscribe(/start_processing.action_controller/) do |*args|
+        #   Spraycan::Templates.add_action(args[3], args[4])
+        # end
 
       end
 
@@ -50,7 +50,7 @@ module Spraycan
     end
 
     def self.initialize_themes
-      if Spraycan::Config.enable_overrides
+      if Rails.application.config.deface.enabled
         #clear all WIP overrides, they get reloaded below
         Deface::Override.all.each do |virtual_path, overrides|
           overrides.reject! {|name, override| override.args[:from_editor] }
@@ -67,6 +67,14 @@ module Spraycan
     end
 
     config.to_prepare &method(:activate).to_proc
+
+    # sets up spraycan environment 
+    #
+    initializer "spraycan.environment", :after => :load_environment_config do |app|
+      #setup real env object
+      app.config.spraycan = Spraycan::Environment.new
+    end
+
   end
 end
 

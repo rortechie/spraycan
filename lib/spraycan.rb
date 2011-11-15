@@ -1,5 +1,6 @@
 require 'deface'
-require 'spraycan/config'
+require 'spraycan/environment'
+require 'spraycan/action_view_extension'
 require 'spraycan/railtie'
 require 'spraycan/templates'
 require 'spraycan/import'
