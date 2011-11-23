@@ -1,5 +1,6 @@
 html {
   height: 100%;
+  overflow: hidden;
 }
 
 body {
@@ -7,7 +8,6 @@ body {
   margin: 0;
   height: 100%;
   overflow: hidden;
-  font: 12px Verdana, sans-serif;
 }
 iframe{
   width: 100%;
@@ -16,319 +16,351 @@ iframe{
 }
 
 div#spraycan{
-  color:#fff;
-  background-color:#111;
-  float:left;
-  opacity:0.96;
-  filter:alpha(opacity=96);
-  -moz-opacity:0.96;
-  bottom: 0;
-  height: 50px;
+  /* background-color:#111;*/
+  background-color: #FEFBF3;
+  /* opacity:0.96;*/
+  /* filter:alpha(opacity=96);*/
+  /* -moz-opacity:0.96;*/
+  bottom: -10px;
+  height: 350px;
   position: absolute;
   width: 100%;
   z-index: 500;
 }
-
-div#spraycan #top_bar{
-  border-top: 1px solid #fff;
-  border-bottom: 1px solid #fff;
-  padding: 8px 8px 6px 8px;
+div#spraycan .topbar{
+  top: auto;
 }
-
-div#spraycan h1{
-  float: left;
-  font-size: 1.4em;
-  margin: 7px 4px;
-}
-
-div#spraycan img#busy{
-  margin: 10px;
-  visibility: hidden;
-  float: left;
-}
-div#spraycan span#activity_message{
-  visibility: hidden;
-  margin: 10px -3px;
-  float: left;
-}
-
-div#spraycan .buttons{
-  margin: 0px;
-  float: right;
-}
-
-div#spraycan .buttons li{
-  float: left;
-  margin-top: 0px;
-}
-
-
-div#spraycan .buttons li.last{
-  border-right: 1px solid #999999;
-}
-
-div#spraycan .buttons li{
-  border-left: 1px solid #999999;
-  border-top: 1px solid #999999;
-  border-bottom: 1px solid #999999;
-  font-weight: bold;
-  list-style: none outside none;
-  padding: 4px 0;
-  text-align: center;
-  width: 70px;
-  background-color: #222;
-  margin-top: 5px;
-}
-
-div#spraycan .buttons li a{
-  display: block;
-}
-div#spraycan #nav #theme_name{
-  margin: 8px 0px 0px 0px;
-  float: right;
-  font-weight: bold;
-  display: block;
-  text-decoration: underline;
-  font-size: 120%;
-}
-
-div#spraycan #nav #loadables{
-  float: right;
-  margin: 10px -25px 0 10px;
-  width: 180px;
-  visibility: hidden;
-}
-
-div#spraycan #nav #loadables select{
-  width: 140px;
-}
-
-div#spraycan #nav #loadables button{
-  vertical-align: top;
-}
-
-div#spraycan #nav .toggle li{
-  width: 60px;
-}
-div#spraycan #nav .toggle .active{
-  background-color: #ccc;
-}
-
-div#spraycan #nav .toggle .active a{
-  color: #000;
-}
-
-div#spraycan #nav .toggle .first{
-  -webkit-border-radius: 15px 0px 0px 15px;
-  -moz-border-radius: 15px 0px 0px 15px;
-}
-
-div#spraycan #nav .toggle .last{
-  -webkit-border-radius: 0px 15px 15px 0px;
-  -moz-border-radius: 0px 15px 15px 0px;
-}
-
-div#spraycan #nav .toggle .first_last{
-  -webkit-border-radius: 15px;
-  -moz-border-radius: 15px;
-}
-
-div#spraycan .buttons li.big {
-  width: 70px!important;
-}
-
-div#spraycan #nav .small li{
-  width: 30px;
-}
-
-div#spraycan .disabled a{
-  color: #333;
-  cursor: not-allowed;
-}
-
-div#spraycan a{
-  color: #fff;
-  text-decoration: none;
-}
-
 div#spraycan #main{
-  margin-top: 8px;
-  clear: both;
-  padding: 0 14px;
+  margin-top: 35px;
 }
-div#spraycan .scroller{
-  height: 260px;
-  overflow-x: auto;
-  border: 1px solid #ffffff;
-}
-div#spraycan .file_list{
-  border: 1px solid #fff;
-  padding: 5px;
-  width: 75%;
-  margin-right: 20px;
-  float: left;
-}
-div#spraycan .file_list ul{
-  margin: 0px;
-  padding: 0px;
-}
-div#spraycan .file_list ul li{
-  list-style: none;
-  float: left;
-  width: 33%;
-}
-div#spraycan #edit_wrapper {
-  min-width: 20%;
-}
-div#spraycan #edit_wrapper h3{
-  margin: 0 0 10px 0;
-}
-div#spraycan #edit_wrapper .fields {
-   float: none;
-   width: auto;
-   height: 30px;
-   margin-right: 0px; 
-}
-div#spraycan #edit_wrapper .fields label{
-  width: 60px;
-}
-div#spraycan #edit_wrapper .fields span{
-  vertical-align: super;
-}
-div#spraycan #edit_wrapper .fields input{
-  height: auto;
-}
-div#spraycan #edit_wrapper #actions {
-  clear: none;
-}
-div#spraycan #graphic_preview  {
-  margin-top: 5px;
-  text-align: center;
-}
-div#spraycan #graphic_preview img {
-  background-color: #FFFFFF;
-  border: 1px solid #FFFFFF;
-  max-width: 200px;
-  max-height: 150px;
-  padding: 4px;
-}
-div#spraycan #graphic_details{
-  height: 250px;
-}
-div#spraycan #graphic_details form{
-  float: right;
-  margin-right: 111px;
-  text-align: left;
-  width: 110px;
-}
-div#spraycan #graphics_list a{
-  text-decoration: underline
-}
-
-div#spraycan #themes_list{
-  padding: 5px;
-  width: 75%;
-  margin-right: 20px;
-  float: left;
-}
-div#spraycan #themes_list th{
-  padding: 2px;
-  text-align: left;
-  background-color: #ffffff;
-  color: #000000;
-}
-div#spraycan #themes_list table{
-  width: 100%
-}
-div#spraycan #themes_list table tr.ui-sortable-helper{
-  display: inline-table;
-}
-div#spraycan #themes_list table td{
-  padding: 2px;
-}
-div#spraycan #themes_list table td.handle{
-  font-weight: bold;
-  text-align: center;
-  cursor: move;
-}
-div#spraycan #themes_list a{
-  text-decoration: underline;
-}
-div#spraycan #theme_details{
-   height: 250px;
-}
-
-
-div#spraycan .form{
-  display: none;
-  padding: 0px 12px;
-}
-
-div#spraycan .fields{
-  float: left;
-  margin-right: 20px;
-  height: 30px;
-  width: 330px;
-}
-
-
-div#spraycan .fields label{
-  font-weight: bold;
-  display: inline-block;
-  margin: 2px 0px;
-  width: 100px;
-}
-
-div#spraycan .fields label.error{
-  font-weight: normal;
-  color: red;
-  margin: 2px 0px 2px -16px;
-}
-
-div#spraycan .fields input{
-  height: 12px;
-  width: 180px;
-}
-
-div#spraycan .fields input[type='checkbox']{
-  width: 20px;
-}
-
-div#spraycan .fields select{
-  padding: 2px;
-  width: 180px;
-}
-
-div#spraycan .fields label,input,select,button{
-  vertical-align: super;
-}
-
-div#spraycan .fields input.error{
-  border :1px solid red;
-}
-
-div#spraycan .fields select.error{
-  border :1px solid red;
-}
-
-div#spraycan .fields span.error_icon{
-  color: red;
-  vertical-align: super;
-  font-weight: bold;
-  margin-left: 4px;
-}
-
 div#spraycan .advanced{
   display: none;
 }
-
-div#spraycan #actions{
-  clear: both;
+div#spraycan #busy{
+  height: 16px;
+  width: 16px;
+  margin: 12px 0px;
 }
 
-div#spraycan .clear, .replacement{
-  clear: both;
+.align-right{
+  text-align: right;
 }
+input{
+  height: 27px;
+  line-height: 27px;
+}
+
+/* Bootstrap Overrides*/
+.form-stacked {
+  padding-right: 20px;
+}
+.form-stacked .actions {
+  margin-right: -20px;
+}
+.actions {
+  margin-top: 0px;
+}
+
+/* div#spraycan #top_bar{*/
+/*   border-top: 1px solid #fff;*/
+/*   border-bottom: 1px solid #fff;*/
+/*   padding: 8px 8px 6px 8px;*/
+/* }*/
+
+/* div#spraycan h1{*/
+/*   float: left;*/
+/*   font-size: 1.4em;*/
+/*   margin: 7px 4px;*/
+/* }*/
+
+/* div#spraycan img#busy{*/
+/*   margin: 10px;*/
+/*   visibility: hidden;*/
+/*   float: left;*/
+/* }*/
+/* div#spraycan span#activity_message{*/
+/*   visibility: hidden;*/
+/*   margin: 10px -3px;*/
+/*   float: left;*/
+/* }*/
+
+/* div#spraycan .buttons{*/
+/*   margin: 0px;*/
+/*   float: right;*/
+/* }*/
+
+/* div#spraycan .buttons li{*/
+/*   float: left;*/
+/*   margin-top: 0px;*/
+/* }*/
+
+
+/* div#spraycan .buttons li.last{*/
+/*   border-right: 1px solid #999999;*/
+/* }*/
+
+/* div#spraycan .buttons li{*/
+/*   border-left: 1px solid #999999;*/
+/*   border-top: 1px solid #999999;*/
+/*   border-bottom: 1px solid #999999;*/
+/*   font-weight: bold;*/
+/*   list-style: none outside none;*/
+/*   padding: 4px 0;*/
+/*   text-align: center;*/
+/*   width: 70px;*/
+/*   background-color: #222;*/
+/*   margin-top: 5px;*/
+/* }*/
+
+/* div#spraycan .buttons li a{*/
+/*   display: block;*/
+/* }*/
+/* div#spraycan #nav #theme_name{*/
+/*   margin: 8px 0px 0px 0px;*/
+/*   float: right;*/
+/*   font-weight: bold;*/
+/*   display: block;*/
+/*   text-decoration: underline;*/
+/*   font-size: 120%;*/
+/* }*/
+
+/* div#spraycan #nav #loadables{*/
+/*   float: right;*/
+/*   margin: 10px -25px 0 10px;*/
+/*   width: 180px;*/
+/*   visibility: hidden;*/
+/* }*/
+
+/* div#spraycan #nav #loadables select{*/
+/*   width: 140px;*/
+/* }*/
+
+/* div#spraycan #nav #loadables button{*/
+/*   vertical-align: top;*/
+/* }*/
+
+/* div#spraycan #nav .toggle li{*/
+/*   width: 60px;*/
+/* }*/
+/* div#spraycan #nav .toggle .active{*/
+/*   background-color: #ccc;*/
+/* }*/
+
+/* div#spraycan #nav .toggle .active a{*/
+/*   color: #000;*/
+/* }*/
+
+/* div#spraycan #nav .toggle .first{*/
+/*   -webkit-border-radius: 15px 0px 0px 15px;*/
+/*   -moz-border-radius: 15px 0px 0px 15px;*/
+/* }*/
+
+/* div#spraycan #nav .toggle .last{*/
+/*   -webkit-border-radius: 0px 15px 15px 0px;*/
+/*   -moz-border-radius: 0px 15px 15px 0px;*/
+/* }*/
+
+/* div#spraycan #nav .toggle .first_last{*/
+/*   -webkit-border-radius: 15px;*/
+/*   -moz-border-radius: 15px;*/
+/* }*/
+
+/* div#spraycan .buttons li.big {*/
+/*   width: 70px!important;*/
+/* }*/
+
+/* div#spraycan #nav .small li{*/
+/*   width: 30px;*/
+/* }*/
+
+/* div#spraycan .disabled a{*/
+/*   color: #333;*/
+/*   cursor: not-allowed;*/
+/* }*/
+
+/* div#spraycan a{*/
+/*   color: #fff;*/
+/*   text-decoration: none;*/
+/* }*/
+
+/* div#spraycan #main{*/
+/*   margin-top: 8px;*/
+/*   clear: both;*/
+/*   padding: 0 14px;*/
+/* }*/
+/* div#spraycan .scroller{*/
+/*   height: 260px;*/
+/*   overflow-x: auto;*/
+/*   border: 1px solid #ffffff;*/
+/* }*/
+/* div#spraycan .file_list{*/
+/*   border: 1px solid #fff;*/
+/*   padding: 5px;*/
+/*   width: 75%;*/
+/*   margin-right: 20px;*/
+/*   float: left;*/
+/* }*/
+/* div#spraycan .file_list ul{*/
+/*   margin: 0px;*/
+/*   padding: 0px;*/
+/* }*/
+/* div#spraycan .file_list ul li{*/
+/*   list-style: none;*/
+/*   float: left;*/
+/*   width: 33%;*/
+/* }*/
+/* div#spraycan #edit_wrapper {*/
+/*   min-width: 20%;*/
+/* }*/
+/* div#spraycan #edit_wrapper h3{*/
+/*   margin: 0 0 10px 0;*/
+/* }*/
+/* div#spraycan #edit_wrapper .fields {*/
+/*    float: none;*/
+/*    width: auto;*/
+/*    height: 30px;*/
+/*    margin-right: 0px; */
+/* }*/
+/* div#spraycan #edit_wrapper .fields label{*/
+/*   width: 60px;*/
+/* }*/
+/* div#spraycan #edit_wrapper .fields span{*/
+/*   vertical-align: super;*/
+/* }*/
+/* div#spraycan #edit_wrapper .fields input{*/
+/*   height: auto;*/
+/* }*/
+/* div#spraycan #edit_wrapper #actions {*/
+/*   clear: none;*/
+/* }*/
+/* div#spraycan #graphic_preview  {*/
+/*   margin-top: 5px;*/
+/*   text-align: center;*/
+/* }*/
+/* div#spraycan #graphic_preview img {*/
+/*   background-color: #FFFFFF;*/
+/*   border: 1px solid #FFFFFF;*/
+/*   max-width: 200px;*/
+/*   max-height: 150px;*/
+/*   padding: 4px;*/
+/* }*/
+/* div#spraycan #graphic_details{*/
+/*   height: 250px;*/
+/* }*/
+/* div#spraycan #graphic_details form{*/
+/*   float: right;*/
+/*   margin-right: 111px;*/
+/*   text-align: left;*/
+/*   width: 110px;*/
+/* }*/
+/* div#spraycan #graphics_list a{*/
+/*   text-decoration: underline*/
+/* }*/
+
+/* div#spraycan #themes_list{*/
+/*   padding: 5px;*/
+/*   width: 75%;*/
+/*   margin-right: 20px;*/
+/*   float: left;*/
+/* }*/
+/* div#spraycan #themes_list th{*/
+/*   padding: 2px;*/
+/*   text-align: left;*/
+/*   background-color: #ffffff;*/
+/*   color: #000000;*/
+/* }*/
+/* div#spraycan #themes_list table{*/
+/*   width: 100%*/
+/* }*/
+/* div#spraycan #themes_list table tr.ui-sortable-helper{*/
+/*   display: inline-table;*/
+/* }*/
+/* div#spraycan #themes_list table td{*/
+/*   padding: 2px;*/
+/* }*/
+/* div#spraycan #themes_list table td.handle{*/
+/*   font-weight: bold;*/
+/*   text-align: center;*/
+/*   cursor: move;*/
+/* }*/
+/* div#spraycan #themes_list a{*/
+/*   text-decoration: underline;*/
+/* }*/
+/* div#spraycan #theme_details{*/
+/*    height: 250px;*/
+/* }*/
+
+
+/* div#spraycan .form{*/
+/*   display: none;*/
+/*   padding: 0px 12px;*/
+/* }*/
+
+/* div#spraycan .fields{*/
+/*   float: left;*/
+/*   margin-right: 20px;*/
+/*   height: 30px;*/
+/*   width: 330px;*/
+/* }*/
+
+
+/* div#spraycan .fields label{*/
+/*   font-weight: bold;*/
+/*   display: inline-block;*/
+/*   margin: 2px 0px;*/
+/*   width: 100px;*/
+/* }*/
+
+/* div#spraycan .fields label.error{*/
+/*   font-weight: normal;*/
+/*   color: red;*/
+/*   margin: 2px 0px 2px -16px;*/
+/* }*/
+
+/* div#spraycan .fields input{*/
+/*   height: 12px;*/
+/*   width: 180px;*/
+/* }*/
+
+/* div#spraycan .fields input[type='checkbox']{*/
+/*   width: 20px;*/
+/* }*/
+
+/* div#spraycan .fields select{*/
+/*   padding: 2px;*/
+/*   width: 180px;*/
+/* }*/
+
+/* div#spraycan .fields label,input,select,button{*/
+/*   vertical-align: super;*/
+/* }*/
+
+/* div#spraycan .fields input.error{*/
+/*   border :1px solid red;*/
+/* }*/
+
+/* div#spraycan .fields select.error{*/
+/*   border :1px solid red;*/
+/* }*/
+
+/* div#spraycan .fields span.error_icon{*/
+/*   color: red;*/
+/*   vertical-align: super;*/
+/*   font-weight: bold;*/
+/*   margin-left: 4px;*/
+/* }*/
+
+/* div#spraycan .advanced{*/
+/*   display: none;*/
+/* }*/
+
+/* div#spraycan #actions{*/
+/*   clear: both;*/
+/* }*/
+
+/* div#spraycan .clear, .replacement{*/
+/*   clear: both;*/
+/* }*/
 
 .ace_editor .ace_print_margin_layer {
   width: auto;
@@ -341,11 +373,12 @@ div#spraycan .clear, .replacement{
   border: 1px solid #fff;
   background-color: #fff;
   clear: both;
+  padding: 0px;
 }
 
-.confirm_links {
-  text-align: center;
-}
-.confirm_links a:visited {
-  color: blue;
-}
+/* .confirm_links {*/
+/*   text-align: center;*/
+/* }*/
+/* .confirm_links a:visited {*/
+/*   color: blue;*/
+/* }*/

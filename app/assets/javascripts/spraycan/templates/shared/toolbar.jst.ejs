@@ -1,34 +1,76 @@
-<ul class="buttons small toggle">
-  <li class="first <%= (Spraycan.editor.maximised || Spraycan.editor.visible) ? '' : 'disabled' %>" id="min">
-    <a rel="min" href="#">_</a>
+<h3>
+  <a href="#">Spraycan</a>
+</h3>
+<ul class="nav">
+  <li id='html' class="dropdown<%= Spraycan.current == 'view_overrides' ? ' active' : '' %>" data-dropdown="dropdown">
+    <a rel="html" href="#" class="dropdown-toggle">HTML</a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="/spraycan#view_override?new=new_override">New View Override</a>
+      </li>
+      <li>
+        <a href="/spraycan#view_override?all">Load View Overrides</a>
+      </li>
+      <% if(_.size(Spraycan.current_collections.view_overrides) > 0){ %>
+        <li class="divider"></li>
+      <% } %>
+      <% _.each(Spraycan.current_collections.view_overrides.reverse(), function(model) { %> 
+        <li>
+          <a href="/spraycan#view_override/<%= model.cid %>">
+            <%= model.get('name') %><% if(model.id==undefined){ %> *<% } %>
+          </a>
+        </li>
+      <% }); %>
+    </ul>
   </li>
-  <li class="<%= Spraycan.editor.maximised ? '' : 'disabled' %>" id="restore">
-    <a rel="restore" href="#">-</a>
+
+  <li id='css' class="dropdown<%= Spraycan.current == 'stylesheets' ? ' active' : '' %>" data-dropdown="dropdown">
+    <a rel="css" href="#" class="dropdown-toggle">CSS</a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="/spraycan#stylesheet?new">New Stylesheet</a>
+      </li>
+      <li>
+        <a href="/spraycan#stylesheet?all">Load Stylesheet</a>
+      </li>
+      <% if(_.size(Spraycan.current_collections.stylesheets) > 0){ %>
+        <li class="divider"></li>
+      <% } %>
+      <% _.each(Spraycan.current_collections.stylesheets.reverse(), function(model) { %> 
+        <li>
+          <a href="/spraycan#stylesheet/<%= model.cid %>">
+            <%= model.get('name') %><% if(model.id==undefined){ %> *<% } %>
+          </a>
+        </li>
+      <% }); %>
+    </ul>
+
   </li>
-  <li class="last <%= (!Spraycan.editor.maximised && Spraycan.editor.visible) ? '' : 'disabled' %>" id="max">
-    <a rel="max" href="#">&oline;</a>
+
+  <li id='js' class="dropdown<%= Spraycan.current == 'javascripts' ? ' active' : '' %>" data-dropdown="dropdown">
+    <a rel="js" href="#" class="dropdown-toggle">JS</a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="/spraycan#javascript?new">New Javascript</a>
+      </li>
+      <li>
+        <a href="/spraycan#javascript?all">Load Javascript</a>
+      </li>
+      <% if(_.size(Spraycan.current_collections.javascripts) > 0){ %>
+        <li class="divider"></li>
+      <% } %>
+      <% _.each(Spraycan.current_collections.javascripts.reverse(), function(model) { %> 
+        <li>
+          <a href="/spraycan#javascript/<%= model.cid %>">
+            <%= model.get('name') %><% if(model.id==undefined){ %> *<% } %>
+          </a>
+        </li>
+      <% }); %>
+    </ul>
   </li>
+  <li id='files' class="<%= Spraycan.current == 'files' ? 'active' : '' %>"><a rel="files" href="/spraycan#files">Files</a></li>
 </ul>
 
-<ul class="buttons small toggle">
-  <li class="first"><a rel="zoom-in" href="#">+</a></li>
-  <li class="big"><a rel="toggle" href="#">Toggle</a></li>
-  <li class="last"><a rel="zoom-out" href="#">-</a></li>
-</ul>
-
-<ul class="buttons toggle">
-  <li class="first"><a rel="navigate" href="#">Go</a></li>
-  <li class="last"><a rel="refresh" href="#">Refresh</a></li>
-</ul>
-
-<div id="loadables">
+<div class="pull-right">
+  <img src="/assets/spraycan/busy.gif" id="busy"/>
 </div>
-
-<ul id="current" class="buttons toggle">
-  <li id='html' class="first <%= Spraycan.current == 'html' ? 'active' : '' %>"><a rel="html" href="/spraycan#html">HTML</a></li>
-  <li id='css' class="<%= Spraycan.current == 'css' ? 'active' : '' %>"><a rel="css" href="/spraycan#stylesheet/application">CSS</a></li>
-  <li id='js' class="<%= Spraycan.current == 'js' ? 'active' : '' %>"><a rel="js" href="/spraycan#javascript/application">JS</a></li>
-  <li id='files' class="last <%= Spraycan.current == 'files' ? 'active' : '' %>"><a rel="files" href="/spraycan#files">Files</a></li>
-</ul>
-
-<a href="/spraycan#themes" id="theme_name"><%= Spraycan.theme_name %></a>

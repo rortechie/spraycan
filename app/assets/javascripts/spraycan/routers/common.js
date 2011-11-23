@@ -1,10 +1,11 @@
 Spraycan.Routers.Common = Backbone.Router.extend({
   routes: {
-    "hide_qtips": "hide_qtips"
+    "cancel_dialog": "cancel_dialog"
   },
 
-  hide_qtips: function(id) {
-    $('.qtip.ui-tooltip').qtip('hide');
+  cancel_dialog: function() {
+    window.location.href ="#";
+    $('.modal.in').modal('hide');
   }
 
 });

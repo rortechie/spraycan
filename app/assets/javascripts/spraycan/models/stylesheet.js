@@ -2,6 +2,7 @@ var Stylesheet = Backbone.Model.extend({
   toJSON: function() {
     var object = new Object;
     object['stylesheet'] = _.clone(this.attributes);
+    object['cid'] = this.cid;
     return object;
   },
 

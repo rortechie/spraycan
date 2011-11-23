@@ -47,7 +47,7 @@ Spraycan.Views.Shared.Toolbar = Backbone.View.extend({
     var compiled = JST["spraycan/templates/shared/toolbar"];
 
     $(this.el).html(compiled({ collection : Spraycan.view_overrides }));
-    $('#nav').html(this.el);
+    $('#toolbar').html(this.el);
 
     $('iframe').height($(window).height() - 50);
   },

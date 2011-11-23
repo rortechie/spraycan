@@ -15,11 +15,7 @@ Spraycan.Routers.Themes = Backbone.Router.extend({
       Spraycan.themes.bind("add", this.update_themes);
       Spraycan.themes.bind("remove", this.update_themes);
 
-      Spraycan.increment_activity("Loading themes");
       Spraycan.themes.fetch({
-        success: function(){
-          Spraycan.decrement_activity();
-        },
         error: function() {
           new Error({ message: "Error loading themes." });
         }
@@ -58,8 +54,7 @@ Spraycan.Routers.Themes = Backbone.Router.extend({
       $('img#busy').show_message("Whoops!", "Sorry you cannot delete the last theme, please add a new theme before deleting this one.");
     }else{
       var theme = _.detect(Spraycan.themes.models, function(t) { return t.id == id });
-      Spraycan.increment_activity("Deleting theme");
-      theme.destroy({success: function(model, resp){ Spraycan.decrement_activity(); }});
+      theme.destroy();
       Spraycan.themes.remove(theme);
 
       if(Spraycan.theme_id==id){

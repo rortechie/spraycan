@@ -2,6 +2,7 @@ var Theme = Backbone.Model.extend({
   toJSON: function() {
     var object = new Object;
     object['theme'] = _.clone(this.attributes);
+    object['cid'] = this.cid;
     return object;
   },
 

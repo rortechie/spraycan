@@ -1,69 +1,89 @@
-<form id="view_override_form">
-  <div>
-    <div class="fields">
-      <label>Name:</label>
-      <input type="text" size="30" name="name" value="<%= view_override.name %>">
+<form id="view_override_form" class="form-stacked">
+  <fieldset>
+    <div class="row clearfix">
+      <div class="span4">
+        <label>Name:</label>
+        <div class="input">
+          <input type="text" size="30" name="name" value="<%= view_override.name %>">
+        </div>
+      </div>
+
+      <div class="span4">
+        <label>Action:</label>
+        <div class="input">
+          <select name="target" id="view_override_target">
+            <% _.each(['remove', 'replace', 'insert_after', 'insert_before', 'insert_top', 'insert_bottom'], function(_target) { %>
+              <option <%= _target==view_override.target ? 'selected' : '' %>><%= _target %></option>
+            <% }); %>
+          </select>
+        </div>
+      </div>
+
+      <div class="span4">
+        <label>Virtual Path:</label>
+        <div class="input">
+          <select name="virtual_path">
+            <% _.each(window.frames[0].all_templates, function(template) { %>
+              <option <%= template==view_override.virtual_path ? 'selected' : '' %>><%= template %></option>
+            <% }); %>
+          </select>
+        </div>
+      </div>
+
+      <div class="pull-right">
+        <br>
+        <a rel="advanced" class="btn info" href="#">Advanced</a>
+      </div>
     </div>
 
-    <div class="fields">
-      <label>Action:</label>
-      <select name="target" id="view_override_target">
-        <% _.each(['remove', 'replace', 'insert_after', 'insert_before', 'insert_top', 'insert_bottom'], function(_target) { %>
-          <option <%= _target==view_override.target ? 'selected' : '' %>><%= _target %></option>
-        <% }); %>
-      </select>
+    <div class="row clearfix advanced">
+      <div class="span4">
+        <label>Replace With:</label>
+        <div class="input">
+          <select name="replace_with">
+            <% _.each(['text', 'partial', 'template'], function(_replace_with) { %>
+              <option <%= _replace_with==view_override.replace_with ? 'selected' : '' %>><%= _replace_with %></option>
+            <% }); %>
+          </select>
+        </div>
+      </div>
+
+      <div class="span4">
+        <label>Sequence:</label>
+        <div class="input">
+          <select name="sequence" style="width:80px;">
+            <option <%= "before"==view_override.sequence ? 'selected' : '' %>>before</option>
+            <option <%= "after"==view_override.sequence ? 'selected' : '' %>>after</option>
+          </select>
+          <select name="sequence_target" style="width:120px;">
+            <option <%= ""==view_override.sequence_target ? 'selected' : '' %>> </option>
+            <% if(Spraycan.view_overrides!=undefined){ %>
+              <% _.each(Spraycan.view_overrides.models, function(override) { %>
+                <% if(override.attributes.name!=name){ %>
+                  <option <%= override.attributes.name==view_override.sequence_target ? 'selected' : '' %>><%= override.attributes.name %></option>
+                <% } %>
+              <% }); %>
+            <% } %>
+          </select>
+        </div>
+      </div>
+
+      <div class="span4">
+        <label>Selector:</label>
+        <div class="input">
+          <input type="text" size="30" name="selector" value="<%= view_override.selector %>">
+        </div>
+      </div>
+
+      <div class="span4" id="closing_selector_wrapper">
+        <label>End Selector:</label>
+        <div class="input">
+          <input type="text" size="30" name="closing_selector" value="<%= view_override.closing_selector %>">
+        </div>
+      </div>
     </div>
 
-    <div class="fields">
-      <label>Disabled:</label>
-      <input type="checkbox" value="true" name="disabled" <%= view_override.disabled ? 'checked="checked"' : '' %>>
-    </div>
-
-    <div class="fields advanced clear">
-      <label>Replace With:</label>
-      <select name="replace_with">
-        <% _.each(['text', 'partial', 'template'], function(_replace_with) { %>
-          <option <%= _replace_with==view_override.replace_with ? 'selected' : '' %>><%= _replace_with %></option>
-        <% }); %>
-      </select>
-    </div>
-
-    <div class="fields advanced">
-      <label>Virtual Path:</label>
-      <select name="virtual_path">
-        <% _.each(window.frames[0].all_templates, function(template) { %>
-          <option <%= template==view_override.virtual_path ? 'selected' : '' %>><%= template %></option>
-        <% }); %>
-      </select>
-    </div>
-
-    <div class="fields advanced">
-      <label>Sequence:</label>
-      <select name="sequence" style="width:80px;">
-        <option <%= "before"==view_override.sequence ? 'selected' : '' %>>before</option>
-        <option <%= "after"==view_override.sequence ? 'selected' : '' %>>after</option>
-      </select>
-      <select name="sequence_target" style="width:120px;">
-        <option <%= ""==view_override.sequence_target ? 'selected' : '' %>> </option>
-        <% _.each(Spraycan.view_overrides.models, function(override) { %>
-          <% if(override.attributes.name!=name){ %>
-            <option <%= override.attributes.name==view_override.sequence_target ? 'selected' : '' %>><%= override.attributes.name %></option>
-          <% } %>
-        <% }); %>
-      </select>
-    </div>
-
-    <div class="fields advanced clear">
-      <label>Selector:</label>
-      <input type="text" size="30" name="selector" value="<%= view_override.selector %>">
-    </div>
-
-    <div class="fields advanced" id="closing_selector_wrapper">
-      <label>End Selector:</label>
-      <input type="text" size="30" name="closing_selector" value="<%= view_override.closing_selector %>">
-    </div>
-
-    <div style="display: <%= view_override.target!='remove' ? 'block' : 'none' %>;" class="clear" id="replace_withs">
+    <div style="display: <%= view_override.target!='remove' ? 'block' : 'none' %>;" id="replace_withs">
       <div class="replacement" id="replace_with_text">
         <div class="fields">
           <label>Text:</label>
@@ -82,17 +102,24 @@
       </div>
     </div>
 
-    <div id="actions">
-      <ul class="buttons toggle">
-        <li class="<%= typeof(view_override.id)  == "undefined" ? 'disabled' : '' %>"><a rel="delete" href="#">Delete</a></li>
-        <li><a rel="cancel" href="#">Cancel</a></li>
-        <li class="last"><a rel="save" href="#">Save</a></li>
-      </ul>
+    <ul class="clearfix inputs-list">
+      <li>
+        <label>
+          <input type="checkbox" value="true" name="disabled" <%= view_override.disabled ? 'checked="checked"' : '' %>>
+          <span><strong>Disabled</strong> - prevents override from being applied.</span>
+        </label>
+      </li>
+    </ul><br>
 
-      <ul class="buttons ">
-        <li class="last"><a rel="advanced" href="#">Advanced</a></li>
-      </ul>
-
+    <div class="actions clearfix">
+      <div class="pull-right">
+        <button rel="save" class="btn primary">Save Changes</button>
+        <a rel="delete" href="/spraycan#view_override?delete=<%= cid %>&confirm=<%= view_override.id==undefined ? 'true' : 'false' %>" class="btn danger" >
+          <%= view_override.id==undefined ? 'Discard' : 'Delete' %>
+        </a>
+        <a href="/spraycan#view_override?all" class="btn">Close</a>
+      </div>
     </div>
-
+  </fieldset>
 </form>
+

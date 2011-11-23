@@ -1,9 +1,43 @@
-<div id="load_javascript">
-  <select id="all_javascripts">
-    <option value="add-new">Add New Javascript</option>
-    <% collection.each(function(item) { %>
-      <option><%= item.escape('name') %></option>
-    <% }); %>
-  </select>
-  <button>ok</button>
+<div class="container-fluid">
+  <h3>Javascript</h3>
+  <p>This is all the javascript included in this theme</p>
+  <table class="condensed-table zebra-striped">
+    <thead>
+      <tr>
+        <th class="span6">Name</th>
+        <th class="align-right">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if(Spraycan.loaded.javascripts){ %>
+        <% if(collection.length==0){ %>
+          <tr>
+            <td colspan="2">No javascripts found</td>
+          </tr>
+        <% } %>
+        <% collection.each(function(item) { %>
+          <tr>
+            <td>
+              <%= item.escape('name') %>
+              <% if(item.get('id')==undefined){ %>
+                <em>*</em>
+              <% } %>
+            </td>
+            <td class="align-right">
+              <a href="/spraycan#javascript/<%= item.cid %>" class="btn small primary">Edit</a>
+              <% if(item.id==undefined){ %>
+                <a href="/spraycan#javascript?delete=<%= item.cid %>&confirm=true" class="btn small danger">Discard</a>
+              <% }else{ %>
+                <a href="/spraycan#javascript?delete=<%= item.cid %>&confirm=false" class="btn small danger">Delete</a>
+              <% } %>
+            </td>
+          </tr>
+        <% }); %>
+      <% }else{ %>
+        <tr>
+          <td colspan="2">Loading...</td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
 </div>

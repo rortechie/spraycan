@@ -3,8 +3,6 @@ var Spraycan = {
   Routers: {},
   Collections: {},
 
-  templates: [],
-
   view: null,
 
   current: 'html',
@@ -17,11 +15,16 @@ var Spraycan = {
 
   editor: {minimised: true, maximised: false, visible: false },
 
-  activity: 0,
+  loaded: {view_overrides: false, stylesheets: false, javascripts: false, grahpics: false},
+
+  //holds the last x models opened for each class
+  current_collections: { view_overrides: [], javascripts: [], stylesheets: [] }, 
+
+  //holds unsaved models when main collection is being fetched
+  new_collections: { view_overrides: [], javascripts: [], stylesheets: [] }, 
 
   init: function() {
     view_overrides_controller = new Spraycan.Routers.ViewOverrides();
-    view_overrides_controller.load();
 
     new Spraycan.Routers.Common();
     new Spraycan.Routers.Themes();
@@ -32,27 +35,34 @@ var Spraycan = {
 
     Backbone.history.start();
 
-    Spraycan.increment_activity("Loading site") //for iframe load
+    Spraycan.refresh_toolbar();
 
-    //render toolbar
+    //ajax activity indicators
+    $(document).ajaxSend(function() {
+      $('#busy').show();
+    });
+    $(document).ajaxStop(function() {
+      $('#busy').hide();
+    });
+
+    //iframe activity indicators
+    $(frames[0]).unload(function() {
+      $('#busy').show();
+    });
+    $(frames[0]).load(function() {
+      $(frames[0]).unload(function() {
+        $('#busy').show();
+      });
+      $(frames[0]).load(function() {
+        $('#busy').hide();
+      });
+
+      $('#busy').hide();
+    });
+  },
+
+  refresh_toolbar: function(){
     new Spraycan.Views.Shared.Toolbar();
-  },
-
-  increment_activity: function(message){
-    Spraycan.activity += 1;
-    $('img#busy').css("visibility", "visible");
-    $('span#activity_message').text(message + "...");
-    $('span#activity_message').css("visibility", "visible");
-  },
-
-  decrement_activity: function(){
-    Spraycan.activity -= 1;
-
-    if(Spraycan.activity<=0){
-      $('img#busy').css("visibility", "hidden");
-      $('span#activity_message').css("visibility", "hidden");
-      Spraycan.activity = 0;
-    }
   },
 
   animate_resize: function(){
@@ -93,34 +103,36 @@ var Spraycan = {
     $("div#spraycan").animate({height: height + 'px'}, t);
   },
 
-  set_current: function(value){
-    Spraycan.previous[Spraycan.current] = Spraycan.view;
-    Spraycan.view = null;
-    Spraycan.current = value;
+  set_current: function(group, action, model){
+    Spraycan.current = group;
+    Spraycan.current_action = action;
 
-    $("div#nav ul#current li").removeClass("active");
-    $("div#nav ul#current li#" + value).addClass("active");
+    $(".nav li").removeClass("active");
+    $(".nav li#" + group).addClass("active");
 
-    if(Spraycan.previous[value]!=undefined){
-      Spraycan.view = Spraycan.previous[value];
-      Spraycan.view.render();
-      Spraycan.view.delegateEvents();
+    if(model!=undefined){
+      //Spraycan.view = view;
 
-      return true;
-    }else{
-      $("#loadables").css("visibility", "hidden");
-      $('#main').html('');
+      var collection;
 
-      return false;
+      if(group=='javascripts'){
+        collection = Spraycan.current_collections.javascripts;
+      }else if(group=='stylesheets'){
+        collection = Spraycan.current_collections.stylesheets;
+      }else if(group=='view_overrides'){
+        collection = Spraycan.current_collections.view_overrides;
+      }
+
+      existing = _.find(collection, function(m){ return model.cid == m.cid } )
+
+      if(existing==undefined){
+        collection[_.size(collection)] = model;
+      }else{
+        collection[collection.indexOf(existing)] = model;
+      }
+
+      Spraycan.refresh_toolbar();
     }
-  },
-
-  reset_editor: function(){
-    Spraycan.editor = {minimised: true, maximised: false, visible: false };
-    Spraycan.animate_resize();
-
-    Spraycan.previous[Spraycan.current] = null;
-    Spraycan.view = null;
   },
 
   reload_frame: function(){
@@ -128,8 +140,6 @@ var Spraycan = {
   },
 
   handle_save_error: function(model, errors){
-    Spraycan.decrement_activity();
-
     _.each(errors, function(message, field){
       $("[name='" + field + "']").addClass('error');
       $("[name='" + field + "']").after("<span title='" + message + "' class='error_icon'>E<span>")
@@ -139,7 +149,24 @@ var Spraycan = {
   clear_errors: function(){
     $(".error").removeClass("error");
     $(".error_icon").remove();
+  },
+
+  ensure_fetched: function(collection){
+    if(!Spraycan.loaded[collection]){
+      Spraycan.new_collections[collection] = _.select(Spraycan[collection].models, function(model){
+        return model.get('id') == undefined;
+      });
+
+      Spraycan[collection].fetch({
+        error: function() {
+          Spraycan.loaded[collection] = false;
+          new Error({ message: "Error loading collection." });
+        }
+      });
+    }
   }
+
+
 };
 
 

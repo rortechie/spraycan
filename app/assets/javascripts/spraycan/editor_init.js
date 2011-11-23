@@ -20,23 +20,6 @@ $.fn.serializeObject = function(){
    return o;
 };
 
-//modal dialog for confirming delete
-$.fn.add_confirm_delete = function(){
-  this.qtip({
-    content: {
-        text: function(api) {
-          var temp = JST["spraycan/templates/shared/confirm_delete"];
-          return temp({ klass: Spraycan.view.model.klass(), id: Spraycan.view.model.get('id')});
-        },
-        title: { text: 'Confirm Delete', button: true }
-    },
-    position: { my: 'center', at: 'center', target: $("div#spraycan") },
-    show: { event: 'click', solo: true, modal: true },
-    hide: false,
-    style: 'ui-tooltip-light ui-tooltip-rounded'
-  });
-};
-
 //modal dialog for general message
 $.fn.show_message = function(title, message){
   $('.qtip.ui-tooltip').qtip('hide');

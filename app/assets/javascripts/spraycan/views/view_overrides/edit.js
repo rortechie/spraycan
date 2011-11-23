@@ -5,9 +5,8 @@ Spraycan.Views.ViewOverrides.Edit = Backbone.View.extend({
   code_editor: null,
 
   events: {
-    "click li:not(.disabled) a[rel='save']": "save",
-    "click li:not(.disabled) a[rel='cancel']": "cancel",
-    "click li:not(.disabled) a[rel='advanced']": "advanced",
+    "click button[rel='save']:not(.disabled)": "save",
+    "click a[rel='advanced']:not(.disabled)": "advanced",
     "change select[name='replace_with']": "set_replacement",
     "change select[name='target']": "set_replacement",
     "change input" :"changed",
@@ -32,20 +31,11 @@ Spraycan.Views.ViewOverrides.Edit = Backbone.View.extend({
 
     var isNew = this.model.isNew();
 
-    Spraycan.increment_activity("Saving view override");
-
     this.model.save(attrs, {
       success: function(model, resp) {
         Spraycan.reload_frame();
 
-        if(Spraycan.view_overrides.get(model.get('id'))!=undefined){
-          Spraycan.view_overrides.remove(Spraycan.view_overrides.get(model.get('id')), {silent: true});
-        }
-
-        Spraycan.view_overrides.add(model);
-
-        $("a[rel='delete']").parent().removeClass('disabled');
-        $("li:not(.disabled) a[rel='delete']").add_confirm_delete();
+        $("a[rel='delete']").html('Delete');
       },
       error: Spraycan.handle_save_error
     });
@@ -53,8 +43,23 @@ Spraycan.Views.ViewOverrides.Edit = Backbone.View.extend({
     return false;
   },
 
-  cancel: function() {
-    Spraycan.reset_editor();
+  close: function(){
+    current = this.model;
+
+    if(current.id==undefined){
+
+
+      _.each(Spraycan.view_overrides.models, function(override){
+        if(override.cid == current.cid){
+          Spraycan.view_overrides.remove(override);
+        }
+      });
+
+    }else if(current.changed==true){
+     console.log(current);
+    }
+
+    window.location.href = "/spraycan#view_override?all";
     return false;
   },
 
@@ -89,7 +94,7 @@ Spraycan.Views.ViewOverrides.Edit = Backbone.View.extend({
   },
 
   calculate_size: function() {
-    var height = 0;
+    var height = 60;
 
     if(Spraycan.editor.maximised){
       if(this.code_editor!=null){
@@ -143,7 +148,7 @@ Spraycan.Views.ViewOverrides.Edit = Backbone.View.extend({
 
       if(replacement=="text"){
         this.show_text_editor = true;
-        var editor_height = 170;
+        var editor_height = 17
 
         if(Spraycan.editor.maximised){
           editor_height = $(window).height() - 170;
@@ -188,27 +193,31 @@ Spraycan.Views.ViewOverrides.Edit = Backbone.View.extend({
 
     if(this.model.get('hook')!=undefined){
       hook_name = this.model.get('hook');
-      var template;
-      var hook;
 
-      _.each(window.frames[0].all_templates, function(t) {
-        template = t;
-        hooks = window.frames[0].hooks_by_template[t];
+      if(hook_name=="new_override"){
+      }else{
+        var template;
+        var hook;
 
-        if(hooks!=undefined){
-          if(_.include(_.pluck(hooks,0), hook_name)){
-            hook = _.detect(hooks, function(hook){
-              return hook[0] == hook_name;
-            })
+        _.each(window.frames[0].all_templates, function(t) {
+          template = t;
+          hooks = window.frames[0].hooks_by_template[t];
 
-            if(hook!=undefined){
-              return _.breaker;
+          if(hooks!=undefined){
+            if(_.include(_.pluck(hooks,0), hook_name)){
+              hook = _.detect(hooks, function(hook){
+                return hook[0] == hook_name;
+              })
+
+              if(hook!=undefined){
+                return _.breaker;
+              }
             }
           }
-        }
-      } );
+        } );
 
-      this.model.set( {virtual_path: template, replacement: Base64.decode(hook[1]) } );
+        this.model.set( {virtual_path: template, replacement: Base64.decode(hook[1]) } );
+      }
 
       //todo finish this unset to remove hook attr
       this.model.unset('hook')
@@ -218,7 +227,6 @@ Spraycan.Views.ViewOverrides.Edit = Backbone.View.extend({
     $('#main').html(this.el);
 
     this.set_replacement();
-    $("li:not(.disabled) a[rel='delete']").add_confirm_delete();
 
     return this;
   }

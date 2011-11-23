@@ -2,6 +2,7 @@ var Javascript = Backbone.Model.extend({
   toJSON: function() {
     var object = new Object;
     object['javascript'] = _.clone(this.attributes);
+    object['cid'] = this.cid;
     return object;
   },
 

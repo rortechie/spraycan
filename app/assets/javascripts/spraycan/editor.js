@@ -3,9 +3,12 @@
 //= require spraycan/jquery-ui-1.8.13.custom.min
 //= require spraycan/jquery.upload-1.0.2.min
 //= require spraycan/jquery.qtip
+//= require spraycan/inflection
 //= require spraycan/underscore-min
 //= require spraycan/backbone
 //= require spraycan/base64
+//= require spraycan/bootstrap-dropdown
+//= require spraycan/bootstrap-modal
 //= require spraycan/models/theme
 //= require spraycan/models/view_override
 //= require spraycan/models/template
@@ -18,6 +21,7 @@
 //= require spraycan/collections/stylesheets
 //= require spraycan/collections/javascripts
 //= require spraycan/collections/graphics
+//= require spraycan/routers/base
 //= require spraycan/routers/common
 //= require spraycan/routers/themes
 //= require spraycan/routers/view_overrides

@@ -15,11 +15,7 @@ Spraycan.Routers.Graphics = Backbone.Router.extend({
         Spraycan.graphics.bind("add", this.update_graphics);
         Spraycan.graphics.bind("remove", this.update_graphics);
 
-        Spraycan.increment_activity("Loading files");
         Spraycan.graphics.fetch({
-          success: function(){
-            Spraycan.decrement_activity();
-          },
           error: function() {
             new Error({ message: "Error loading files." });
           }
@@ -31,7 +27,6 @@ Spraycan.Routers.Graphics = Backbone.Router.extend({
   },
 
   update_graphics: function() {
-    $("#loadables").css("visibility", "hidden");
     window.location.href ="#";
 
     if(Spraycan.current == 'files'){
@@ -43,8 +38,7 @@ Spraycan.Routers.Graphics = Backbone.Router.extend({
     $('.qtip.ui-tooltip').qtip('hide');
 
     var graphic = _.detect(Spraycan.graphics.models, function(t) { return t.id == id });
-    Spraycan.increment_activity("Deleting file");
-    graphic.destroy({success: function(model, resp){ Spraycan.decrement_activity(); }});
+    graphic.destroy();
     Spraycan.graphics.remove(graphic);
   }
 

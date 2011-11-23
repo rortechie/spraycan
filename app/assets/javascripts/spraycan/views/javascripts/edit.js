@@ -3,8 +3,7 @@ Spraycan.Views.Javascripts.Edit = Backbone.View.extend({
   show_text_editor: false,
 
   events: {
-    "click li:not(.disabled) a[rel='save']": "save",
-    "click li:not(.disabled) a[rel='cancel']": "cancel",
+    "click button[rel='save']:not(.disabled)": "save",
     "change input" :"changed",
     "change select" :"changed"
   },
@@ -26,30 +25,14 @@ Spraycan.Views.Javascripts.Edit = Backbone.View.extend({
 
     var isNew = this.model.isNew();
 
-    Spraycan.increment_activity("Saving javascript");
-
     this.model.save(attrs, {
       success: function(model, resp) {
-        window.frames[0].location.reload();
 
-        if(Spraycan.javascripts.get(model.get('id'))!=undefined){
-          Spraycan.javascripts.remove(Spraycan.javascripts.get(model.get('id')), {silent: true});
-        }
-
-        Spraycan.javascripts.add(model);
-        Spraycan.decrement_activity();
-
-        $("a[rel='delete']").parent().removeClass('disabled');
-        $("li:not(.disabled) a[rel='delete']").add_confirm_delete();
+        $("a[rel='delete']").html('Delete');
       },
       error: Spraycan.handle_save_error
     });
 
-    return false;
-  },
-
-  cancel: function() {
-    Spraycan.reset_editor();
     return false;
   },
 
@@ -77,7 +60,7 @@ Spraycan.Views.Javascripts.Edit = Backbone.View.extend({
   },
 
   calculate_size: function() {
-    var height = 0;
+    var height = 40;
 
     if(Spraycan.editor.maximised){
       if(this.code_editor!=null){
@@ -128,19 +111,25 @@ Spraycan.Views.Javascripts.Edit = Backbone.View.extend({
       editor_height = $(window).height() - 170;
     }
 
+    if(this.model.get('js')==undefined){
+      content = "function foo(){\n}";
+    }else{
+      content = this.model.get('js');
+    }
+
     $("#javascriptc_js").height(editor_height);
     this.code_editor = ace.edit("javascriptc_js");
 
     this.code_editor.setTheme("ace/theme/vibrant_ink");
 
     var js_mode = require("ace/mode/javascript").Mode;
+    //disables lint check as it causes lots of errors in
+    //firefox - should look at updating ACE and retesting
+    js_mode.prototype.createWorker=function() {};
     this.code_editor.getSession().setTabSize(2);
     this.code_editor.getSession().setMode(new js_mode());
-    this.code_editor.getSession().setValue(this.model.get('js'));
+    this.code_editor.getSession().setValue(content);
     this.code_editor.getSession().doc.on('change', this.editor_changed);
-
-
-    $("li:not(.disabled) a[rel='delete']").add_confirm_delete();
 
     Spraycan.animate_resize();
 

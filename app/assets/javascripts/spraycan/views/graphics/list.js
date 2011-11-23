@@ -53,7 +53,6 @@ Spraycan.Views.Graphics.List = Backbone.View.extend({
     $('#graphic_details').html(compiled({ model : graphic }));
 
     $("a[rel='delete']").parent().removeClass('disabled');
-    $("li:not(.disabled) a[rel='delete']").add_confirm_delete();
   },
 
   new_graphic: function(e) {
@@ -63,9 +62,7 @@ Spraycan.Views.Graphics.List = Backbone.View.extend({
     $("a[rel='delete']").parent().addClass('disabled');
 
     $('#file1').change(function() {
-      Spraycan.increment_activity("Uploading file");
       $(this).upload('/spraycan/themes/' + Spraycan.theme_id + '/graphics', function(res) {
-        Spraycan.decrement_activity();
         Spraycan.graphics.fetch();
       }, 'script');
     });

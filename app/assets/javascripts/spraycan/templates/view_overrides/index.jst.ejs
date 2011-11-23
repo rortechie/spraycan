@@ -1,9 +1,49 @@
-<div id="load_override">
-  <select id="all_view_overrides">
-    <option value="add-new">Add New Override</option>
-    <% collection.each(function(item) { %>
-      <option><%= item.escape('name') %></option>
-    <% }); %>
-  </select>
-  <button>ok</button>
+<div class="container-fluid">
+  <h3>View Overrides</h3>
+  <p>I can't think of any text to put here, but the view looks much better with something.</p>
+  <table class="condensed-table zebra-striped">
+    <thead>
+      <tr>
+        <th class="span4">Name</th>
+        <th class="span6">Virtual Path</th>
+        <th class="span4">Action</th>
+        <th class="span10">Selector</th>
+        <th class="align-right">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+     <% if(Spraycan.loaded.view_overrides){ %>
+        <% if(collection.length==0){ %>
+          <tr>
+            <td colspan="5">No view overrides found.</td>
+          </tr>
+        <% } %>
+        <% collection.each(function(item) { %>
+          <tr>
+            <td>
+              <%= item.escape('name') %>
+              <% if(item.get('id')==undefined){ %>
+                <em>*</em>
+              <% } %>
+            </td>
+            <td><%= item.escape('virtual_path') %></td>
+            <td><%= item.escape('target') %></td>
+            <td><%= item.escape('selector') %></td>
+            <td class="align-right">
+              <a href="/spraycan#view_override/<%= item.cid %>" class="btn small primary">Edit</a>
+              <% if(item.id==undefined){ %>
+                <a href="/spraycan#view_override?delete=<%= item.cid %>&confirm=true" class="btn small danger">Discard</a>
+              <% }else{ %>
+                <a href="/spraycan#view_override?delete=<%= item.cid %>&confirm=false" class="btn small danger">Delete</a>
+              <% } %>
+            </td>
+          </tr>
+        <% }); %>
+      <% }else{ %>
+        <tr>
+          <td colspan="5">Loading...</td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
 </div>

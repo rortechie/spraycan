@@ -72,8 +72,6 @@ Spraycan.Views.Themes.List = Backbone.View.extend({
 
     $("a[rel='delete']").parent().removeClass('disabled');
     $("a[rel='save']").parent().removeClass('disabled');
-
-    $("li:not(.disabled) a[rel='delete']").add_confirm_delete();
   },
 
   save_theme: function(e) {
@@ -89,9 +87,7 @@ Spraycan.Views.Themes.List = Backbone.View.extend({
   },
 
   save_theme_record: function(theme, attrs){
-    Spraycan.increment_activity("Saving theme");
-
-    theme.save(attrs, {
+    heme.save(attrs, {
       success: function(model, resp) {
         frames[0].location.href = frames[0].location.href;
 
@@ -116,12 +112,9 @@ Spraycan.Views.Themes.List = Backbone.View.extend({
     $('#theme_details').html(compiled({ model : this.model }));
 
     $('#file1').change(function() {
-      Spraycan.increment_activity("Uploading theme");
       $("a[rel='save']").parent().addClass('disabled');
 
       $(this).upload('/spraycan/themes/import.js', function(res) {
-        Spraycan.decrement_activity();
-
         frames[0].location.href = frames[0].location.href;
         Spraycan.themes.fetch();
       }, 'script');

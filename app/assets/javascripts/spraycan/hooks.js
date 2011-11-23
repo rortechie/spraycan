@@ -48,7 +48,7 @@ function hook_zoom(in_or_out){
 $jQ(function() {
 
   if(top.Spraycan!=undefined){
-    top.Spraycan.decrement_activity();
+    top.$('#busy').hide();
 
     show_hook_frames();
 
@@ -87,6 +87,7 @@ $jQ(function() {
 //show activity while iframe is loading
 window.onbeforeunload = function() {
   if(top.Spraycan!=undefined){
-    top.Spraycan.increment_activity("Loading site");
+    top.$('#busy').show();
   }
 }
+

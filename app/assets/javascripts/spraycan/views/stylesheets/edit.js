@@ -3,8 +3,7 @@ Spraycan.Views.Stylesheets.Edit = Backbone.View.extend({
   show_text_editor: false,
 
   events: {
-    "click li:not(.disabled) a[rel='save']": "save",
-    "click li:not(.disabled) a[rel='cancel']": "cancel",
+    "click button[rel='save']:not(.disabled)": "save",
     "change input" :"changed",
     "change select" :"changed"
   },
@@ -26,27 +25,14 @@ Spraycan.Views.Stylesheets.Edit = Backbone.View.extend({
 
     var isNew = this.model.isNew();
 
-    Spraycan.increment_activity("Saving stylesheet");
-
     this.model.save(attrs, {
       success: function(model, resp) {
-        if(Spraycan.stylesheets.get(model.get('id'))!=undefined){
-          Spraycan.stylesheets.remove(Spraycan.stylesheets.get(model.get('id')), {silent: true});
-        }
 
-        Spraycan.stylesheets.add(model);
-        Spraycan.decrement_activity();
-        $("a[rel='delete']").parent().removeClass('disabled');
-        $("li:not(.disabled) a[rel='delete']").add_confirm_delete();
+        $("a[rel='delete']").html('Delete');
       },
       error: Spraycan.handle_save_error
     });
 
-    return false;
-  },
-
-  cancel: function() {
-    Spraycan.reset_editor();
     return false;
   },
 
@@ -94,7 +80,7 @@ Spraycan.Views.Stylesheets.Edit = Backbone.View.extend({
             $(this.code_editor.container).height(170);
             this.code_editor.resize();
 
-            height += 300;
+            height += 340;
           }
         }else{
           height += 80;
@@ -141,6 +127,12 @@ Spraycan.Views.Stylesheets.Edit = Backbone.View.extend({
       editor_height = $(window).height() - 170;
     }
 
+    if(this.model.get('css')==undefined){
+      content = "p {}";
+    }else{
+      content = this.model.get('css');
+    }
+
     $("#stylesheet_css").height(editor_height);
     this.code_editor = ace.edit("stylesheet_css");
 
@@ -148,14 +140,12 @@ Spraycan.Views.Stylesheets.Edit = Backbone.View.extend({
 
     var css_mode = require("ace/mode/css").Mode;
     //disables lint check as it causes lots of errors in
-    //firefox 5 - should look at updating ACE and retesting
+    //firefox - should look at updating ACE and retesting
     css_mode.prototype.createWorker=function() {};
     this.code_editor.getSession().setTabSize(2);
     this.code_editor.getSession().setMode(new css_mode());
-    this.code_editor.getSession().setValue(this.model.get('css'));
+    this.code_editor.getSession().setValue(content);
     this.code_editor.getSession().doc.on('change', this.apply_styles);
-
-    $("li:not(.disabled) a[rel='delete']").add_confirm_delete();
 
     Spraycan.animate_resize();
 
