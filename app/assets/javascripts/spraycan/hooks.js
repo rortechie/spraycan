@@ -1,3 +1,5 @@
+var $jQ = jQuery.noConflict(true);
+
 //set hook frame positions
 var show_frames = false;
 var frame_level = 0;
@@ -17,10 +19,38 @@ function show_hook_frames(){
     });
   }else{
     $jQ('.spraycan_hook_frame').removeClass('spraycan_hook_frame');
+
   }
 }
 
+function find_hook_frame(event){
+  var target = $jQ(this);
+
+  if(target.hasClass('spraycan_hook_frame')){
+    show_hook_details(target);
+  }else{
+    parents = target.parents('.spraycan_hook_frame');
+
+    if(parents.length>0){
+      show_hook_details($jQ(parents[0]));
+    }
+
+  }
+}
+
+function show_hook_details(target){
+  var hook_name = target.attr('data-hook');
+
+  if(hook_name==""){
+    hook_name = target.attr('id');
+  }
+
+  top.location.href = "/spraycan#inspect/" + hook_name;
+}
+
+
 function hook_zoom(in_or_out){
+  console.log(in_or_out);
   show_frames = true;
   var current_level = frame_level;
 
@@ -46,41 +76,9 @@ function hook_zoom(in_or_out){
 }
 
 $jQ(function() {
-
   if(top.Spraycan!=undefined){
-    top.$('#busy').hide();
-
+    $jQ('*').bind('mouseenter', find_hook_frame);
     show_hook_frames();
-
-    //set handlers for tooltips
-    $jQ('[data-hook]').qtip({
-      content: {
-        text: function(api) {
-          var hook_name = this.attr('data-hook');
-          if(hook_name==""){
-            hook_name = this.attr('id');
-          }
-
-          return '<h4>' + hook_name + '</h4><a href="/spraycan#view_overrides/edit/' + hook_name + '" target="_top">Edit</a> | <a href="/spraycan#view_overrides/new/' + hook_name + '" target="_top">New</a>'
-        }
-      },
-      position: { viewport: true, my: 'top center', at: 'top center' },
-      show: { solo: true },
-      hide: { event: 'unfocus', delay: 3000 },
-      events: {
-        show: function(event, api) {
-          var layer = api.elements.target.attr('data-layer');
-          if(layer==undefined || layer!=frame_level){
-            event.preventDefault();
-          }
-        }
-      },
-   style: {
-      classes: 'ui-tooltip-dark ui-tooltip-rounded ui-tooltip-shadow spraycan-qtip'
-   }
-      
-    })
-
   }
 });
 

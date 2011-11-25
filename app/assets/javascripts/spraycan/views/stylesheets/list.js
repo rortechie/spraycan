@@ -1,6 +1,4 @@
 Spraycan.Views.Stylesheets.List = Backbone.View.extend({
-  el: 'div#main',
-
   initialize: function() {
     this.render();
   },
@@ -9,6 +7,7 @@ Spraycan.Views.Stylesheets.List = Backbone.View.extend({
     var compiled = JST['spraycan/templates/stylesheets/index'];
 
     $(this.el).html(compiled({ collection : Spraycan.stylesheets }));
+    $('#main').html(this.el);
 
     $('iframe').height($(window).height() - 50);
   }

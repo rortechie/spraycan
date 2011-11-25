@@ -9,6 +9,8 @@ Spraycan.Views.Stylesheets.Edit = Backbone.View.extend({
   },
 
   initialize: function() {
+    Spraycan.view = this;
+
     $(this.el).data('view', this);
     this.model = this.options.model;
 
@@ -49,7 +51,7 @@ Spraycan.Views.Stylesheets.Edit = Backbone.View.extend({
   },
 
   editor_changed: function(evt){
-    this.set_change("css", this.code_editor.getSession().getValue());
+    Spraycan.view.set_change("css", Spraycan.view.code_editor.getSession().getValue());
   },
 
   set_change: function(name, value){
@@ -115,7 +117,6 @@ Spraycan.Views.Stylesheets.Edit = Backbone.View.extend({
   render: function() {
     Spraycan.editor.minimised = false;
     Spraycan.editor.visible = true;
-    Spraycan.view = this;
 
     var compiled = JST["spraycan/templates/stylesheets/edit"];
     $(this.el).html(compiled(this.model.toJSON()));
@@ -147,7 +148,7 @@ Spraycan.Views.Stylesheets.Edit = Backbone.View.extend({
     this.code_editor.getSession().setValue(content);
     this.code_editor.getSession().doc.on('change', this.apply_styles);
 
-    Spraycan.animate_resize();
+    Spraycan.animate_resize(this.calculate_size());
 
     return this;
   }

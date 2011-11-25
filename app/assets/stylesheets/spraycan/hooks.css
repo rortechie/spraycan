@@ -41,3 +41,7 @@
 div.spraycan_source{
   display: none;
 }
+/* ensure body hook frames are visible */
+body{
+  margin: 5px;
+}

@@ -1,6 +1,4 @@
 Spraycan.Views.ViewOverrides.List = Backbone.View.extend({
-  el: 'div#main',
-
   initialize: function() {
     this.render();
   },
@@ -9,8 +7,11 @@ Spraycan.Views.ViewOverrides.List = Backbone.View.extend({
     var compiled = JST['spraycan/templates/view_overrides/index'];
 
     $(this.el).html(compiled({ collection : Spraycan.view_overrides }));
+    $('#main').html(this.el);
 
-    $('iframe').height($(window).height() - 50);
+    $('table#view_overrides').tableScroll({height:200});
+
+    Spraycan.animate_resize(300);
   }
 
 });

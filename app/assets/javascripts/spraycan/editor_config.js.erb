@@ -1,11 +1,11 @@
 var Spraycan = {
-  Views: {Shared: {}, Themes: {}, ViewOverrides: {}, Stylesheets: {}, Javascripts: {}, Graphics: {} },
+  Views: {Shared: {}, Themes: {}, ViewOverrides: {}, Stylesheets: {}, Javascripts: {}, Graphics: {}, Inspector: {} },
   Routers: {},
   Collections: {},
 
-  view: null,
-
   current: 'html',
+
+  view: null, //holds edit view for ACE events to access
 
   previous: { html: null, css: null, js: null, files: null },
 
@@ -32,6 +32,7 @@ var Spraycan = {
     new Spraycan.Routers.Stylesheets();
     new Spraycan.Routers.Javascripts();
     new Spraycan.Routers.Graphics();
+    new Spraycan.Routers.Inspector();
 
     Backbone.history.start();
 
@@ -65,13 +66,10 @@ var Spraycan = {
     new Spraycan.Views.Shared.Toolbar();
   },
 
-  animate_resize: function(){
+  animate_resize: function(height){
     var pre_height = $("div#spraycan").height();
 
-    var height = 50;
-    if(Spraycan.view!=null){
-      height += Spraycan.view.calculate_size();
-    }
+    height = height + 50; //pad for toolbar
 
     if(Spraycan.editor.visible){
       if(Spraycan.editor.minimised){
@@ -100,6 +98,8 @@ var Spraycan = {
       t = 1500;
     }
 
+    $('iframe').animate({height: ($(window).height() - height) + 'px'}, t);
+
     $("div#spraycan").animate({height: height + 'px'}, t);
   },
 
@@ -111,8 +111,6 @@ var Spraycan = {
     $(".nav li#" + group).addClass("active");
 
     if(model!=undefined){
-      //Spraycan.view = view;
-
       var collection;
 
       if(group=='javascripts'){
@@ -164,6 +162,36 @@ var Spraycan = {
         }
       });
     }
+  },
+
+  get_hook_details: function(hook_name){
+    var template;
+    var hook;
+
+    _.each(window.frames[0].all_templates, function(t) {
+      if(hook!=undefined){
+        return _.breaker;
+      } 
+
+      template = t;
+      hooks = window.frames[0].hooks_by_template[t];
+
+      if(hooks!=undefined){
+        if(_.include(_.pluck(hooks,0), hook_name)){
+          hook = _.detect(hooks, function(hook){
+            return hook[0] == hook_name;
+          })
+
+          if(hook!=undefined){
+            return _.breaker;
+          }
+        }
+      }
+    } );
+
+
+    return {virtual_path: template, source:  Base64.decode(hook[1])};
+
   }
 
 

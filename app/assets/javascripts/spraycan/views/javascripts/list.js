@@ -1,6 +1,4 @@
 Spraycan.Views.Javascripts.List = Backbone.View.extend({
-  el: 'div#main',
-
   initialize: function() {
     this.render();
   },
@@ -9,6 +7,7 @@ Spraycan.Views.Javascripts.List = Backbone.View.extend({
     var compiled = JST['spraycan/templates/javascripts/index'];
 
     $(this.el).html(compiled({ collection : Spraycan.javascripts }));
+    $('#main').html(this.el);
 
     $('iframe').height($(window).height() - 50);
   }

@@ -18,8 +18,7 @@ Spraycan.Views.Shared.navigate = Backbone.View.extend({
     $(this.el).html(compiled({ url : frames[0].location.href }));
     $('#main').html(this.el);
 
-    Spraycan.view = this;
-    Spraycan.animate_resize();
+    Spraycan.animate_resize(this.calculate_size);
   },
 
   calculate_size: function() {
@@ -36,6 +35,6 @@ Spraycan.Views.Shared.navigate = Backbone.View.extend({
 
     Spraycan.editor.visible = false;
     this.show_form = false;
-    Spraycan.animate_resize();
+    Spraycan.animate_resize(this.calculate_size());
   }
 });

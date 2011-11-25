@@ -31,14 +31,13 @@ Spraycan.Views.Graphics.List = Backbone.View.extend({
   render: function() {
     Spraycan.editor.minimised = false;
     Spraycan.editor.visible = true;
-    Spraycan.view = this;
 
     var compiled = JST["spraycan/templates/graphics/index"];
 
     $(this.el).html(compiled({ collection : Spraycan.graphics }));
     $('#main').html(this.el);
 
-    Spraycan.animate_resize();
+    Spraycan.animate_resize(this.calculate_size());
 
     return this;
   },

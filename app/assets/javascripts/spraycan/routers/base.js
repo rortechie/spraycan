@@ -60,7 +60,7 @@ Spraycan.Routers.Base = Backbone.Router.extend({
     Spraycan.refresh_toolbar();
   },
 
-  new_record: function(hook) {
+  new_record: function() {
     var model = new top[this.klass.singularize().camelize()]()
     model.set({ name: 'new_' + model.cid });
 

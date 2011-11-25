@@ -9,6 +9,8 @@ Spraycan.Views.Javascripts.Edit = Backbone.View.extend({
   },
 
   initialize: function() {
+    Spraycan.view = this;
+
     $(this.el).data('view', this);
     this.model = this.options.model;
 
@@ -99,7 +101,6 @@ Spraycan.Views.Javascripts.Edit = Backbone.View.extend({
   render: function() {
     Spraycan.editor.minimised = false;
     Spraycan.editor.visible = true;
-    Spraycan.view = this;
 
     var compiled = JST["spraycan/templates/javascripts/edit"];
     $(this.el).html(compiled(this.model.toJSON()));
@@ -131,7 +132,7 @@ Spraycan.Views.Javascripts.Edit = Backbone.View.extend({
     this.code_editor.getSession().setValue(content);
     this.code_editor.getSession().doc.on('change', this.editor_changed);
 
-    Spraycan.animate_resize();
+    Spraycan.animate_resize(this.calculate_size());
 
     return this;
   }

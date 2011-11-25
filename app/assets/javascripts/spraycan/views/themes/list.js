@@ -32,7 +32,6 @@ Spraycan.Views.Themes.List = Backbone.View.extend({
   render: function() {
     Spraycan.editor.minimised = false;
     Spraycan.editor.visible = true;
-    Spraycan.view = this;
 
     var compiled = JST['spraycan/templates/themes/index'];
 
@@ -52,11 +51,11 @@ Spraycan.Views.Themes.List = Backbone.View.extend({
         var new_position = ui.item.index('.scroller tbody tr')
         var theme = _.detect(Spraycan.themes.models, function(t) { return t.id == id });
 
-        Spraycan.view.save_theme_record(theme,{position: new_position}); 
+        this.save_theme_record(theme,{position: new_position}); 
       }
     });
 
-    Spraycan.animate_resize();
+    Spraycan.animate_resize(this.calculate_size());
 
     return this;
   },

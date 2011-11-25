@@ -1,11 +1,5 @@
 <%= javascript_include_tag 'spraycan/embed' %>
-<%= javascript_tag do %>
-  $jQ(function(){
-    if(top.Spraycan!=undefined){
-      top.location = "/spraycan#templates/<%=params[:controller]%>/<%=params[:action]%>";
-    }
-  });
-<% end %>
+
 <%= stylesheet_link_tag 'spraycan/embed' %>
 <% if Rails.env.development? %>
   <% Spraycan::Theme.active.each do |theme| %>

@@ -1,0 +1,30 @@
+<div class="container-fluid">
+  <form action="#" class="form-stacked">
+    <div class="row">
+      <h3 class="pull-left">Inspector</h3>
+      <% if(hook!=undefined){ %>
+        <h4 class="pull-left">&nbsp;> Current hook: <%= hook %></h4>
+      <% } %> 
+    </div>
+
+    <div class="row">
+      <div class="pull-left">
+        <button rel="new_override" class="btn success"<%= (hook==undefined) ? ' disabled' : '' %>>New Override</button>
+      </div>
+
+      <div class="pull-right">
+        <button rel="toggle" class="btn primary">Toggle Hooks</button>
+        <button rel="zoom-in" class="btn">Zoom In</button>
+        <button rel="zoom-out"" class="btn">Zoom Out</button>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <h4>Source<span id="source_template"></span></h4>
+      <pre id="source" class="prettyprint">
+      </pre>
+    </div>
+
+  </form>
+</div>

@@ -50,17 +50,27 @@ input{
   line-height: 27px;
 }
 
+pre#source{
+  height: 160px;
+  overflow-y: scroll;
+}
+
+
 /* Bootstrap Overrides*/
 .form-stacked {
   padding-right: 20px;
-}
-.form-stacked .actions {
   margin-right: -20px;
 }
 .actions {
   margin-top: 0px;
 }
-
+/* jquery-tablescroll overrides */
+.tablescroll_head{
+  margin-bottom: 0px;
+}
+.tablescroll_head th,td{
+  padding: 5px 5px 4px;
+}
 /* div#spraycan #top_bar{*/
 /*   border-top: 1px solid #fff;*/
 /*   border-bottom: 1px solid #fff;*/

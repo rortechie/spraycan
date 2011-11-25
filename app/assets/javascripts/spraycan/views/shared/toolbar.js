@@ -4,9 +4,6 @@ Spraycan.Views.Shared.Toolbar = Backbone.View.extend({
     "click a[rel='min']": "minimise",
     "click a[rel='restore']": "restore",
     "click a[rel='max']": "maximise",
-    "click a[rel='zoom-in']": "zoom_in",
-    "click a[rel='zoom-out']": "zoom_out",
-    "click a[rel='toggle']": "toggle",
     "click a[rel='refresh']": "refresh"
   },
 
@@ -18,8 +15,7 @@ Spraycan.Views.Shared.Toolbar = Backbone.View.extend({
     if(Spraycan.editor.visible){
       Spraycan.editor.maximised = false;
       Spraycan.editor.minimised = true;
-      Spraycan.animate_resize();
-    }
+      Spraycan.animate_resize(this.calculate_size()); }
     return false;
   },
 
@@ -27,7 +23,7 @@ Spraycan.Views.Shared.Toolbar = Backbone.View.extend({
     if(Spraycan.editor.visible){
       Spraycan.editor.maximised = false;
       Spraycan.editor.minimised = false;
-      Spraycan.animate_resize();
+      Spraycan.animate_resize(this.calculate_size());
     }
 
     return false;
@@ -37,7 +33,7 @@ Spraycan.Views.Shared.Toolbar = Backbone.View.extend({
     if(Spraycan.editor.visible){
       Spraycan.editor.maximised = true;
       Spraycan.editor.minimised = false;
-      Spraycan.animate_resize();
+      Spraycan.animate_resize(this.calculate_size());
     }
 
     return false;
@@ -49,24 +45,9 @@ Spraycan.Views.Shared.Toolbar = Backbone.View.extend({
     $(this.el).html(compiled({ collection : Spraycan.view_overrides }));
     $('#toolbar').html(this.el);
 
-    $('iframe').height($(window).height() - 50);
+    $('iframe').height($(window).height() - $('div#spraycan').height());
   },
 
-  zoom_in: function() {
-    frames[0].hook_zoom('in');
-    return false;
-  },
-
-  zoom_out: function() {
-    frames[0].hook_zoom('out');
-    return false;
-  },
-
-  toggle: function() {
-    frames[0].show_frames = !frames[0].show_frames;
-    frames[0].show_hook_frames();
-    return false;
-  },
 
   refresh: function() {
     frames[0].location.href = frames[0].location.href;

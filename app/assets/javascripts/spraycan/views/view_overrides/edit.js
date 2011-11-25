@@ -14,6 +14,8 @@ Spraycan.Views.ViewOverrides.Edit = Backbone.View.extend({
   },
 
   initialize: function() {
+    Spraycan.view = this;
+
     $(this.el).data('view', this);
     this.show_form = true;
     this.model = this.options.model;
@@ -65,7 +67,7 @@ Spraycan.Views.ViewOverrides.Edit = Backbone.View.extend({
 
   advanced: function() {
     this.show_advanced = !this.show_advanced ;
-    Spraycan.animate_resize();
+    Spraycan.animate_resize(this.calculate_size());
     $('#view_override_form .advanced').toggle();
     return false;
   },
@@ -83,7 +85,7 @@ Spraycan.Views.ViewOverrides.Edit = Backbone.View.extend({
   },
 
   editor_changed: function(evt){
-    this.set_change("replacement", this.code_editor.getSession().getValue());
+    Spraycan.view.set_change("replacement", Spraycan.view.code_editor.getSession().getValue());
   },
 
   set_change: function(name, value){
@@ -166,9 +168,7 @@ Spraycan.Views.ViewOverrides.Edit = Backbone.View.extend({
           this.code_editor.getSession().setValue(this.model.get('replacement'));
         }
 
-        this.code_editor.getSession().doc.on('change', function(evt){
-          Spraycan.view.editor_changed();
-        });
+        this.code_editor.getSession().doc.on('change', this.editor_changed, {view: this});
 
       }else if(target=="partial"){
         this.code_editor = null;
@@ -180,14 +180,13 @@ Spraycan.Views.ViewOverrides.Edit = Backbone.View.extend({
 
     }
 
-    Spraycan.animate_resize();
+    Spraycan.animate_resize(this.calculate_size());
 
   },
 
   render: function() {
     Spraycan.editor.minimised = false;
     Spraycan.editor.visible = true;
-    Spraycan.view = this;
 
     var compiled = JST['spraycan/templates/view_overrides/edit'];
 
@@ -196,27 +195,9 @@ Spraycan.Views.ViewOverrides.Edit = Backbone.View.extend({
 
       if(hook_name=="new_override"){
       }else{
-        var template;
-        var hook;
+        var details = Spraycan.get_hook_details(hook_name)
 
-        _.each(window.frames[0].all_templates, function(t) {
-          template = t;
-          hooks = window.frames[0].hooks_by_template[t];
-
-          if(hooks!=undefined){
-            if(_.include(_.pluck(hooks,0), hook_name)){
-              hook = _.detect(hooks, function(hook){
-                return hook[0] == hook_name;
-              })
-
-              if(hook!=undefined){
-                return _.breaker;
-              }
-            }
-          }
-        } );
-
-        this.model.set( {virtual_path: template, replacement: Base64.decode(hook[1]) } );
+        this.model.set( {virtual_path: details['virtual_path'], replacement: details['source'] } );
       }
 
       //todo finish this unset to remove hook attr
