@@ -38,7 +38,7 @@ Spraycan.Views.Themes.List = Backbone.View.extend({
     $(this.el).html(compiled({ collection : Spraycan.themes }));
     $('#main').html(this.el);
 
-    $('.scroller tbody').sortable({
+    $('.sortable tbody').sortable({
       axis: 'y', 
       dropOnEmpty:false, 
       handle: '.handle', 
@@ -86,7 +86,7 @@ Spraycan.Views.Themes.List = Backbone.View.extend({
   },
 
   save_theme_record: function(theme, attrs){
-    heme.save(attrs, {
+    theme.save(attrs, {
       success: function(model, resp) {
         frames[0].location.href = frames[0].location.href;
 

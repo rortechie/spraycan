@@ -7,7 +7,7 @@ class Spraycan::Theme < ActiveRecord::Base
   has_many :view_overrides, :dependent => :destroy
   has_many :stylesheets, :dependent => :destroy
   has_many :javascripts, :dependent => :destroy
-  has_many :graphics, :dependent => :destroy
+  has_many :files, :dependent => :destroy
 
   validates :name, :presence => true
   validates :guid, :presence => true, :uniqueness => true
@@ -50,7 +50,7 @@ class Spraycan::Theme < ActiveRecord::Base
   def sprockets_dump
     self.stylesheets.each {|s| s.sprockets_dump(sprockets_dump_root) }
     self.javascripts.each {|j| j.sprockets_dump(sprockets_dump_root) }
-    self.graphics.each {|g| g.sprockets_dump(sprockets_dump_root) }
+    self.files.each {|g| g.sprockets_dump(sprockets_dump_root) }
   end
 
   def export
@@ -86,7 +86,7 @@ class Spraycan::Theme < ActiveRecord::Base
         File.open(temp_path, "w") {|f| f.write(z.read) }
 
         local_file = File.open(temp_path, "r")
-        self.graphics.create(:file => local_file )
+        self.files.create(:file => local_file )
         local_file.close
 
       end
@@ -105,8 +105,8 @@ class Spraycan::Theme < ActiveRecord::Base
     @source[:stylesheets] = self.stylesheets.map { |s| s.attributes.reject { |key, val| ![:name, :css].include? key.to_sym } }
     @source[:files] = []
 
-    self.graphics.each do |graphic|
-      file = graphic.file.file
+    self.files.each do |file|
+      file = file.file.file #meta huh? location location location!
       next if file.nil?
 
       data = StringIO.new

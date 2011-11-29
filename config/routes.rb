@@ -13,6 +13,6 @@ Spraycan::Engine.routes.draw do
     resources :view_overrides, :only => [:index, :create, :update, :destroy]
     resources :stylesheets
     resources :javascripts
-    resources :graphics
+    resources :files
   end
 end

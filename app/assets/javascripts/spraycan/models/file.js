@@ -1,17 +1,17 @@
-var Graphic = Backbone.Model.extend({
+var File = Backbone.Model.extend({
   toJSON: function() {
     var object = new Object;
-    object['graphic'] = _.clone(this.attributes);
+    object['file'] = _.clone(this.attributes);
     object['cid'] = this.cid;
     return object;
   },
 
   klass: function(){
-    return 'graphic'
+    return 'file'
   },
 
   url : function() {
-    var base = '/spraycan/themes/' + Spraycan.theme_id + '/graphics';
+    var base = '/spraycan/themes/' + Spraycan.theme_id + '/file';
     if (this.isNew()) return base;
     return base + (base.charAt(base.length - 1) == '/' ? '' : '/') + this.id;
   },

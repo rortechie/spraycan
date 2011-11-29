@@ -6,13 +6,13 @@ module DefaceEditor
       @theme ||= DefaceEditor::Theme.create(:name => name, :active => true)
       @theme.update_attribute(:imported_from, name)
 
-      [:javascripts, :stylesheets, :graphics, :view_overrides].each {|association| @theme.send(association).delete_all }
+      [:javascripts, :stylesheets, :files, :view_overrides].each {|association| @theme.send(association).delete_all }
 
       assets_path = engine.root.join(engine.paths["app/assets"].to_s) #might be custom, so need to get it this way
 
       enumerate_and_import(assets_path.join("javascripts"), :javascripts, :js)
       enumerate_and_import(assets_path.join("stylesheets"), :stylesheets, :css)
-      enumerate_and_import(assets_path.join("images"), :graphics, :file, 'images', true)
+      enumerate_and_import(assets_path.join("images"), :files, :file, 'images', true)
 
       import_overrides(engine.root.join("app/overrides"))
     end

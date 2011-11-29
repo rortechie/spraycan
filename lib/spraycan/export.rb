@@ -24,9 +24,9 @@ module DefaceEditor
             create_file File.join(asset_base_path, "stylesheets", "#{stylesheet.name}.css"), stylesheet.body
           end
 
-          @theme.graphics.each do |graphic|
-            next unless File.exist? graphic.file.path
-            copy_file graphic.file.path, File.join(asset_base_path, "images", graphic.name)
+          @theme.files.each do |file|
+            next unless File.exist? file.file.path
+            copy_file file.file.path, File.join(asset_base_path, "images", file.name)
           end
 
 

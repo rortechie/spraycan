@@ -1,67 +1,58 @@
-Spraycan.Routers.Themes = Backbone.Router.extend({
+Spraycan.Routers.Themes = Spraycan.Routers.Base.extend({
+  klass: 'themes',
+
   routes: {
-    "themes": "load_all",
-    "switch_theme/:id": "switch_theme",
-    "delete_theme/:id": "delete_theme"
+    "theme?all": "all",
+    "theme/:cid": "edit",
+    "theme?new": "new_record",
+    "theme?delete=:cid&confirm=:confirm": "delete_record",
+    "theme?switch=:cid": "switch_theme"
   },
 
-  load_all: function(name) {
-    Spraycan.set_current('themes')
-
-    if(Spraycan.themes==undefined){
-      Spraycan.themes = new Spraycan.Collections.Themes();
-
-      Spraycan.themes.bind("reset", this.update_themes);
-      Spraycan.themes.bind("add", this.update_themes);
-      Spraycan.themes.bind("remove", this.update_themes);
-
-      Spraycan.themes.fetch({
-        error: function() {
-          new Error({ message: "Error loading themes." });
-        }
-      });
-    }
-
+  initialize: function(){
+    Spraycan[this.klass] =  eval("new Spraycan.Collections." + this.klass.camelize() + "()");
+    Spraycan[this.klass].bind("reset", this.collection_fetched, this);
+    Spraycan[this.klass].bind("reset", this.collection_changed, this);
+    Spraycan[this.klass].bind("add", this.collection_changed, this);
+    Spraycan[this.klass].bind("remove", this.collection_changed, this);
   },
 
-  update_themes: function() {
-    window.location.href ="#";
-    new Spraycan.Views.Themes.List();
+  all: function(name) {
+    Spraycan.set_current(this.klass, 'index');
+    Spraycan.ensure_fetched(this.klass);
+
+    eval("new Spraycan.Views." + this.klass.camelize() + ".List()");
   },
 
-  switch_theme: function(id) {
-    var theme = _.detect(Spraycan.themes.models, function(t) { return t.id == id });
+  switch_theme: function(cid) {
+    var theme = Spraycan[this.klass].getByCid(cid);
 
-    Spraycan.theme_id = id;
+    Spraycan.theme_id = theme.id;
     Spraycan.theme_name = theme.attributes.name;
-    $('#theme_name').text(theme.attributes.name); 
 
-    Spraycan.previous = { html: null, css: null, files: null };
-    Spraycan.view_overrides = undefined;
-    Spraycan.stylesheets = undefined;
-    Spraycan.files = undefined;
+    Spraycan.reset_collections();
 
     // frames[0].location.href = frames[0].location.href;
 
     window.location.href ="#";
     new Spraycan.Views.Themes.List();
-  },
-
-  delete_theme: function(id) {
-    $('.qtip.ui-tooltip').qtip('hide');
-
-    if(Spraycan.themes.length==1){
-      $('img#busy').show_message("Whoops!", "Sorry you cannot delete the last theme, please add a new theme before deleting this one.");
-    }else{
-      var theme = _.detect(Spraycan.themes.models, function(t) { return t.id == id });
-      theme.destroy();
-      Spraycan.themes.remove(theme);
-
-      if(Spraycan.theme_id==id){
-        window.location.href ="spraycan#switch_theme/" + Spraycan.themes.models[0].get('id');
-      }
-    }
   }
+
+  // delete_theme: function(id) {
+  //   $('.qtip.ui-tooltip').qtip('hide');
+
+  //   if(Spraycan.themes.length==1){
+  //     $('img#busy').show_message("Whoops!", "Sorry you cannot delete the last theme, please add a new theme before deleting this one.");
+  //   }else{
+  //     var theme = _.detect(Spraycan.themes.models, function(t) { return t.id == id });
+  //     theme.destroy();
+  //     Spraycan.themes.remove(theme);
+
+  //     if(Spraycan.theme_id==id){
+  //       window.location.href ="spraycan#switch_theme/" + Spraycan.themes.models[0].get('id');
+  //     }
+  //   }
+  // }
 
 });
 

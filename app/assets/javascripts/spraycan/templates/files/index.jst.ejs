@@ -1,0 +1,42 @@
+<div class="container-fluid">
+  <form action="#" class="form-stacked">
+
+    <div id="file_wrapper" class="pull-left">
+
+      <div class="row">
+        <h3><%= Spraycan.theme_name %> &raquo; Files</h3>
+      </div>
+
+      <div class="row">
+        <p>I can't think of any text to put here, but the view looks much better with something.</p>
+      </div>
+
+      <div class="row">
+        <dl id="files">
+         <% if(Spraycan.loaded.files){ %>
+            <% if(collection.length==0){ %>
+              <dt>No files found.</dt>
+            <% } %>
+            <% collection.each(function(item) { %>
+              <dt>
+                <a href="/spraycan#file/<%= item.cid %>"><%= item.get('name') %></a>
+                <% if(item.get('id')==undefined){ %>
+                  <em>*</em>
+                <% } %>
+              </dt>
+            <% }); %>
+          <% }else{ %>
+            <dt>Loading...</td>
+          <% } %>
+        </dl>
+      </div>
+
+    </div>
+
+    <div id="edit_wrapper" class="pull-right">
+      <a href="/spraycan#file?new" class="btn primary success pull-right">New File</a>
+    </div>
+
+
+  </form>
+</div>

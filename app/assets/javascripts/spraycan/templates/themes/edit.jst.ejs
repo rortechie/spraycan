@@ -1,22 +1,49 @@
-  <form id="theme_form">
-    <% if(model.attributes.id==undefined){ %>
-      <h3>Create New Theme</h3>
-    <% } %>
-    <div class="fields">
-      <label>Name:</label>
-      <input name="name" type="text" value="<%= model.attributes.name %>">
+<form id="theme_form" class="form-stacked">
+  <fieldset>
+    <div class="row">
+      <div class="pull-left span8">
+        <% if(theme.id==undefined){ %>
+          <h3>Create New Theme</h3>
+        <% } %>
+
+        <div class="clearfix">
+          <label>Name:</label>
+          <div class="input">
+            <input name="name" type="text" value="<%= theme.name %>">
+          </div>
+        </div>
+
+        <ul class="clearfix inputs-list">
+          <li>
+            <label>
+              <input type="checkbox" value="true" name="active" <%= theme.active ? 'checked="checked"' : '' %>>
+              <span><strong>Active</strong> - this theme will be applied to current site.</span>
+            </label>
+          </li>
+        </ul><br>
+
+      </div>
+      <div class="pull-left span8 split_edit">
+        <% if(theme.id==undefined){ %>
+          <h3>Import Existing Theme</h3>
+
+          <div class="clearfix">
+            <label>Theme File<D-r>:</label>
+            <div class="input">
+              <input type="file" name="import" id="file1">
+            </div>
+          </div>
+        <% } %>
+      </div>
+  </div>
+  <div class="actions row clearfix">
+    <div class="pull-right">
+      <button rel="save" class="btn primary">Save Changes</button>
+      <a rel="delete" href="/spraycan#theme?delete=<%= cid %>&confirm=<%= theme.id==undefined ? 'true' : 'false' %>" class="btn danger" >
+        <%= theme.id==undefined ? 'Discard' : 'Delete' %>
+      </a>
+      <a href="/spraycan#theme?all" class="btn">Close</a>
     </div>
-    <div class="fields">
-      <label>Active:</label>
-      <input name="active" value="true" type="checkbox" <%= model.attributes.active ? 'checked="checked"' : '' %>>
-    </div>
-  </form>
-  <% if(model.attributes.id==undefined){ %>
-    <hr>
-    <h3>Import Existing Theme</h3>
-    <div class="fields">
-      <label>Import:</label>
-      <input type="file" name="import" id="file1">
-    </div>
-  <% } %>
-</div>
+  </div>
+  </fieldset>
+</form>

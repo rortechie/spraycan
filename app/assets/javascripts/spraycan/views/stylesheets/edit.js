@@ -25,8 +25,6 @@ Spraycan.Views.Stylesheets.Edit = Backbone.View.extend({
     attrs = $('form#stylesheet_form').serializeObject();
     attrs.css = this.code_editor.getSession().getValue();
 
-    var isNew = this.model.isNew();
-
     this.model.save(attrs, {
       success: function(model, resp) {
 

@@ -16,11 +16,7 @@ iframe{
 }
 
 div#spraycan{
-  /* background-color:#111;*/
   background-color: #FEFBF3;
-  /* opacity:0.96;*/
-  /* filter:alpha(opacity=96);*/
-  /* -moz-opacity:0.96;*/
   bottom: -10px;
   height: 350px;
   position: absolute;
@@ -31,8 +27,12 @@ div#spraycan .topbar{
   top: auto;
 }
 div#spraycan #main{
-  margin-top: 35px;
+  margin-top: 40px;
 }
+div#spraycan .index_actions{
+  padding-top: 10px;
+}
+
 div#spraycan .advanced{
   display: none;
 }
@@ -41,6 +41,83 @@ div#spraycan #busy{
   width: 16px;
   margin: 12px 0px;
 }
+
+div#spraycan dl#files{
+  float: left;
+  height: 220px;
+  width: 100%;
+  padding: 0.5%;
+  overflow-y: auto;
+  border: 1px solid #404040;
+}
+div#spraycan dl#files dt{
+  float: left;
+  width: 33%;
+}
+div#spraycan #file_wrapper{
+  width: 75%;
+}
+
+div#spraycan #edit_wrapper {
+  width: 20%;
+  margin: 10px 20px;
+}
+div#spraycan #edit_wrapper h3{
+  margin: 0 0 10px 0;
+}
+div#spraycan #edit_wrapper .fields {
+   float: none;
+   width: auto;
+   height: 30px;
+   margin-right: 0px;
+}
+div#spraycan #edit_wrapper .fields label{
+  width: 60px;
+}
+div#spraycan #edit_wrapper .fields span{
+  vertical-align: super;
+}
+div#spraycan #edit_wrapper .fields input{
+  height: auto;
+}
+div#spraycan #edit_wrapper .actions {
+  clear: none;
+  background: none;
+  border-top: none;
+  text-align: right;
+}
+div#spraycan #file_preview  {
+  margin-top: 5px;
+  height: 120px;
+  text-align: center;
+}
+div#spraycan #file_preview img {
+  background-color: #FFFFFF;
+  border: 1px solid #FFFFFF;
+  max-width: 200px;
+  max-height: 120px;
+  padding: 4px;
+}
+div#spraycan #graphic_details{
+  height: 250px;
+}
+div#spraycan #graphic_details form{
+  float: right;
+  margin-right: 111px;
+  text-align: left;
+  width: 110px;
+}
+div#spraycan #graphics_list a{
+  text-decoration: underline
+}
+
+div#spraycan .split_edit{
+  border-left: 5px solid #EEEEEE;
+  height: 220px;
+  margin-bottom: 10px;
+  padding-left: 22px;
+}
+
 
 .align-right{
   text-align: right;

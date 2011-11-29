@@ -1,5 +1,5 @@
 var Spraycan = {
-  Views: {Shared: {}, Themes: {}, ViewOverrides: {}, Stylesheets: {}, Javascripts: {}, Graphics: {}, Inspector: {} },
+  Views: {Shared: {}, Themes: {}, ViewOverrides: {}, Stylesheets: {}, Javascripts: {}, Files: {}, Inspector: {} },
   Routers: {},
   Collections: {},
 
@@ -7,32 +7,26 @@ var Spraycan = {
 
   view: null, //holds edit view for ACE events to access
 
-  previous: { html: null, css: null, js: null, files: null },
-
   theme_id: <%= Spraycan::Theme.active.first.id %>,
 
   theme_name: '<%= Spraycan::Theme.active.first.name %>',
 
   editor: {minimised: true, maximised: false, visible: false },
 
-  loaded: {view_overrides: false, stylesheets: false, javascripts: false, grahpics: false},
+  loaded: {},
 
   //holds the last x models opened for each class
-  current_collections: { view_overrides: [], javascripts: [], stylesheets: [] }, 
+  current_collections: {}, 
 
   //holds unsaved models when main collection is being fetched
-  new_collections: { view_overrides: [], javascripts: [], stylesheets: [] }, 
+  new_collections: {}, 
 
   init: function() {
-    view_overrides_controller = new Spraycan.Routers.ViewOverrides();
-
     new Spraycan.Routers.Common();
-    new Spraycan.Routers.Themes();
-    new Spraycan.Routers.Templates();
-    new Spraycan.Routers.Stylesheets();
-    new Spraycan.Routers.Javascripts();
-    new Spraycan.Routers.Graphics();
     new Spraycan.Routers.Inspector();
+    new Spraycan.Routers.Themes();
+
+    Spraycan.reset_collections(); //initializes collection routers aswell
 
     Backbone.history.start();
 
@@ -60,6 +54,21 @@ var Spraycan = {
 
       $('#busy').hide();
     });
+  },
+
+  reset_collections: function(){
+    Spraycan.loaded = {view_overrides: false, stylesheets: false, javascripts: false, files: false, themes: Spraycan.loaded['themes']};
+
+    Spraycan.current_collections = { view_overrides: [], javascripts: [], stylesheets: [], files: [], themes: Spraycan.current_collections['themes']};
+
+    Spraycan.new_collections = { view_overrides: [], javascripts: [], stylesheets: [], files: [], themes: Spraycan.new_collections['themes']};
+
+    //recreates collections
+    new Spraycan.Routers.ViewOverrides();
+    new Spraycan.Routers.Stylesheets();
+    new Spraycan.Routers.Javascripts();
+    new Spraycan.Routers.Files();
+
   },
 
   refresh_toolbar: function(){
@@ -113,13 +122,7 @@ var Spraycan = {
     if(model!=undefined){
       var collection;
 
-      if(group=='javascripts'){
-        collection = Spraycan.current_collections.javascripts;
-      }else if(group=='stylesheets'){
-        collection = Spraycan.current_collections.stylesheets;
-      }else if(group=='view_overrides'){
-        collection = Spraycan.current_collections.view_overrides;
-      }
+      collection = Spraycan.current_collections[group];
 
       existing = _.find(collection, function(m){ return model.cid == m.cid } )
 

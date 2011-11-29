@@ -2,7 +2,7 @@ Spraycan.Routers.Base = Backbone.Router.extend({
   klass: undefined,
 
   initialize: function(){
-    Spraycan[this.klass] =  eval("new Spraycan.Collections." + this.klass.camelize() + "()");
+    Spraycan[this.klass] = eval("new Spraycan.Collections." + this.klass.camelize() + "()");
     Spraycan[this.klass].bind("reset", this.collection_fetched, this);
     Spraycan[this.klass].bind("reset", this.collection_changed, this);
     Spraycan[this.klass].bind("add", this.collection_changed, this);

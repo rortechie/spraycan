@@ -24,7 +24,7 @@ class Spraycan::Javascript < ActiveRecord::Base
 
       file_path.to_s.include?(".js") ? file_path.to_s : file_path.to_s << ".js"
     end
-    
+
     def remove_sprockets_dump
       FileUtils.rm sprocket_dump_path
     end

@@ -36,12 +36,9 @@ Spraycan.Views.Inspector.Show = Backbone.View.extend({
 
     if(this.hook!=undefined){
       var details = Spraycan.get_hook_details(this.hook);
-      console.log(details['source']);
       $('#main #source').text(details['source']);
-      $('#main #source_template').text(" froom " + details['virtual_path']);
+      $('#main #source_template').text(" from " + details['virtual_path']);
     }
-
-
 
     Spraycan.animate_resize(this.calculate_size());
   },

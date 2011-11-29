@@ -1,47 +1,53 @@
-<div id="themes_list">
-  <table cellspacing="0" cellpadding="0">
+<div class="container-fluid">
+  <div class="pull-left">
+    <h3>Themes</h3>
+    <p>I can't think of any text to put here, but the view looks much better with something.</p>
+  </div>
+
+  <div class="pull-right index_actions">
+    <a href="/spraycan#theme?new" class="btn primary success pull-right">New Theme</a>
+  </div>
+
+  <table class="condensed-table zebra-striped sortable">
     <thead>
-      <tr>
-        <th style="width:5%;">&nbsp;</th>
-        <th style="width:45%;">Name</th>
-        <th style="width:23%;">Active</th>
-        <th style="width:25%;">&nbsp;</th>
-      </tr>
+      <th colspan="2">Name</th>
+      <th>Active</th>
+      <th class="align-right">Actions</th>
     </thead>
-  </table>
-  <div class="scroller">
-    <table cellspacing="0" cellpadding="0">
-      <tbody>
+    <tbody>
+     <% if(Spraycan.loaded.themes){ %>
+        <% if(collection.length==0){ %>
+          <tr>
+            <td colspan="4">No themes found.</td>
+          </tr>
+        <% } %>
         <% collection.each(function(item) { %>
-          <tr id="<%= item.attributes.id %>">
-            <td class="handle" style="width:5%;">-</td>
-            <td style="width:46%;">
-              <%= item.attributes.name %>
+          <tr>
+            <td class="handle" style="width:15px;">-</td>
+            <td>
+              <%= item.escape('name') %>
             </td>
-            <td style="width:25%;">
+            <td>
               <%= item.attributes.active ? 'Yes' : 'No' %>
             </td>
-            <td style="width:25%;">
-              <a class="edit" data-theme-id="<%= item.attributes.id %>" href="/spraycan#theme/<%= item.attributes.id %>">Edit</a>
-              <% if(Spraycan.theme_id != item.attributes.id){ %>
-               | <a data-theme-id="<%= item.attributes.id %>" href="/spraycan#switch_theme/<%= item.attributes.id %>">Load</a>
+            <td class="align-right">
+              <a href="/spraycan#theme/<%= item.cid %>" class="btn small primary">Edit</a>
+              <% if(item.id==undefined){ %>
+                <a href="/spraycan#theme?delete=<%= item.cid %>&confirm=true" class="btn small danger">Discard</a>
+              <% }else{ %>
+                <a href="/spraycan#theme?delete=<%= item.cid %>&confirm=false" class="btn small danger">Delete</a>
+
+                <a href="/spraycan#theme?switch=<%= item.cid %>" class="btn small<%= Spraycan.theme_id==item.id ? ' disabled' : '' %>">Load</a>
               <% } %>
-              | <a data-theme-id="<%= item.attributes.id %>" href="/spraycan/themes/<%= item.attributes.id %>/export">Export</a>
-            </td>
+              <a data-theme-id="<%= item.attributes.id %>" href="/spraycan/themes/<%= item.attributes.id %>/export" class="btn small">Export</a>
+            <td>
           </tr>
         <% }); %>
-      </tobdy>
-    </table>
-  </div>
-</div>
-<div id="edit_wrapper">
-  <div id="theme_details">
-  </div>
-  <div id="actions">
-    <ul class="buttons toggle">
-      <li class="disabled"><a href="#" rel="delete">Delete</a></li>
-      <li><a href="#" rel="new">New</a></li>
-      <li class="disabled last"><a href="#" rel="save">Save</a></li>
-    </ul>
-  </div>
+      <% }else{ %>
+        <tr>
+          <td colspan="4">Loading...</td>
+        </tr>
+      <% } %>
+    </tobdy>
+  </table>
 </div>
