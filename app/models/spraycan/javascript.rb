@@ -1,4 +1,6 @@
 class Spraycan::Javascript < ActiveRecord::Base
+  include Spraycan::SprocketsHelper
+
   belongs_to :theme
 
   before_save :check_name_change
@@ -7,10 +9,6 @@ class Spraycan::Javascript < ActiveRecord::Base
 
   def body
     self.js
-  end
-
-  def sprockets_dump(root_path=nil)
-    File.open(sprocket_dump_path(root_path), 'w') {|f| f.write(self.body) } 
   end
 
   private
@@ -26,7 +24,7 @@ class Spraycan::Javascript < ActiveRecord::Base
     end
 
     def remove_sprockets_dump
-      FileUtils.rm sprocket_dump_path
+      FileUtils.rm sprocket_dump_path rescue nil
     end
 
     def check_name_change

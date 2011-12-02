@@ -19,7 +19,7 @@ class Spraycan::Theme < ActiveRecord::Base
   before_save :check_name_change
   after_create :reset_asset_paths
 
-  acts_as_list
+  # acts_as_list
 
   def sprockets_dump_root
     return @theme_dump_root if @theme_dump_root.present?

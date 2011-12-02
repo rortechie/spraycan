@@ -21,4 +21,8 @@ Gem::Specification.new do |s|
   s.add_dependency('carrierwave', '0.5.4')
   s.add_dependency('guid', '0.1.1')
   s.add_dependency('acts_as_list', '>= 0.1.2')
+
+  s.add_development_dependency('rspec', '>= 2.7.0')
+  s.add_development_dependency('rspec-rails', '>= 2.7.0')
+  s.add_development_dependency('factory_girl', '>= 2.3.0')
 end

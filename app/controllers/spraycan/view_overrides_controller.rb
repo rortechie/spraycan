@@ -2,7 +2,6 @@ class Spraycan::ViewOverridesController < Spraycan::BaseController
   layout 'spraycan/editor'
 
   before_filter :set_theme, :only => [:index, :create]
-  before_filter :set_replacement, :only => [:create, :update]
   after_filter :clear_resolver_cache, :only => [:create, :update, :destroy]
 
   respond_to :json
@@ -44,16 +43,5 @@ class Spraycan::ViewOverridesController < Spraycan::BaseController
     def set_theme
       @theme = Spraycan::Theme.find(params[:theme_id])
     end
-
-    def set_replacement
-      params[:view_override][:replacement] = case params[:view_override][:replace_with].to_sym
-        when :text then params[:view_override].delete(:replace_text)
-        when :partial then params[:view_override].delete(:replace_parital)
-        when :template then params[:view_override].delete(:replace_template)
-      end
-
-      [:replace_text, :replace_partial, :replace_template].each {|replacement| params[:view_override].delete(replacement) }
-    end
-
 
 end

@@ -22,7 +22,7 @@
           </tr>
         <% } %>
         <% collection.each(function(item) { %>
-          <tr>
+          <tr data-id="<%= item.id==undefined ? item.cid : item.id %>">
             <td class="handle" style="width:15px;">-</td>
             <td>
               <%= item.escape('name') %>

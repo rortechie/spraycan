@@ -15,6 +15,8 @@ var Spraycan = {
 
   loaded: {},
 
+  busy: { ajax: false, iframe: true },
+
   //holds the last x models opened for each class
   current_collections: {}, 
 
@@ -34,26 +36,17 @@ var Spraycan = {
 
     //ajax activity indicators
     $(document).ajaxSend(function() {
-      $('#busy').show();
+      Spraycan.busy.ajax = true;
+      Spraycan.busy_indicator();
     });
     $(document).ajaxStop(function() {
-      $('#busy').hide();
+      Spraycan.busy.ajax = false;
+      Spraycan.busy_indicator();
     });
 
-    //iframe activity indicators
-    $(frames[0]).unload(function() {
-      $('#busy').show();
-    });
-    $(frames[0]).load(function() {
-      $(frames[0]).unload(function() {
-        $('#busy').show();
-      });
-      $(frames[0]).load(function() {
-        $('#busy').hide();
-      });
-
-      $('#busy').hide();
-    });
+    Spraycan.set_current('themes', 'index');
+    Spraycan.ensure_fetched('themes');
+    new Spraycan.Views.Themes.List();
   },
 
   reset_collections: function(){
@@ -72,6 +65,7 @@ var Spraycan = {
   },
 
   refresh_toolbar: function(){
+    Spraycan.busy_indicator();
     new Spraycan.Views.Shared.Toolbar();
   },
 
@@ -195,8 +189,20 @@ var Spraycan = {
 
     return {virtual_path: template, source:  Base64.decode(hook[1])};
 
-  }
+  },
 
+  iframe_busy: function(state){
+    Spraycan.busy.iframe = state;
+    Spraycan.busy_indicator();
+  },
+
+  busy_indicator: function(){
+    if(Spraycan.busy.iframe || Spraycan.busy.ajax){
+      $('#busy').show();
+    }else{
+      $('#busy').hide();
+    }
+  }
 
 };
 

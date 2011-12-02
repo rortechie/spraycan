@@ -4,8 +4,8 @@
 <% if Rails.env.development? %>
   <% Spraycan::Theme.active.each do |theme| %>
     <% theme.stylesheets.each do |stylesheet| %>
-      <style id="<%= stylesheet.name %>">
-        <%#= stylesheet.css %>
+      <style id="<%= stylesheet.style_id %>">
+        <%= stylesheet.css %>
       </style>
     <% end %>
   <% end %>

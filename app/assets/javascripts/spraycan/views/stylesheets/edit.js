@@ -27,6 +27,7 @@ Spraycan.Views.Stylesheets.Edit = Backbone.View.extend({
 
     this.model.save(attrs, {
       success: function(model, resp) {
+        Spraycan.reload_frame();
 
         $("a[rel='delete']").html('Delete');
       },
@@ -99,16 +100,21 @@ Spraycan.Views.Stylesheets.Edit = Backbone.View.extend({
   apply_styles: function() {
     Spraycan.view.editor_changed();
 
-    var name = Spraycan.view.model.get('name')
-    if(name==""){
+    //need to use Spraycan.view here as this is
+    //an ACE callback, can't control 'this'
+    var style_id = Spraycan.view.model.get('name')
+    style_id = style_id.replace(/\//g, '-');
+    style_id = style_id.replace(/.css/g, '');
+
+    if(style_id==""){
       //tell user to set name first
     }else{
 
-      if(frames[0].$jQ("style#" + name).length==0){
-        frames[0].$jQ("head").append("<style id='" + name + "'></style>");
+      if(frames[0].$jQ("style#" + style_id).length==0){
+        frames[0].$jQ("head").append("<style id='" + style_id + "'></style>");
       }
 
-      frames[0].$jQ("style#" + name).html(Spraycan.view.code_editor.getSession().getValue());
+      frames[0].$jQ("style#" + style_id).html(Spraycan.view.code_editor.getSession().getValue());
     }
   },
 

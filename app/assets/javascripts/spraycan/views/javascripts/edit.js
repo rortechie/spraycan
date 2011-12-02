@@ -29,6 +29,7 @@ Spraycan.Views.Javascripts.Edit = Backbone.View.extend({
 
     this.model.save(attrs, {
       success: function(model, resp) {
+        Spraycan.reload_frame();
 
         $("a[rel='delete']").html('Delete');
       },

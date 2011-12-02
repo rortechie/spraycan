@@ -2,6 +2,7 @@ Spraycan.Views.ViewOverrides.Edit = Backbone.View.extend({
   show_form: false,
   show_text_editor: false,
   show_advanced: false,
+  show_attributes_editor: false,
   code_editor: null,
 
   events: {
@@ -10,7 +11,8 @@ Spraycan.Views.ViewOverrides.Edit = Backbone.View.extend({
     "change select[name='replace_with']": "set_replacement",
     "change select[name='target']": "set_replacement",
     "change input" :"changed",
-    "change select" :"changed"
+    "change select" :"changed",
+    "change textarea" :"changed"
   },
 
   initialize: function() {
@@ -29,7 +31,16 @@ Spraycan.Views.ViewOverrides.Edit = Backbone.View.extend({
     if(attrs.disabled==undefined){
       attrs.disabled = false;
     }
-    attrs.replace_text = this.code_editor.getSession().getValue();
+
+    //removes unwanted prepended forward slashes / from rails virtual paths
+    attrs.virtual_path = attrs.virtual_path.replace(/^\//, '');
+
+    if(this.show_text_editor){
+      attrs.replacement = this.code_editor.getSession().getValue();
+    }else if(this.show_attributes_editor){
+      attrs.replacement = $("#replace_set_attibutes").val();
+      attrs.replace_with = 'attributes';
+    }
 
     var isNew = this.model.isNew();
 
@@ -129,6 +140,10 @@ Spraycan.Views.ViewOverrides.Edit = Backbone.View.extend({
         if(this.show_advanced){
           height += 60;
         }
+
+        if(this.show_attributes_editor){
+          height += 95;
+        }
       }
     }
 
@@ -140,42 +155,69 @@ Spraycan.Views.ViewOverrides.Edit = Backbone.View.extend({
     var target = $("select[name='target']").val();
 
     $('div#replace_withs > div').hide();
-    $('div#replace_with_' + replacement).show();
-
-    if(target=='remove'){
+    
+    if(target=='remove' || target=='remove_contents'){
       $('div#replace_withs').hide();
       this.show_text_editor = false;
     }else{
       $('div#replace_withs').show();
 
-      if(replacement=="text"){
-        this.show_text_editor = true;
-        var editor_height = 17
+      $('div#replace_withs .fields').attr('disabled','true');
 
-        if(Spraycan.editor.maximised){
-          editor_height = $(window).height() - 170;
-        }
+      var field;
 
-        $("#view_override_replace_text").height(editor_height);
-        this.code_editor = ace.edit("view_override_replace_text");
+      if(target=="set_attributes"){
+        this.show_attributes_editor = true;
 
-        this.code_editor.setTheme("ace/theme/vibrant_ink");
-
-        var html_mode = require("ace/mode/html").Mode;
-        this.code_editor.getSession().setTabSize(2);
-        this.code_editor.getSession().setMode(new html_mode());
-        if(this.model.get('replacement')!=null){
-          this.code_editor.getSession().setValue(this.model.get('replacement'));
-        }
-
-        this.code_editor.getSession().doc.on('change', this.editor_changed, {view: this});
-
-      }else if(target=="partial"){
         this.code_editor = null;
-        $("#view_override_replace_parital").val(this.model.get('replacement'));
-      }else if(target=="template"){
-        this.code_editor = null;
-        $("#view_override_replace_template").val(this.model.get('replacement'));
+        field = $("#replace_set_attibutes");
+        field.val(this.model.get('replacement'));
+
+        $("select[name='replace_with']").attr('disabled','true');
+        $('div#replace_with_' + target).show();
+
+      }else{
+        this.show_attributes_editor = false;
+
+        $('div#replace_with_' + replacement).show();
+
+        $("select[name='replace_with']").removeAttr('disabled');
+
+        if(replacement=="text"){
+          this.show_text_editor = true;
+          var editor_height = 17
+
+          if(Spraycan.editor.maximised){
+            editor_height = $(window).height() - 170;
+          }
+
+          $("#view_override_replace_text").height(editor_height);
+          this.code_editor = ace.edit("view_override_replace_text");
+
+          this.code_editor.setTheme("ace/theme/vibrant_ink");
+
+          var html_mode = require("ace/mode/html").Mode;
+          this.code_editor.getSession().setTabSize(2);
+          this.code_editor.getSession().setMode(new html_mode());
+          if(this.model.get('replacement')!=null){
+            this.code_editor.getSession().setValue(this.model.get('replacement'));
+          }
+
+          this.code_editor.getSession().doc.on('change', this.editor_changed, {view: this});
+
+        }else if(replacement=="partial"){
+          this.code_editor = null;
+          field = $("#replace_parital");
+          field.val(this.model.get('replacement'));
+        }else if(replacement=="template"){
+          this.code_editor = null;
+          field = $("#replace_template");
+          field.val(this.model.get('replacement'));
+        }
+      }
+
+      if(field!=undefined){
+        field.removeAttr('disabled');
       }
 
     }

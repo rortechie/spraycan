@@ -31,6 +31,7 @@ Spraycan.Routers.Themes = Spraycan.Routers.Base.extend({
     Spraycan.theme_name = theme.attributes.name;
 
     Spraycan.reset_collections();
+    Spraycan.refresh_toolbar();
 
     // frames[0].location.href = frames[0].location.href;
 

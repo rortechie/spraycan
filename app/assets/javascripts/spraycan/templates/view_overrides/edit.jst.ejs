@@ -12,7 +12,7 @@
         <label>Action:</label>
         <div class="input">
           <select name="target" id="view_override_target">
-            <% _.each(['remove', 'replace', 'insert_after', 'insert_before', 'insert_top', 'insert_bottom'], function(_target) { %>
+            <% _.each(['remove', 'replace', 'replace_contents', 'surround', 'surround_contents', 'insert_after', 'insert_before', 'insert_top', 'insert_bottom', 'set_attributes'], function(_target) { %>
               <option <%= _target==view_override.target ? 'selected' : '' %>><%= _target %></option>
             <% }); %>
           </select>
@@ -30,8 +30,7 @@
         </div>
       </div>
 
-      <div class="pull-right">
-        <br>
+      <div class="pull-right edit_actions">
         <a rel="advanced" class="btn info" href="#">Advanced</a>
       </div>
     </div>
@@ -91,14 +90,19 @@
         <pre id="view_override_replace_text" class="small_editor"><p>I am a p.</p></pre>
       </div>
 
-      <div class="fields replacement" id="replace_with_partial">
+      <div class="replacement" id="replace_with_partial">
         <label>Partial:</label>
-        <input type="text" size="30" name="replace_parital" disabled="disabled">
+        <input type="text" class="field span8" id="replace_parital" name="replacement"disabled>
       </div>
 
-      <div class="fields replacement" id="replace_with_template">
+      <div class="replacement" id="replace_with_template">
         <label>Template:</label>
-        <input type="text" size="30" name="replace_template" disabled="disabled">
+        <input type="text" class="field span8" id="replace_template" name="replacement" disabled>
+      </div>
+
+      <div class="replacement" id="replace_with_set_attributes">
+        <label>Attributes:</label>
+        <textarea class="field span16" id="replace_set_attibutes" name="replacement" disabled></textarea>
       </div>
     </div>
 
@@ -122,4 +126,3 @@
     </div>
   </fieldset>
 </form>
-

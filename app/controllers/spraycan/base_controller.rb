@@ -3,10 +3,10 @@ class Spraycan::BaseController < ActionController::Base
 
   private
     def authenticate_spraycan
-      unless Rails.env.development?
-        raise ActionController::RoutingError.new('Spraycan is only enabled in development mode by default.')
-        return false
-      end
+      # unless Rails.env.development?
+      #   raise ActionController::RoutingError.new('Spraycan is only enabled in development mode by default.')
+      #   return false
+      # end
     end
 
     # Clears all cached ActionView Templates, forcing re-compile

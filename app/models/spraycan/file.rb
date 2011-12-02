@@ -3,6 +3,8 @@ require "fileutils"
 class Spraycan::File < ActiveRecord::Base
   include Sprockets::Helpers::RailsHelper
   include Sprockets::Helpers::IsolatedHelper
+  include Spraycan::SprocketsHelper
+
 
   belongs_to :theme
 
@@ -14,10 +16,6 @@ class Spraycan::File < ActiveRecord::Base
 
   def body
     self.file.read
-  end
-
-  def sprockets_dump(root_path=nil)
-    File.open(sprocket_dump_path(root_path), 'w') {|f| f.write(self.body) } 
   end
 
   def url
@@ -45,6 +43,6 @@ class Spraycan::File < ActiveRecord::Base
     end
 
     def remove_sprockets_dump
-      FileUtils.rm sprocket_dump_path
+      FileUtils.rm sprocket_dump_path rescue nil #shutup
     end
 end

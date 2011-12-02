@@ -34,16 +34,6 @@ module Spraycan
 
         end
 
-        # # #catch all template renders for use in dropdown
-        # ActiveSupport::Notifications.subscribe(/render/) do |*args|
-        #   Spraycan::Templates.add_template(args[3], args[4])
-        # end
-
-        # #catch all controller action processing
-        # ActiveSupport::Notifications.subscribe(/start_processing.action_controller/) do |*args|
-        #   Spraycan::Templates.add_action(args[3], args[4])
-        # end
-
       end
 
       self.initialize_themes

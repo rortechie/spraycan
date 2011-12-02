@@ -1,6 +1,8 @@
 require "fileutils"
 
 class Spraycan::Stylesheet < ActiveRecord::Base
+  include Spraycan::SprocketsHelper
+
   belongs_to :theme
 
   before_save :check_name_change
@@ -11,8 +13,8 @@ class Spraycan::Stylesheet < ActiveRecord::Base
     self.css
   end
 
-  def sprockets_dump(root_path=nil)
-    File.open(sprocket_dump_path(root_path), 'w') {|f| f.write(self.body) } 
+  def style_id
+    self.name.gsub('/', '-').gsub('.css', '')
   end
 
   private 
@@ -28,7 +30,7 @@ class Spraycan::Stylesheet < ActiveRecord::Base
     end
 
     def remove_sprockets_dump
-      FileUtils.rm sprocket_dump_path
+      FileUtils.rm sprocket_dump_path rescue nil
     end
 
     def check_name_change

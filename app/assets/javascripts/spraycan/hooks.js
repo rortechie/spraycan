@@ -50,7 +50,6 @@ function show_hook_details(target){
 
 
 function hook_zoom(in_or_out){
-  console.log(in_or_out);
   show_frames = true;
   var current_level = frame_level;
 
@@ -77,6 +76,8 @@ function hook_zoom(in_or_out){
 
 $jQ(function() {
   if(top.Spraycan!=undefined){
+    top.Spraycan.iframe_busy(false);
+
     $jQ('*').bind('mouseenter', find_hook_frame);
     show_hook_frames();
   }
@@ -85,7 +86,7 @@ $jQ(function() {
 //show activity while iframe is loading
 window.onbeforeunload = function() {
   if(top.Spraycan!=undefined){
-    top.$('#busy').show();
+    top.Spraycan.iframe_busy(true);
   }
 }
 

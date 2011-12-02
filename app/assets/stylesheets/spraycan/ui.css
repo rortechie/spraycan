@@ -7,7 +7,7 @@ body {
   padding: 0;
   margin: 0;
   height: 100%;
-  overflow: hidden;
+  /* overflow: hidden; this angers selenium*/
 }
 iframe{
   width: 100%;
@@ -31,6 +31,10 @@ div#spraycan #main{
 }
 div#spraycan .index_actions{
   padding-top: 10px;
+}
+div#spraycan .edit_actions{
+  padding-top: 10px;
+  margin-right: 20px;
 }
 
 div#spraycan .advanced{

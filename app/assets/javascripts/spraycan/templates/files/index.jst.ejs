@@ -18,7 +18,7 @@
               <dt>No files found.</dt>
             <% } %>
             <% collection.each(function(item) { %>
-              <dt>
+              <dt data-id="<%= item.id==undefined ? item.cid : item.id %>">
                 <a href="/spraycan#file/<%= item.cid %>"><%= item.get('name') %></a>
                 <% if(item.get('id')==undefined){ %>
                   <em>*</em>

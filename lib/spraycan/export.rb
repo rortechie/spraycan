@@ -1,6 +1,6 @@
 require 'thor'
 
-module DefaceEditor
+module Spraycan
   class Export < Thor
     include Thor::Actions
     
@@ -9,7 +9,7 @@ module DefaceEditor
     no_tasks do #stop Thor warnings
 
       def execute(railtie)
-        @theme = DefaceEditor::Theme.where(:name => railtie.engine_name).first
+        @theme = Spraycan::Theme.where(:name => railtie.engine_name).first
         if @theme.nil?
           puts "Theme named '#{railtie.engine_name}' cannot be found."
         else
@@ -17,25 +17,25 @@ module DefaceEditor
           asset_base_path = Pathname.new(railtie.root.join("app", "assets"))
 
           @theme.javascripts.each do |javascript|
-            create_file File.join(asset_base_path, "javascripts", "#{javascript.name}.js"), javascript.body
+            create_file ::File.join(asset_base_path, "javascripts", "#{javascript.name}.js"), javascript.body
           end
 
           @theme.stylesheets.each do |stylesheet|
-            create_file File.join(asset_base_path, "stylesheets", "#{stylesheet.name}.css"), stylesheet.body
+            create_file ::File.join(asset_base_path, "stylesheets", "#{stylesheet.name}.css"), stylesheet.body
           end
 
           @theme.files.each do |file|
-            next unless File.exist? file.file.path
-            copy_file file.file.path, File.join(asset_base_path, "images", file.name)
+            next unless ::File.exist? file.file.path
+            copy_file file.file.path, ::File.join(asset_base_path, "images", file.name)
           end
 
 
-          overrides_path = File.join(asset_base_path, "../", "overrides")
+          overrides_path = ::File.join(asset_base_path, "../", "overrides")
 
           @theme.view_overrides.each do |override|
             sequence = override.sequence_target.blank? ? 100 : {override.sequence.to_sym => override.sequence_target}
 
-            create_file File.join(overrides_path, "#{override.name}.rb") do
+            create_file ::File.join(overrides_path, "#{override.name}.rb") do
               %Q{Deface::Override.new(:virtual_path => %q{#{override.virtual_path}},
                           :name => %q{#{override.name}},
                           :#{override.target} => %q{#{override.selector}},

@@ -1,9 +1,9 @@
-module DefaceEditor
+module Spraycan
   class Import
     def self.execute(engine)
       name = engine.engine_name
-      @theme = DefaceEditor::Theme.where(:name => name).first
-      @theme ||= DefaceEditor::Theme.create(:name => name, :active => true)
+      @theme = Spraycan::Theme.where(:name => name).first
+      @theme ||= Spraycan::Theme.create(:name => name, :active => true)
       @theme.update_attribute(:imported_from, name)
 
       [:javascripts, :stylesheets, :files, :view_overrides].each {|association| @theme.send(association).delete_all }
@@ -25,13 +25,13 @@ module DefaceEditor
         search_path = binary ? base_path.join("**/*.*") : base_path.join("**/*.#{attr}")
 
         Dir.glob(search_path) do |file|
-          next unless File.file? file
+          next unless ::File.file? file
 
           relative_path = file.gsub(base_path, "")
           relative_path = relative_path[1..-1] if relative_path.first == "/"
 
           if binary
-            @theme.send(association).create(:name => relative_path, attr => File.open(file, "r"))
+            @theme.send(association).create(:name => relative_path, attr => ::File.open(file, "r"))
           else
             @theme.send(association).create(:name => relative_path, attr => IO.read(file))
           end
@@ -42,7 +42,7 @@ module DefaceEditor
         search_path = base_path.join("**/*.rb")
 
         Dir.glob(search_path) do |file|
-          next unless File.file? file
+          next unless ::File.file? file
 
           Deface::Override.all.clear
           load(file)
@@ -59,17 +59,24 @@ module DefaceEditor
                 new_override.closing_selector = override.args[:closing_selector]
               end 
 
-              if override.args.key? :text
-                new_override.replace_with = "text"
-                new_override.replacement  = override.args[:text]
-              elsif override.args.key? :partial
-                new_override.replace_with = "partial"
-                new_override.replacement  = override.args[:partial]
-              elsif override.args.key? :partial
-                new_override.replace_with = "partial"
-                new_override.replacement  = override.args[:template]
+              if override.action == :set_attributes
+                new_override.replace_with = "attributes"
+                new_override.replacement = override.args[:attributes].inspect rescue '{}'
               else
-                new_override.replace_with = "text"
+
+                if override.args.key? :text
+                  new_override.replace_with = "text"
+                  new_override.replacement  = override.args[:text]
+                elsif override.args.key? :partial
+                  new_override.replace_with = "partial"
+                  new_override.replacement  = override.args[:partial]
+                elsif override.args.key? :partial
+                  new_override.replace_with = "partial"
+                  new_override.replacement  = override.args[:template]
+                else
+                  new_override.replace_with = "text"
+                end
+
               end
 
               if sequence = override.args[:sequence]

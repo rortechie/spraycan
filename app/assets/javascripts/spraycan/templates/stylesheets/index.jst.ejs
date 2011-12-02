@@ -16,7 +16,7 @@
           </tr>
         <% } %>
         <% collection.each(function(item) { %>
-          <tr>
+          <tr data-id="<%= item.id==undefined ? item.cid : item.id %>">
             <td>
               <%= item.escape('name') %>
               <% if(item.get('id')==undefined){ %>
