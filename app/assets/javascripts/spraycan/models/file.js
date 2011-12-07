@@ -11,7 +11,7 @@ var File = Backbone.Model.extend({
   },
 
   url : function() {
-    var base = '/spraycan/themes/' + Spraycan.theme_id + '/file';
+    var base = '/spraycan/themes/' + Spraycan.theme_id + '/files';
     if (this.isNew()) return base;
     return base + (base.charAt(base.length - 1) == '/' ? '' : '/') + this.id;
   },

@@ -24,8 +24,8 @@ module Spraycan
 
     #writes file to disk for sprockets to find.
     def sprockets_dump(root_path=nil)
-      path = sprocket_dump_path(root_path)
-      ::File.open(path, 'w') {|f| f.write(self.body) } 
+      path = sprocket_dump_path(root_path).to_s
+      ::File.open(path, 'w') {|f| f.write(self.body) }
 
       if self.is_a? Spraycan::Stylesheet
         expire_asset(path, self.name, 'css')

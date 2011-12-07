@@ -74,6 +74,7 @@ describe "Javascripts" do
 
       page.should have_link('Delete')
 
+      sleep(1) #otherwise ajax is not completed?
       @theme.javascripts.where(:name => 'second.js').count.should == 1
     end
 

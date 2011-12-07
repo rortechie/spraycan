@@ -1,8 +1,6 @@
 Spraycan::Engine.routes.draw do
   root :to => "view_overrides#spraycan"
 
-  resources :templates, :only => [:index]
-
   resources :themes do
     member do
       get :export

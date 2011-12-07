@@ -1,5 +1,5 @@
 class Spraycan::FilesController < Spraycan::BaseController
-  respond_to :json, :js
+  respond_to :json
 
   before_filter :set_theme, :only => [:index, :create]
 
@@ -10,7 +10,25 @@ class Spraycan::FilesController < Spraycan::BaseController
   end
 
   def create
-    @file = @theme.files.create params[:file]
+    file_path = Rails.root.join('tmp', params[:qqfile]).to_s
+    File.open(file_path, 'wb'){|f| f.write request.raw_post }
+
+    @file = @theme.files.where(:name =>  params[:qqfile].downcase).first
+    @file ||= @theme.files.new(:name =>  params[:qqfile])
+
+    @file.file = File.open(file_path)
+
+    if @file.save
+      render :json => {:success => 'true'}
+    else
+      render :json => {:error => 'Failed to create file'}
+    end
+  end
+
+  def update
+    @file = Spraycan::File.where(:id => params.delete(:id)).first
+    @file.update_attributes params[:file]
+
     respond_with @file
   end
 

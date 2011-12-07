@@ -39,12 +39,15 @@ class Spraycan::ThemesController < Spraycan::BaseController
   end
 
   def import
+    file_path = Rails.root.join('tmp', params[:qqfile]).to_s
+    File.open(file_path, 'wb'){|f| f.write request.raw_post }
+
     @theme = Spraycan::Theme.new
 
-    if @theme.import_from_string(params[:import].tempfile.read)
-      render :js => "var theme_id = #{@theme.id};"
+    if @theme.import_from_string(File.open(file_path).read)
+      render :json => {:success => 'true'}
     else
-      render :js => "var theme_id = null;"
+      render :json => {:error => 'Failed to create file'}
     end
   end
 

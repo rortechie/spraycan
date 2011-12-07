@@ -1,10 +1,6 @@
 Spraycan.Views.Files.Edit = Backbone.View.extend({
   show_form: false,
 
-  events: {
-    "change #file1" :"upload_file"
-  },
-
   initialize: function() {
     Spraycan.view = this;
 
@@ -39,12 +35,5 @@ Spraycan.Views.Files.Edit = Backbone.View.extend({
     Spraycan.animate_resize(this.calculate_size());
 
     return this;
-  },
-
-  upload_file: function(){
-    $('#file1').upload('/spraycan/themes/' + Spraycan.theme_id + '/files', function(res) {
-      window.location.href = "/spraycan#file?all"
-    }, 'json');
   }
-
 });

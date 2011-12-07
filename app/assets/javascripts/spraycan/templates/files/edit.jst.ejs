@@ -1,30 +1,27 @@
 <div class="form-stacked">
-    <label>Upload:</label>
-    <input type="file" name="file[file]" id="file1">
+  <% if(file.id==undefined){ %>
+    <div class="actions">
+      <a rel="delete" href="/spraycan#file?delete=<%= cid %>&confirm=true" class="btn" >Discard</a>
+    </div>
+  <% }else{ %>
 
-    <% if(file.id==undefined){ %>
-      <div class="actions">
-        <a rel="delete" href="/spraycan#file?delete=<%= cid %>&confirm=true" class="btn" >Discard</a>
+    <% if(file.image){ %>
+      <label>Preview</label>
+      <div id="file_preview">
+        <img src="<%= file.url %>">
       </div>
+
+      <label>Usage</label>
+      <span>&lt;%= image_tag('<%= file.name %>)' &gt;</span>
     <% }else{ %>
+      <label>Usage</label>
+      <span>&lt;%= link_to(asset_path '<%= file.name %>') &gt;</span>
+    <% } %>
 
-      <% if(file.image){ %>
-        <label>Preview</label>
-        <div id="file_preview">
-          <img src="<%= file.url %>">
-        </div>
+    <div class="actions clear-fix">
+      <a rel="delete" href="/spraycan#file?delete=<%= cid %>&confirm=false" class="btn danger">Delete</a>
+      <a href="/spraycan#file?all" class="btn">Close</a>
+    </div>
 
-        <label>Usage</label>
-        <span>&lt;%= image_tag('<%= file.name %>)' &gt;</span>
-      <% }else{ %>
-        <label>Usage</label>
-        <span>&lt;%= link_to(asset_path '<%= file.name %>') &gt;</span>
-      <% } %>
-
-      <div class="actions clear-fix">
-        <a rel="delete" href="/spraycan#file?delete=<%= cid %>&confirm=false" class="btn danger">Delete</a>
-        <a href="/spraycan#file?all" class="btn">Close</a>
-      </div>
-
-     <% } %>
+   <% } %>
 </div>

@@ -32,6 +32,22 @@ Spraycan.Views.Files.List = Backbone.View.extend({
     $(this.el).html(compiled({ collection : Spraycan.files }));
     $('#main').html(this.el);
 
+    var uploader = new qq.FileUploader({
+      element: document.getElementById('file-uploader'),
+      action: '/spraycan/themes/' + Spraycan.theme_id + '/files.json',
+      template: '<div class="qq-uploader">' +
+              '<div class="qq-upload-drop-area"><span>Drop files here to upload</span></div>' +
+              '<div class="qq-upload-button btn primary success pull-right">New File</div>' +
+              '<ul class="qq-upload-list"></ul>' +
+          '</div>',
+      onComplete: function(id, fileName, responseJSON){
+        Spraycan.files.fetch();
+      },
+      onCancel: function(id, fileName){
+        Spraycan.files.fetch();
+      }
+    });
+
     Spraycan.animate_resize(this.calculate_size());
 
     return this;

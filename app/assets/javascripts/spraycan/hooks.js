@@ -6,7 +6,11 @@ var frame_level = 0;
 
 function show_hook_frames(){
   if(show_frames){
-    $jQ.each($("[data-hook]"), function(i, hook){
+    if($jQ("[data-hook]").length==0){
+      top.Spraycan.show_dialog('No hook defined', 'The current page does not contain any data-hook elements.');
+    }
+
+    $jQ.each($jQ("[data-hook]"), function(i, hook){
       var hooks = $jQ(hook).parents().filter(function(i,p) { return $jQ(p).attr("data-hook")!=undefined });
       if(hooks.length == frame_level){
         var hook = $jQ(hook);
@@ -64,7 +68,7 @@ function hook_zoom(in_or_out){
 
     show_hook_frames();
 
-    //check we haven't zoomed to far in or out, 
+    //check we haven't zoomed to far in or out,
     //undo if we did
     if($jQ('.spraycan_hook_frame').length==0){
       frame_level = current_level;

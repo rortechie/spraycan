@@ -18,10 +18,10 @@ var Spraycan = {
   busy: { ajax: false, iframe: true },
 
   //holds the last x models opened for each class
-  current_collections: {}, 
+  current_collections: {},
 
   //holds unsaved models when main collection is being fetched
-  new_collections: {}, 
+  new_collections: {},
 
   init: function() {
     new Spraycan.Routers.Common();
@@ -168,7 +168,7 @@ var Spraycan = {
     _.each(window.frames[0].all_templates, function(t) {
       if(hook!=undefined){
         return _.breaker;
-      } 
+      }
 
       template = t;
       hooks = window.frames[0].hooks_by_template[t];
@@ -202,6 +202,11 @@ var Spraycan = {
     }else{
       $('#busy').hide();
     }
+  },
+
+  show_dialog: function(title, message){
+    $('#dialogs').html(temp({ title: title, warning: message}));
+    $('#dialog').modal({backdrop: true, keyboard: true, show: true})
   }
 
 };

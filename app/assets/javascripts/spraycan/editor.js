@@ -1,7 +1,7 @@
 //= require spraycan/editor_config
 //= require spraycan/jquery-1.5.1.min
 //= require spraycan/jquery-ui-1.8.13.custom.min
-//= require spraycan/jquery.upload-1.0.2.min
+//= require spraycan/jquery-file-uploader
 //= require spraycan/jquery-tablescroll
 //= require spraycan/inflection
 //= require spraycan/underscore-min

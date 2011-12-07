@@ -19,7 +19,7 @@ class Spraycan::Theme < ActiveRecord::Base
   before_save :check_name_change
   after_create :reset_asset_paths
 
-  # acts_as_list
+  acts_as_list
 
   def sprockets_dump_root
     return @theme_dump_root if @theme_dump_root.present?
@@ -62,7 +62,7 @@ class Spraycan::Theme < ActiveRecord::Base
     data = data["theme"] if data.keys.include? "theme"
 
     if %w(guid name source).all? {|k| data.include? k}
-      return false unless %w(view_overrides stylesheets files).all? {|k| data["source"].include? k}
+      return false unless %w(view_overrides stylesheets javascripts files).all? {|k| data["source"].include? k}
     else
       return false
     end
@@ -77,6 +77,7 @@ class Spraycan::Theme < ActiveRecord::Base
     if self.save
       data["source"]["view_overrides"].each { |override| self.view_overrides.create(override) }
       data["source"]["stylesheets"].each { |stylesheet| self.stylesheets.create(stylesheet) }
+      data["source"]["javascripts"].each { |javascript| self.javascripts.create(javascript) }
 
       data["source"]["files"].each do |file|
         s = StringIO.new(ActiveSupport::Base64.decode64(file["data"]))
@@ -103,6 +104,7 @@ class Spraycan::Theme < ActiveRecord::Base
     @source = {}
     @source[:view_overrides] = self.view_overrides.map { |s| s.attributes.reject { |key, val| ![:name, :virtual_path, :replace_with, :target, :selector, :closing_selector, :disabled, :replacement].include? key.to_sym } }
     @source[:stylesheets] = self.stylesheets.map { |s| s.attributes.reject { |key, val| ![:name, :css].include? key.to_sym } }
+    @source[:javascripts] = self.javascripts.map { |s| s.attributes.reject { |key, val| ![:name, :js].include? key.to_sym } }
     @source[:files] = []
 
     self.files.each do |file|

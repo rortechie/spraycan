@@ -42,8 +42,6 @@ Spraycan.Views.ViewOverrides.Edit = Backbone.View.extend({
       attrs.replace_with = 'attributes';
     }
 
-    var isNew = this.model.isNew();
-
     this.model.save(attrs, {
       success: function(model, resp) {
         Spraycan.reload_frame();
@@ -155,7 +153,7 @@ Spraycan.Views.ViewOverrides.Edit = Backbone.View.extend({
     var target = $("select[name='target']").val();
 
     $('div#replace_withs > div').hide();
-    
+
     if(target=='remove' || target=='remove_contents'){
       $('div#replace_withs').hide();
       this.show_text_editor = false;

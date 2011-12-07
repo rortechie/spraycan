@@ -17,7 +17,7 @@ Spraycan.Views.Themes.Edit = Backbone.View.extend({
   },
 
   calculate_size: function() {
-    var height = 300;
+    var height = 210;
 
     if(Spraycan.editor.maximised){
       height = ($(window).height() - 50);
@@ -37,6 +37,27 @@ Spraycan.Views.Themes.Edit = Backbone.View.extend({
     $(this.el).html(compiled(this.model.toJSON()));
     $('#main').html(this.el);
 
+    if(this.model.id==undefined){
+      var uploader = new qq.FileUploader({
+        element: document.getElementById('file-uploader'),
+        action: '/spraycan/themes/import.json',
+        allowedExtensions: ['json'],
+        template: '<div class="qq-uploader">' +
+                '<div class="qq-upload-drop-area"><span>Drop theme file here to import</span></div>' +
+                '<div class="qq-upload-button btn primary success pull-right">Import</div>' +
+                '<ul class="qq-upload-list"></ul>' +
+            '</div>',
+        onComplete: function(id, fileName, responseJSON){
+          // Spraycan.themes.fetch();
+          // new Spraycan.Views.Themes.List();
+          Spraycan.themes.remove(Spraycan.view.model);
+        },
+        onCancel: function(id, fileName){
+          Spraycan.themes.fetch();
+        }
+      });
+    }
+
     Spraycan.animate_resize(this.calculate_size());
 
     return this;
@@ -49,7 +70,7 @@ Spraycan.Views.Themes.Edit = Backbone.View.extend({
     if(attrs.active==undefined){
       attrs.active = false;
     }
-    
+
     this.model.save(attrs, {
       success: function(model, resp) {
 
