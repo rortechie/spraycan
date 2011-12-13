@@ -17,7 +17,7 @@ class Spraycan::Theme < ActiveRecord::Base
 
   before_validation :set_guid
   before_save :check_name_change
-  after_create :reset_asset_paths
+  # after_create :reset_asset_paths
 
   acts_as_list
 
@@ -131,33 +131,9 @@ class Spraycan::Theme < ActiveRecord::Base
     def check_name_change
       return if self.new_record?
 
-      if self.changed.include? "name"
-        #don't remove old version (it won't be included in asset paths anyway).
+      if self.changed.include?("name") || self.changed.include?("active")
         self.sprockets_dump
-
-        Rails.application.assets.send(:trail).paths.map! do |path|
-          path.gsub File.join("tmp/spraycan", self.changes["name"].first, "/"), File.join("tmp/spraycan", self.name, "/")
-        end
-
-        Rails.application.assets.send(:expire_index!)
       end
-    end
-
-    def reset_asset_paths
-      paths = Rails.application.assets.paths
-
-      #remove all tmp/spraycan asset_paths
-      paths.reject!{ |path| path.include? "tmp/spraycan/" }
-
-      #add active themes again - in correct sequence
-      self.class.active.each do |theme|
-        theme.sprockets_dump_asset_directories.each do |path|
-          paths.unshift path.to_s
-        end
-      end
-
-      #force sprockets to dump it's cache
-      Rails.application.config.assets.version = Time.now.to_i
     end
 
 end

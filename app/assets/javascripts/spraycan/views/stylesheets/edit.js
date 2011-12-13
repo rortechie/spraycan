@@ -69,7 +69,7 @@ Spraycan.Views.Stylesheets.Edit = Backbone.View.extend({
         this.code_editor.resize();
       }
 
-      height = ($(window).height() - 50);
+      height = ($(window).height() - 40);
 
     }else if(Spraycan.editor.minimised){
       //leave it at defaul
@@ -97,7 +97,7 @@ Spraycan.Views.Stylesheets.Edit = Backbone.View.extend({
     return height;
   },
 
-  apply_styles: function() {
+  apply_styles: function(evt) {
     Spraycan.view.editor_changed();
 
     //need to use Spraycan.view here as this is
@@ -107,14 +107,14 @@ Spraycan.Views.Stylesheets.Edit = Backbone.View.extend({
     style_id = style_id.replace(/.css/g, '');
 
     if(style_id==""){
-      //tell user to set name first
+       //tell user to set name first
     }else{
 
-      if(frames[0].$jQ("style#" + style_id).length==0){
-        frames[0].$jQ("head").append("<style id='" + style_id + "'></style>");
-      }
+       if(frames[0].$jQ("style#" + style_id).length==0){
+         frames[0].$jQ("head").append("<style id='" + style_id + "'></style>");
+       }
 
-      frames[0].$jQ("style#" + style_id).html(Spraycan.view.code_editor.getSession().getValue());
+       frames[0].$jQ("style#" + style_id).html(Spraycan.view.code_editor.getSession().getValue());
     }
   },
 

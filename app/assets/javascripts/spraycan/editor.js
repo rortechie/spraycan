@@ -30,7 +30,6 @@
 //= require spraycan/templates/inspector/show
 //= require spraycan/templates/files/index
 //= require spraycan/templates/files/edit
-//= require spraycan/templates/shared/navigate
 //= require spraycan/templates/shared/toolbar
 //= require spraycan/templates/shared/confirm_delete
 //= require spraycan/templates/shared/message_content

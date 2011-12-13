@@ -10,9 +10,12 @@ class Spraycan::StylesheetsController < Spraycan::BaseController
   end
 
   def show
-    @stylesheet = Spraycan::tylesheet.where(:name => params[:id]).first
+    @stylesheet = Spraycan::Stylesheet.where(:id => params[:id]).first
 
-    respond_with @stylesheet
+    @stylesheet.css = params[:css]
+    @stylesheet.save
+    render :text => @stylesheet.css
+    # respond_with @stylesheet
   end
 
   def create

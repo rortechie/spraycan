@@ -1,3 +1,3 @@
 object @themes
 
-attributes :id, :name, :active, :guid, :position
+attributes :id, :name, :active, :guid, :position, :applies_to

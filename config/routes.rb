@@ -1,5 +1,5 @@
 Spraycan::Engine.routes.draw do
-  root :to => "view_overrides#spraycan"
+  root :to => "boot#tweaker"
 
   resources :themes do
     member do

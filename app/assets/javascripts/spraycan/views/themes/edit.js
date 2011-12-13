@@ -17,16 +17,7 @@ Spraycan.Views.Themes.Edit = Backbone.View.extend({
   },
 
   calculate_size: function() {
-    var height = 210;
-
-    if(Spraycan.editor.maximised){
-      height = ($(window).height() - 50);
-      //leave it at defaul
-    }else{
-
-    }
-
-    return height;
+    return 195;
   },
 
   render: function() {
@@ -73,6 +64,7 @@ Spraycan.Views.Themes.Edit = Backbone.View.extend({
 
     this.model.save(attrs, {
       success: function(model, resp) {
+        Spraycan.reload_frame();
 
         $("a[rel='delete']").html('Delete');
       },

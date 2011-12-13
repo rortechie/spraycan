@@ -11,7 +11,7 @@ var Spraycan = {
 
   theme_name: '<%= Spraycan::Theme.active.first.name %>',
 
-  editor: {minimised: true, maximised: false, visible: false },
+  editor: {minimised: false, maximised: false, visible: false },
 
   loaded: {},
 
@@ -44,6 +44,12 @@ var Spraycan = {
       Spraycan.busy_indicator();
     });
 
+    if(window.location.hash.indexOf("goto=")!=-1){
+      url = window.location.hash;
+      url = url.replace("#goto=", "");
+      url =  window.location.protocol + "//" + window.location.host + url;
+      frames[0].location.href = url;
+    }
     Spraycan.set_current('themes', 'index');
     Spraycan.ensure_fetched('themes');
     new Spraycan.Views.Themes.List();
@@ -71,27 +77,12 @@ var Spraycan = {
 
   animate_resize: function(height){
     var pre_height = $("div#spraycan").height();
-
-    height = height + 50; //pad for toolbar
-
-    if(Spraycan.editor.visible){
-      if(Spraycan.editor.minimised){
-        $('#nav li#min').addClass('disabled');
-        $('#nav li#restore').removeClass('disabled');
-        $('#nav li#max').removeClass('disabled');
-      }else if(Spraycan.editor.maximised){
-        $('#nav li#min').removeClass('disabled');
-        $('#nav li#restore').removeClass('disabled');
-        $('#nav li#max').addClass('disabled');
-      }else{ //restore
-        $('#nav li#min').removeClass('disabled');
-        $('#nav li#restore').addClass('disabled');
-        $('#nav li#max').removeClass('disabled');
-      }
+    if(Spraycan.editor.maximised==true){
+      height = $(window).height() + 10;
+    }else if(Spraycan.editor.minimised==true){
+      height = 40 + 10;
     }else{
-      $('#nav li#min').addClass('disabled');
-      $('#nav li#restore').addClass('disabled');
-      $('#nav li#max').addClass('disabled');
+      height = height + 40; //pad for toolbar
     }
 
     var t = Math.abs((pre_height - height) * 5);
@@ -101,9 +92,10 @@ var Spraycan = {
       t = 1500;
     }
 
-    $('iframe').animate({height: ($(window).height() - height) + 'px'}, t);
+    $('iframe').animate({height: (($(window).height() + 10) - height) + 'px'}, t);
 
     $("div#spraycan").animate({height: height + 'px'}, t);
+
   },
 
   set_current: function(group, action, model){

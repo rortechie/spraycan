@@ -15,7 +15,7 @@ Spraycan.Views.Files.Edit = Backbone.View.extend({
     var height = 300;
 
     if(Spraycan.editor.maximised){
-      height = ($(window).height() - 50);
+      height = ($(window).height() - 40);
       //leave it at defaul
     }else{
 

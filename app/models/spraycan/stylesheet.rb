@@ -17,7 +17,7 @@ class Spraycan::Stylesheet < ActiveRecord::Base
     self.name.gsub('/', '-').gsub('.css', '')
   end
 
-  private 
+  private
     def sprocket_dump_path(root_path=nil)
       self.theme.sprockets_dump_asset_directories
       root_path ||= self.theme.sprockets_dump_root

@@ -1,4 +1,4 @@
-require 'guid' 
+require 'guid'
 require 'rabl'
 
 module Spraycan
@@ -13,16 +13,13 @@ module Spraycan
     initializer "spraycan.set_paths" do |app|
       if Spraycan::Theme.table_exists?
         Spraycan::Theme.active.each do |theme|
-          theme.sprockets_dump_asset_directories.each do |path|
-            app.config.assets.paths.unshift path.to_s
-          end
+          theme.sprockets_dump
         end
 
       end
     end
 
     def self.activate
-
       if Rails.application.config.spraycan.enable_editor
 
         #define overrides needed for theming UI
@@ -49,7 +46,7 @@ module Spraycan
         #load all overrides from db
         if Spraycan::Theme.table_exists?
           Spraycan::Theme.active.each do |theme|
-            theme.view_overrides.map(&:initiate) 
+            theme.view_overrides.map(&:initiate)
           end
         end
       end
@@ -58,7 +55,7 @@ module Spraycan
 
     config.to_prepare &method(:activate).to_proc
 
-    # sets up spraycan environment 
+    # sets up spraycan environment
     #
     initializer "spraycan.environment", :after => :load_environment_config do |app|
       #setup real env object

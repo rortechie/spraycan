@@ -1,5 +1,5 @@
 .spraycan_hook_frame {
-  outline: 2px solid #505050;
+  outline: 2px solid pink;
 }
 
 #spraycan_hook_bar{
@@ -45,3 +45,5 @@ div.spraycan_source{
 body{
   margin: 5px;
 }
+
+

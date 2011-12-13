@@ -1,12 +1,2 @@
 <%= javascript_include_tag 'spraycan/embed' %>
-
 <%= stylesheet_link_tag 'spraycan/embed' %>
-<% if Rails.env.development? %>
-  <% Spraycan::Theme.active.each do |theme| %>
-    <% theme.stylesheets.each do |stylesheet| %>
-      <style id="<%= stylesheet.style_id %>">
-        <%= stylesheet.css %>
-      </style>
-    <% end %>
-  <% end %>
-<% end %>

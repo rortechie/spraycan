@@ -17,8 +17,8 @@ class Spraycan::BaseController < ActionController::Base
     end
 
     # Clears all cached static and bundled assets
-    def clear_sprockets_assets
-      return unless Rails.env.production?
-      Rails.application.assets.instance_eval { @assets = {} }
-    end
+    # def clear_sprockets_assets
+    #   return unless Rails.env.production?
+    #   Rails.application.assets.instance_eval { @assets = {} }
+    # end
 end

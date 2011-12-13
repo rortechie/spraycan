@@ -17,7 +17,7 @@ Spraycan.Views.Inspector.Show = Backbone.View.extend({
     var height = 0;
 
     if(Spraycan.editor.maximised){
-      height = ($(window).height() - 50);
+      height = ($(window).height() - 40);
 
     }else if(Spraycan.editor.minimised){
       //leave it at default 0

@@ -18,10 +18,31 @@ Spraycan.Views.ViewOverrides.Edit = Backbone.View.extend({
   initialize: function() {
     Spraycan.view = this;
 
+    this.bind('editor:resize', this.handle_resize);
+
     $(this.el).data('view', this);
     this.show_form = true;
     this.model = this.options.model;
     this.render();
+  },
+
+  handle_resize: function(){
+    if(this.code_editor!=null){
+
+      if(Spraycan.editor.maximised){
+
+        if(this.show_advanced){
+          $(this.code_editor.container).height($(window).height() - 290);
+        }else{
+          $(this.code_editor.container).height($(window).height() - 210);
+        }
+
+        this.code_editor.resize();
+      }else{
+        $(this.code_editor.container).height(150);
+        this.code_editor.resize();
+      }
+    }
   },
 
   save: function() {
@@ -75,7 +96,10 @@ Spraycan.Views.ViewOverrides.Edit = Backbone.View.extend({
   },
 
   advanced: function() {
-    this.show_advanced = !this.show_advanced ;
+    this.show_advanced = !this.show_advanced;
+
+    Spraycan.view.trigger('editor:resize');
+
     Spraycan.animate_resize(this.calculate_size());
     $('#view_override_form .advanced').toggle();
     return false;
@@ -107,41 +131,22 @@ Spraycan.Views.ViewOverrides.Edit = Backbone.View.extend({
   calculate_size: function() {
     var height = 60;
 
-    if(Spraycan.editor.maximised){
-      if(this.code_editor!=null){
-        if(this.show_advanced){
-          $(this.code_editor.container).height($(window).height() - 230);
-        }else{
-          $(this.code_editor.container).height($(window).height() - 170);
-        }
+    if(this.show_form){
 
-        this.code_editor.resize();
+      if(this.show_text_editor && this.code_editor!=null){
+
+
+        height += 300;
+      }else{
+        height += 80;
       }
 
-      height = ($(window).height() - 50);
+      if(this.show_advanced){
+        height += 60;
+      }
 
-    }else if(Spraycan.editor.minimised){
-      //leave it at default 0
-    }else{
-
-      if(this.show_form){
-
-        if(this.show_text_editor && this.code_editor!=null){
-          $(this.code_editor.container).height(170);
-          this.code_editor.resize();
-
-          height += 300;
-        }else{
-          height += 80;
-        }
-
-        if(this.show_advanced){
-          height += 60;
-        }
-
-        if(this.show_attributes_editor){
-          height += 95;
-        }
+      if(this.show_attributes_editor){
+        height += 95;
       }
     }
 
@@ -219,6 +224,8 @@ Spraycan.Views.ViewOverrides.Edit = Backbone.View.extend({
       }
 
     }
+
+    Spraycan.view.trigger('editor:resize');
 
     Spraycan.animate_resize(this.calculate_size());
 

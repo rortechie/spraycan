@@ -12,7 +12,7 @@ Spraycan.Views.Files.List = Backbone.View.extend({
         this.code_editor.resize();
       }
 
-      height = ($(window).height() - 50);
+      height = ($(window).height() - 40);
 
     }else if(Spraycan.editor.minimised){
       //leave it at default 0

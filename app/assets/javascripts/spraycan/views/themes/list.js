@@ -17,11 +17,6 @@ Spraycan.Views.Themes.List = Backbone.View.extend({
         $(this.code_editor.container).height($(window).height() - 170);
         this.code_editor.resize();
       }
-
-      height = ($(window).height() - 50);
-
-    }else if(Spraycan.editor.minimised){
-      //leave it at default 0
     }else{
       height += 300;
     }
@@ -33,15 +28,17 @@ Spraycan.Views.Themes.List = Backbone.View.extend({
     Spraycan.editor.minimised = false;
     Spraycan.editor.visible = true;
 
+    Spraycan.view = this;
+
     var compiled = JST['spraycan/templates/themes/index'];
 
     $(this.el).html(compiled({ collection : Spraycan.themes }));
     $('#main').html(this.el);
 
     $('.sortable tbody').sortable({
-      axis: 'y', 
-      dropOnEmpty:false, 
-      handle: '.handle', 
+      axis: 'y',
+      dropOnEmpty:false,
+      handle: '.handle',
       cursor: 'crosshair',
       items: 'tr',
       opacity: 0.9,
@@ -51,7 +48,7 @@ Spraycan.Views.Themes.List = Backbone.View.extend({
         var new_position = ui.item.index('.scroller tbody tr')
         var theme = _.detect(Spraycan.themes.models, function(t) { return t.id == id });
 
-        this.save_theme_record(theme,{position: new_position}); 
+        this.save_theme_record(theme,{position: new_position});
       }
     });
 
