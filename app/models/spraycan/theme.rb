@@ -3,6 +3,7 @@ require 'stringio'
 require 'net/http'
 require 'uri'
 
+
 class Spraycan::Theme < ActiveRecord::Base
   has_many :view_overrides, :dependent => :destroy
   has_many :stylesheets, :dependent => :destroy
@@ -16,42 +17,8 @@ class Spraycan::Theme < ActiveRecord::Base
   scope :active, where(:active => true)
 
   before_validation :set_guid
-  before_save :check_name_change
-  # after_create :reset_asset_paths
 
   acts_as_list
-
-  def sprockets_dump_root
-    return @theme_dump_root if @theme_dump_root.present?
-
-    dump_root = Rails.root.join "tmp/spraycan"
-    Dir.mkdir(dump_root) unless File.exist?(dump_root)
-
-    @theme_dump_root = dump_root.join(self.name.parameterize.underscore)
-    Dir.mkdir(@theme_dump_root) unless File.exist?(@theme_dump_root)
-
-    @theme_dump_root
-  end
-
-  def sprockets_dump_asset_directories
-    return @sprockets_dump_asset_directories if @sprockets_dump_asset_directories.present?
-
-    @sprockets_dump_asset_directories = []
-
-    %w{stylesheets javascripts images}.each do |directory|
-      Dir.mkdir(sprockets_dump_root.join(directory)) unless File.exist?(sprockets_dump_root.join(directory))
-      @sprockets_dump_asset_directories << sprockets_dump_root.join(directory)
-    end
-
-    @sprockets_dump_asset_directories
-  end
-
-
-  def sprockets_dump
-    self.stylesheets.each {|s| s.sprockets_dump(sprockets_dump_root) }
-    self.javascripts.each {|j| j.sprockets_dump(sprockets_dump_root) }
-    self.files.each {|g| g.sprockets_dump(sprockets_dump_root) }
-  end
 
   def export
     self.to_json(:methods => [:source], :only => [:name, :guid])
@@ -127,13 +94,4 @@ class Spraycan::Theme < ActiveRecord::Base
     def set_guid
       self.guid ||= Guid.new.to_s
     end
-
-    def check_name_change
-      return if self.new_record?
-
-      if self.changed.include?("name") || self.changed.include?("active")
-        self.sprockets_dump
-      end
-    end
-
 end

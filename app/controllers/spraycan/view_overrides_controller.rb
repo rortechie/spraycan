@@ -6,17 +6,6 @@ class Spraycan::ViewOverridesController < Spraycan::BaseController
 
   respond_to :json
 
-  def spraycan
-    #editor boot method
-    if Spraycan::Theme.active.empty?
-      if Spraycan::Theme.all.empty?
-        Spraycan::Theme.create(:name => "Site Theme", :active => true)
-      else
-        Spraycan::Theme.first.update_attribute(:active, true)
-      end
-    end
-  end
-
   def index
     @view_overrides = @theme.view_overrides
     respond_with @view_overrides

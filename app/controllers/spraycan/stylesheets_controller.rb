@@ -1,7 +1,6 @@
 class Spraycan::StylesheetsController < Spraycan::BaseController
   respond_to :css, :json
 
-  after_filter :clear_sprockets_assets, :only => [:create, :update, :destroy]
   before_filter :set_theme, :only => [:index, :create]
 
   def index

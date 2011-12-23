@@ -1,0 +1,7 @@
+<div class="container">
+  <h3><%= display_name %></h3>
+
+  <% _.each(themes, function(theme) { %>
+    <a href="#theme?apply=<%= theme.cid %>" class="box <%= theme.get('active') ? 'selected' : '' %> "><%= theme.get('name') %></a>
+  <% }); %>
+</div>

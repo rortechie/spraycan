@@ -18,4 +18,5 @@ end
 
 #keeps db cleaner happy to be outside :test group
 gem 'database_cleaner'
+gem 'spree', :path => '../spree' #only required for preferences
 

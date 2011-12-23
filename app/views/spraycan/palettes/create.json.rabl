@@ -1,0 +1,3 @@
+object @palette
+
+attributes :id

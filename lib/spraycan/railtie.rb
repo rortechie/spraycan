@@ -8,17 +8,6 @@ module Spraycan
 
     config.autoload_paths += %W(#{root}/lib)
 
-    #needs to be done here, as other sprockets stuff
-    #migt not be initialized yet
-    initializer "spraycan.set_paths" do |app|
-      if Spraycan::Theme.table_exists?
-        Spraycan::Theme.active.each do |theme|
-          theme.sprockets_dump
-        end
-
-      end
-    end
-
     def self.activate
       if Rails.application.config.spraycan.enable_editor
 

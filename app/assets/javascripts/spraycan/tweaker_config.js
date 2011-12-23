@@ -1,9 +1,11 @@
 var Spraycan = {
-  Views: {Layouts: {} },
+  Views: {Shared: {}, Palettes: {}, Fonts: {}, Files: {} },
   Routers: {},
   Collections: {},
 
   current: 'html',
+
+  current_action: null,
 
   view: null,
 
@@ -17,13 +19,22 @@ var Spraycan = {
   current_collections: {},
 
   //holds unsaved models when main collection is being fetched
-  new_collections: {},
+  new_collections: {themes: []},
+
+  theme_id: null,
+
+  preload: { themes: null },
+
+  preferences: { logo_file_name: null, background_file_name: null, title_font: null, title_font_size: null, body_font: null, body_font_size: null },
 
   init: function() {
+    Spraycan.themes = new Spraycan.Collections.Themes();
+    Spraycan.palettes = new Spraycan.Collections.Palettes();
+    Spraycan.files = new Spraycan.Collections.Palettes();
+
     new Spraycan.Routers.Tweaker();
-
-    Spraycan.Themes = new Spraycan.Collections.Theme();
-
+    new Spraycan.Routers.Files();
+    new Spraycan.Routers.Palettes();
 
     Spraycan.reset_collections(); //initializes collection routers aswell
 
@@ -31,14 +42,21 @@ var Spraycan = {
 
     $('#tweaker').draggable({handle: '.drag_bar'});
 
-    Spraycan.ensure_fetched('themes');
+    Spraycan.themes.reset(Spraycan.preload.themes);
+    Spraycan.loaded.themes = true;
 
-    var compiled = JST["spraycan/templates/navigation/design"];
-    $('#design-container').html(compiled());
+    Spraycan.palettes.reset(Spraycan.preload.palettes);
+    Spraycan.loaded.palettes = true;
+
+
+    if(Spraycan.current=='design' && Spraycan.current_action=='index'){
+      var compiled = JST["spraycan/templates/navigation/design"];
+      $('#design-container').html(compiled());
+    }
   },
 
   reset_collections: function(){
-    Spraycan.loaded = { themes: false };
+    Spraycan.loaded = { themes: false, palettes: false };
 
     Spraycan.current_collections = { themes: []};
 
@@ -49,10 +67,20 @@ var Spraycan = {
   },
 
   set_current: function(group, action, model){
+    Spraycan.current = group;
+    Spraycan.current_action = action;
+  },
+
+  refresh_toolbar: function(){
+    // not used
   },
 
   reload_frame: function(){
     window.frames[0].location.reload();
+  },
+
+  reset_url: function(){
+    window.location.href = "#";
   },
 
   ensure_fetched: function(collection){

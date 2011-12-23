@@ -11,6 +11,7 @@
   <table class="condensed-table zebra-striped sortable">
     <thead>
       <th colspan="2">Name</th>
+      <th>Applies To</th>
       <th>Active</th>
       <th class="align-right">Actions</th>
     </thead>
@@ -26,6 +27,9 @@
             <td class="handle" style="width:15px;">-</td>
             <td>
               <%= item.escape('name') %>
+            </td>
+            <td>
+              <%= item.escape('applies_to') %>
             </td>
             <td>
               <%= item.attributes.active ? 'Yes' : 'No' %>

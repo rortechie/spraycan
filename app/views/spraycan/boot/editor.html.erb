@@ -1,16 +1,27 @@
-<div id="spraycan">
-  <div class="container-fluid">
-    <div class="topbar">
-      <div class="topbar-inner">
-        <div id="toolbar" class="container-fluid">
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Spraycan</title>
+  <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
+  <%= javascript_include_tag 'spraycan/editor' %>
+  <%= stylesheet_link_tag 'spraycan/editor' %>
+</head>
+<body>
+  <div id="spraycan">
+    <div class="container-fluid">
+      <div class="topbar">
+        <div class="topbar-inner">
+          <div id="toolbar" class="container-fluid">
 
+          </div>
         </div>
       </div>
     </div>
+    <div id="main"></div>
   </div>
-  <div id="main"></div>
-</div>
 
-<div id="dialogs"></div>
+  <div id="dialogs"></div>
 
-<iframe src="/"></iframe>
+  <iframe src="/"></iframe>
+</body>
+</html>

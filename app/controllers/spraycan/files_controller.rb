@@ -19,7 +19,10 @@ class Spraycan::FilesController < Spraycan::BaseController
     @file.file = File.open(file_path)
 
     if @file.save
-      render :json => {:success => 'true'}
+      if params.key? :preference
+        Spraycan::Config.send "#{params[:preference]}=", @file.name
+      end
+      render :json => {:success => true, :filename => @file.name}
     else
       render :json => {:error => 'Failed to create file'}
     end

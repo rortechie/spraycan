@@ -1,5 +1,8 @@
 Spraycan::Engine.routes.draw do
-  root :to => "boot#tweaker"
+  root :to => 'boot#editor'
+  match '/toggle', :to => 'boot#toggle'
+
+  match '/compiled.:action', :controller => :compiler
 
   resources :themes do
     member do
@@ -13,4 +16,7 @@ Spraycan::Engine.routes.draw do
     resources :javascripts
     resources :files
   end
+
+  resources :palettes
+  resources :preferences, :only => [:create]
 end

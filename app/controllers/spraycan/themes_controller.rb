@@ -1,6 +1,6 @@
 class Spraycan::ThemesController < Spraycan::BaseController
   after_filter :clear_resolver_cache, :only => [:create, :update, :destroy]
-  after_filter :clear_sprockets_assets, :only => [:create, :update, :destroy]
+  # after_filter :clear_sprockets_assets, :only => [:create, :update, :destroy]
 
   respond_to :json
 
@@ -18,6 +18,12 @@ class Spraycan::ThemesController < Spraycan::BaseController
 
   def update
     @theme = Spraycan::Theme.where(:id => params.delete(:id)).first
+
+    #move into theme model
+    if @theme.applies_to.present?
+      Spraycan::Theme.where(:applies_to => @theme.applies_to).update_all(:active => false)
+    end
+
     @theme.insert_at params[:theme][:position] if params[:theme].key? :position
     @theme.update_attributes params[:theme]
 

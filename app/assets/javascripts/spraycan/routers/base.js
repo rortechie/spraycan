@@ -83,6 +83,7 @@ Spraycan.Routers.Base = Backbone.Router.extend({
       $('#confirm-delete').modal({backdrop: true, keyboard: true, show: true})
     }else{
       $('.modal.in').modal('hide');
+      $('.modal').hide(); //used by tweaker due to lack of bootstrap styles
 
       var model = Spraycan[this.klass].getByCid(cid);
       Spraycan[this.klass].remove(model);

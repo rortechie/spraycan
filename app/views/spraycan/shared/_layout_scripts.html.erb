@@ -1,2 +1,7 @@
-<%= javascript_include_tag 'spraycan/embed' %>
-<%= stylesheet_link_tag 'spraycan/embed' %>
+<%= javascript_include_tag '/spraycan/compiled' %>
+<%= stylesheet_link_tag '/spraycan/compiled' %>
+
+<% if session[:full] %>
+  <%= javascript_include_tag 'spraycan/embed' %>
+  <%= stylesheet_link_tag 'spraycan/embed' %>
+<% end %>
