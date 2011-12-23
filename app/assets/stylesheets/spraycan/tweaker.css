@@ -249,6 +249,11 @@ ul.top ul li a{
 .qq-upload-failed-text {display:none;}
 .qq-upload-fail .qq-upload-failed-text {display:inline;}
 
+.qq-uploader input[type='file']{
+  float: left;
+  height: 10px;
+}
+
 /* Images */
 #file_preview  {
   margin-top: 5px;

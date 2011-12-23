@@ -27,6 +27,8 @@ var Spraycan = {
 
   preferences: { logo_file_name: null, background_file_name: null, title_font: null, title_font_size: null, body_font: null, body_font_size: null },
 
+  rollback: { preferences: {} },
+
   init: function() {
     Spraycan.themes = new Spraycan.Collections.Themes();
     Spraycan.palettes = new Spraycan.Collections.Palettes();

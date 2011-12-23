@@ -28,13 +28,12 @@ Spraycan.Views.Files.Edit = Backbone.View.extend({
                 '<ul class="qq-upload-list"></ul>' +
             '</div>',
         allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
-        params: {
-          preference: pref,
-        },
         onComplete: function(id, fileName, responseJSON){
-          Spraycan.reload_frame();
+          Spraycan.rollback.preferences[pref] = Spraycan.preferences[pref]
           Spraycan.preferences[pref] = responseJSON.filename;
-          Spraycan.view.render()
+
+          Spraycan.view.render();
+          Spraycan.view.delegateEvents();
         },
         onSubmit: function(count, file){
           if(count>0){
@@ -53,7 +52,27 @@ Spraycan.Views.Files.Edit = Backbone.View.extend({
 
     attrs = $('form#images_form').serializeObject();
 
+    prefs = new Spraycan.Collections.Preferences();
 
+    _.each(attrs, function(value, key){
+      prefs.add({
+        configuration: "Spraycan::Config",
+        name: key,
+        value: value
+      });
+    });
+
+    Backbone.sync('create', prefs, {
+      success: function(model, resp) {
+        Spraycan.rollback.preferences.logo_file_name = null;
+        Spraycan.rollback.preferences.background_file_name = null;
+        Spraycan.reload_frame();
+      },
+      error: Spraycan.handle_save_error
+    });
+
+ 
+    return false;
    }
 
 });
