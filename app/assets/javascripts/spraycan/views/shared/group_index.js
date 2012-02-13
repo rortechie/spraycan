@@ -26,7 +26,6 @@ Spraycan.Views.Shared.GroupIndex = Backbone.View.extend({
 
   show_selected: function(sel){
     $('a.box').removeClass('selected');
-    console.log(sel);
-    $(sel.currentTarget).addClass('selected');
+    (sel.currentTarget).addClass('selected');
   }
 });

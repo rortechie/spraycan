@@ -1,0 +1,53 @@
+<form id="images_form" class="container" action="#">
+  <div class="picker_row">
+    <h3>Favicon</h3>
+    <div id="favicon_file_name_uploader">
+    </div>
+    <input type="hidden" id="preferred_favicon_file_name" name="favicon_file_name" value="<%= Spraycan.preferences.favicon_file_name %>">
+  </div>
+
+
+  <div class="picker_row">
+    <h3>Logo</h3>
+    <div id="file_preview">
+      <img src="<%= Spraycan.preferences.logo_file_name %>">
+    </div>
+    <div id="logo_file_name_uploader">
+    </div>
+    <input type="hidden" id="preferred_logo_file_name" name="logo_file_name" value="<%= Spraycan.preferences.logo_file_name %>">
+  </div>
+
+  <div class="picker_row">
+    <label>Alignment</label>
+    <input type="text" id="preferred_logo_alignment" name="logo_alignment" value="<%= Spraycan.preferences.logo_alignment %>">
+  </div>
+
+  <div class="picker_row">
+    <h3>Background</h3>
+    <% if(Spraycan.preferences.background_file_name==""){ %>
+      <p>No background set.</p>
+    <% }else{ %>
+      <div id="file_preview">
+        <img src="<%= Spraycan.preferences.background_file_name %>">
+      </div>
+    <% } %>
+    <div id="background_file_name_uploader">
+    </div>
+    <input type="hidden" id="preferred_background_file_name" name="background_file_name" value="<%= Spraycan.preferences.background_file_name %>">
+  </div>
+
+  <div class="picker_row">
+    <label>Repeat</label>
+    <input type="text" id="preferred_background_repeat" name="background_repeat" value="<%= Spraycan.preferences.background_repeat %>">
+  </div>
+
+  <div class="picker_row">
+    <label>Alignment</label>
+    <input type="text" id="preferred_background_alignment" name="background_alignment" value="<%= Spraycan.preferences.background_alignment %>">
+  </div>
+
+  <div class="picker_row">
+    <button id="save">Save</button>
+  </div>
+</form>
+

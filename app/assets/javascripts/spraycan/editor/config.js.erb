@@ -1,0 +1,206 @@
+var Spraycan = {
+  Views: {Shared: {}, Themes: {}, ViewOverrides: {}, Stylesheets: {}, Javascripts: {}, Files: {}, Inspector: {} },
+  Routers: {},
+  Collections: {},
+
+  current: 'html',
+
+  view: null, //holds edit view for ACE events to access
+
+  theme_id: <%= Spraycan::Theme.active.first.id %>,
+
+  theme_name: '<%= Spraycan::Theme.active.first.name %>',
+
+  editor: {minimised: false, maximised: false, visible: false },
+
+  loaded: {},
+
+  busy: { ajax: false, iframe: true },
+
+  //holds the last x models opened for each class
+  current_collections: {},
+
+  //holds unsaved models when main collection is being fetched
+  new_collections: {},
+
+  init: function() {
+    new Spraycan.Routers.Common();
+    new Spraycan.Routers.Inspector();
+    new Spraycan.Routers.Themes();
+
+    Spraycan.reset_collections(); //initializes collection routers aswell
+
+    Backbone.history.start();
+
+    Spraycan.refresh_toolbar();
+
+    //ajax activity indicators
+    $(document).ajaxSend(function() {
+      Spraycan.busy.ajax = true;
+      Spraycan.busy_indicator();
+    });
+    $(document).ajaxStop(function() {
+      Spraycan.busy.ajax = false;
+      Spraycan.busy_indicator();
+    });
+
+    if(window.location.hash.indexOf("goto=")!=-1){
+      url = window.location.hash;
+      url = url.replace("#goto=", "");
+      url =  window.location.protocol + "//" + window.location.host + url;
+      frames[0].location.href = url;
+    }
+    Spraycan.set_current('themes', 'index');
+    Spraycan.ensure_fetched('themes');
+    new Spraycan.Views.Themes.Index();
+  },
+
+  reset_collections: function(){
+    Spraycan.loaded = {view_overrides: false, stylesheets: false, javascripts: false, files: false, themes: Spraycan.loaded['themes']};
+
+    Spraycan.current_collections = { view_overrides: [], javascripts: [], stylesheets: [], files: [], themes: Spraycan.current_collections['themes']};
+
+    Spraycan.new_collections = { view_overrides: [], javascripts: [], stylesheets: [], files: [], themes: Spraycan.new_collections['themes']};
+
+    //recreates collections
+    new Spraycan.Routers.ViewOverrides();
+    new Spraycan.Routers.Stylesheets();
+    new Spraycan.Routers.Javascripts();
+    new Spraycan.Routers.Files();
+
+  },
+
+  refresh_toolbar: function(){
+    Spraycan.busy_indicator();
+    new Spraycan.Views.Shared.Toolbar();
+  },
+
+  animate_resize: function(height){
+    var pre_height = $("div#spraycan").height();
+    if(Spraycan.editor.maximised==true){
+      height = $(window).height() + 10;
+    }else if(Spraycan.editor.minimised==true){
+      height = 40 + 10;
+    }else{
+      height = height + 40; //pad for toolbar
+    }
+
+    var t = Math.abs((pre_height - height) * 5);
+    if(t<400){
+      t = 400;
+    }else if(t>1500){
+      t = 1500;
+    }
+
+    $('iframe').animate({height: (($(window).height() + 10) - height) + 'px'}, t);
+
+    $("div#spraycan").animate({height: height + 'px'}, t);
+
+  },
+
+  set_current: function(group, action, model){
+    Spraycan.current = group;
+    Spraycan.current_action = action;
+
+    $(".nav li").removeClass("active");
+    $(".nav li#" + group).addClass("active");
+
+    if(model!=undefined){
+      var collection;
+
+      collection = Spraycan.current_collections[group];
+
+      existing = _.find(collection, function(m){ return model.cid == m.cid } )
+
+      if(existing==undefined){
+        collection[_.size(collection)] = model;
+      }else{
+        collection[collection.indexOf(existing)] = model;
+      }
+
+      Spraycan.refresh_toolbar();
+    }
+  },
+
+  reload_frame: function(){
+    window.frames[0].location.reload();
+  },
+
+  handle_save_error: function(model, errors){
+    _.each(errors, function(message, field){
+      $("[name='" + field + "']").addClass('error');
+      $("[name='" + field + "']").after("<span title='" + message + "' class='error_icon'>E<span>")
+    });
+  },
+
+  clear_errors: function(){
+    $(".error").removeClass("error");
+    $(".error_icon").remove();
+  },
+
+  ensure_fetched: function(collection){
+    if(!Spraycan.loaded[collection]){
+      Spraycan.new_collections[collection] = _.select(Spraycan[collection].models, function(model){
+        return model.get('id') == undefined;
+      });
+
+      Spraycan[collection].fetch({
+        error: function() {
+          Spraycan.loaded[collection] = false;
+          new Error({ message: "Error loading collection." });
+        }
+      });
+    }
+  },
+
+  get_hook_details: function(hook_name){
+    var template;
+    var hook;
+
+    _.each(window.frames[0].all_templates, function(t) {
+      if(hook!=undefined){
+        return _.breaker;
+      }
+
+      template = t;
+      hooks = window.frames[0].hooks_by_template[t];
+
+      if(hooks!=undefined){
+        if(_.include(_.pluck(hooks,0), hook_name)){
+          hook = _.detect(hooks, function(hook){
+            return hook[0] == hook_name;
+          })
+
+          if(hook!=undefined){
+            return _.breaker;
+          }
+        }
+      }
+    } );
+
+
+    return {virtual_path: template, source:  Base64.decode(hook[1])};
+
+  },
+
+  iframe_busy: function(state){
+    Spraycan.busy.iframe = state;
+    Spraycan.busy_indicator();
+  },
+
+  busy_indicator: function(){
+    if(Spraycan.busy.iframe || Spraycan.busy.ajax){
+      $('#busy').show();
+    }else{
+      $('#busy').hide();
+    }
+  },
+
+  show_dialog: function(title, message){
+    $('#dialogs').html(temp({ title: title, warning: message}));
+    $('#dialog').modal({backdrop: true, keyboard: true, show: true})
+  }
+
+};
+
+

@@ -9,11 +9,9 @@ class Spraycan::BaseController < ActionController::Base
       # end
     end
 
-    # Clears all cached ActionView Templates, forcing re-compile
-    # needs to be tweaked to only force recompile for single view method
-    def clear_resolver_cache
+    def initialize_themes
       return unless Rails.env.production?
       Spraycan::Engine.initialize_themes
-      @_lookup_context.view_paths.map(&:clear_cache)
+      # @_lookup_context.view_paths.map(&:clear_cache)
     end
 end

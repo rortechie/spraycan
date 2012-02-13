@@ -1,7 +1,9 @@
-<%= javascript_include_tag '/spraycan/compiled' %>
-<%= stylesheet_link_tag '/spraycan/compiled' %>
+<%= favicon_link_tag '/spraycan/favicon.ico' %>
+
+<%= javascript_include_tag "/spraycan/compiled/#{Spraycan::Config[:javascript_digest]}" %>
+<%= stylesheet_link_tag "/spraycan/compiled/#{Spraycan::Config[:stylesheet_digest]}" %>
 
 <% if session[:full] %>
-  <%= javascript_include_tag 'spraycan/embed' %>
-  <%= stylesheet_link_tag 'spraycan/embed' %>
+  <%= javascript_include_tag 'spraycan/editor/embed' %>
+  <%= stylesheet_link_tag 'spraycan/editor/embed' %>
 <% end %>

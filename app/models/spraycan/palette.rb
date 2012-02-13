@@ -10,12 +10,18 @@ module Spraycan
     preference :product_link_text_color, :string, :default => '#000000'
 
     before_save :check_active
+    after_save :set_digest
 
     private
       def check_active
         if self.changed.include?('active')
           Spraycan::Palette.update_all(:active => false)
         end
+      end
+
+      def set_digest
+        return unless self.active?
+        CompileDigest.update_stylesheet_digest(self)
       end
   end
 end

@@ -14,7 +14,7 @@ class GraphicUploader < CarrierWave::Uploader::Base
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
     # Rails.root.join("app", "theme_assets", model.theme.guid)
-    Rails.root.join("public")
+    Rails.root.join("public", "spraycan")
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:

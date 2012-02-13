@@ -22,6 +22,8 @@ module Spraycan
 
       end
 
+      # Rails.application.config.active_record.observers = :compile_sweeper
+
       self.initialize_themes
     end
 
@@ -34,9 +36,7 @@ module Spraycan
 
         #load all overrides from db
         if Spraycan::Theme.table_exists?
-          Spraycan::Theme.active.each do |theme|
-            theme.view_overrides.map(&:initiate)
-          end
+          Spraycan::Theme.active.includes(:view_overrides).each { |theme| theme.view_overrides.map(&:initiate) }
         end
       end
 

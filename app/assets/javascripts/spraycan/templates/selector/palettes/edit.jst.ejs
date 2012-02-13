@@ -1,0 +1,100 @@
+<div class="tab nano active" id="tab-colors" style="display: block; ">
+  <div class="hidden palette-default" id="new-palette" style="display: block; ">
+    <form id="new-palette-form" action="#">
+      <div class="section" id="section-background">
+        <div class="section-header">
+          <h6 class="title">Background</h6>
+        </div>
+        <div class="section-body">
+          <ul class="inline colors-list">
+            <li class="color">
+              <div class="picker">
+                <div class="color-block sample" style="background-color:<%= palette.preferred_layout_background_color || '#ffffff' %>;"></div>
+                <input type="hidden" name="preferred_layout_background_color" value="<%= palette.preferred_layout_background_color || '#ffffff' %>">
+              </div>
+              <div class="color-title">Layout</div>
+            </li>
+            <li class="color">
+              <div class="picker">
+                <div class="color-block sample" style="background-color:<%= palette.preferred_product_background_color || '#ffffff'  %>;"></div>
+                <input type="hidden" name="preferred_product_background_color" value="<%= palette.preferred_product_background_color || '#ffffff' %>">
+              </div>
+              <div class="color-title">Product</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="section" id="section-text">
+        <div class="section-header">
+          <h6 class="title">Text</h6>
+        </div>
+        <div class="section-body">
+          <ul class="inline colors-list">
+            <li class="color">
+              <div class="picker">
+                <div class="color-block sample" style="background-color:<%= palette.preferred_title_text_color || '#000000' %>;"></div>
+                <input type="hidden" name="preferred_title_text_color" value="<%= palette.preferred_title_text_color || '#000000' %>">
+              </div>
+              <div class="color-title">Title</div>
+            </li>
+            <li class="color">
+              <div class="picker">
+                <div class="color-block sample" style="background-color:<%= palette.preferred_body_text_color || '#000000' %>;"></div>
+                <input type="hidden" name="preferred_body_text_color" value="<%= palette.preferred_body_text_color || '#000000' %>">
+              </div>
+              <div class="color-title">Body</div>
+            </li>
+            <li class="color">
+              <div class="picker">
+                <div class="color-block sample" style="background-color:<%= palette.preferred_link_text_color || '#000000' %>;"></div>
+                <input type="hidden" name="preferred_link_text_color" value="<%= palette.preferred_link_text_color || '#000000' %>">
+              </div>
+              <div class="color-title">Link</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="section" id="section-product">
+        <div class="section-header">
+          <h6 class="title">Product</h6>
+        </div>
+        <div class="section-body">
+          <ul class="inline colors-list">
+            <li class="color">
+              <div class="picker">
+                <div class="color-block sample" style="background-color:<%= palette.preferred_product_title_text_color || '#000000' %>;"></div>
+                <input type="hidden" name="preferred_product_title_text_color" value="<%= palette.preferred_product_title_text_color || '#000000' %>">
+              </div>
+              <div class="color-title">Title</div>
+            </li>
+            <li class="color">
+              <div class="picker">
+                <div class="color-block sample" style="background-color:<%= palette.preferred_product_body_text_color || '#000000' %>;"></div>
+                <input type="hidden" name="preferred_product_body_text_color" value="<%= palette.preferred_product_body_text_color || '#000000' %>">
+              </div>
+              <div class="color-title">Body</div>
+            </li>
+            <li class="color">
+              <div class="picker">
+                <div class="color-block sample" style="background-color:<%= palette.preferred_product_link_text_color || '#000000' %>;"></div>
+                <input type="hidden" name="preferred_product_link_text_color" value="<%= palette.preferred_product_link_text_color || '#000000' %>">
+              </div>
+              <div class="color-title">Link</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header">
+          <h6 class="title">Palette name</h6>
+        </div>
+        <div class="section-body">
+          <input class="new-palette-field" name="name" size="23" type="text" value="<%= palette.name %>">
+          <br><br>
+          <input type="submit" value="<%= palette.id==undefined ? 'Add' : 'Save' %> palette">
+          <input class="back" type="button" value="Back">
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

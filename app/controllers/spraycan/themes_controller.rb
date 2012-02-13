@@ -1,6 +1,5 @@
 class Spraycan::ThemesController < Spraycan::BaseController
-  after_filter :clear_resolver_cache, :only => [:create, :update, :destroy]
-  # after_filter :clear_sprockets_assets, :only => [:create, :update, :destroy]
+  after_filter :initialize_themes, :only => [:create, :update, :destroy]
 
   respond_to :json
 
@@ -48,9 +47,7 @@ class Spraycan::ThemesController < Spraycan::BaseController
     file_path = Rails.root.join('tmp', params[:qqfile]).to_s
     File.open(file_path, 'wb'){|f| f.write request.raw_post }
 
-    @theme = Spraycan::Theme.new
-
-    if @theme.import_from_string(File.open(file_path).read)
+    if Spraycan::Theme.import_from_string(File.open(file_path).read)
       render :json => {:success => 'true'}
     else
       render :json => {:error => 'Failed to create file'}

@@ -1,0 +1,56 @@
+<div class="container-fluid">
+  <div class="pull-left">
+    <h3>Themes</h3>
+    <p>I can't think of any text to put here, but the view looks much better with something.</p>
+  </div>
+
+  <div class="pull-right index_actions">
+    <a href="/spraycan#theme?new" class="btn primary success pull-right">New Theme</a>
+  </div>
+
+  <table id="themes" class="condensed-table zebra-striped sortable">
+    <thead>
+      <th class="span12">Name</th>
+      <th class="span6">Applies To</th>
+      <th class="span4">Active</th>
+      <th class="span8 align-right">Actions</th>
+    </thead>
+    <tbody>
+     <% if(Spraycan.loaded.themes){ %>
+        <% if(collection.length==0){ %>
+          <tr>
+            <td colspan="5">No themes found.</td>
+          </tr>
+        <% } %>
+        <% collection.each(function(item) { %>
+          <tr data-id="<%= item.id==undefined ? item.cid : item.id %>">
+            <td class="handle">
+              <%= item.escape('name') %>
+            </td>
+            <td>
+              <%= item.escape('applies_to') %>
+            </td>
+            <td>
+              <%= item.attributes.active ? 'Yes' : 'No' %>
+            </td>
+            <td class="align-right">
+              <a href="/spraycan#theme/<%= item.cid %>" class="btn small primary">Edit</a>
+              <% if(item.id==undefined){ %>
+                <a href="/spraycan#theme?delete=<%= item.cid %>&confirm=true" class="btn small danger">Discard</a>
+              <% }else{ %>
+                <a href="/spraycan#theme?delete=<%= item.cid %>&confirm=false" class="btn small danger">Delete</a>
+
+                <a href="/spraycan#theme?switch=<%= item.cid %>" class="btn small<%= Spraycan.theme_id==item.id ? ' disabled' : '' %>">Load</a>
+                <a data-theme-id="<%= item.attributes.id %>" href="/spraycan/themes/<%= item.attributes.id %>/export" class="btn small">Export</a>
+              <% } %>
+            <td>
+          </tr>
+        <% }); %>
+      <% }else{ %>
+        <tr>
+          <td colspan="5">Loading...</td>
+        </tr>
+      <% } %>
+    </tobdy>
+  </table>
+</div>

@@ -1,0 +1,29 @@
+<div class="tab ui-tabs ui-widget ui-widget-content ui-corner-all" id="tab-layouts" style="overflow-y: hidden; " tabindex="5000">
+  <nav class="layouts-list vertical-tabs">
+    <ul class="tab-links ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+      <li class="ui-state-default ui-corner-top ui-tabs-selected ui-state-active"><a href="#tab-layouts-store">Store</a></li>
+      <li class="ui-state-default ui-corner-top"><a href="#tab-layouts-product-listing">Product listing</a></li>
+      <li class="ui-state-default ui-corner-top"><a href="#tab-layouts-product-details">Product details</a></li>
+      <li class="ui-state-default ui-corner-top"><a href="#tab-layouts-cart">Cart</a></li>
+      <li class="ui-state-default ui-corner-top"><a href="#tab-layouts-checkout">Checkout</a></li>
+    </ul>
+    <div class="tabs-content">
+      <% _.each({layouts: 'store', product_listing: 'product-listing', product_details: 'product-details'}, function(display, applies_to){ %>
+        <div id="tab-layouts-<%= display %>" class="ui-tabs-panel ui-widget-content ui-corner-bottom <%= applies_to == 'layouts' ? '' : 'ui-tabs-hide' %>">
+          <ul class="inline">
+            <% _.each(Spraycan.themes.models, function(theme){ %>
+              <% if(theme.get('applies_to')==applies_to){ %>
+                <li class="layout-right-hand-nav <%= theme.get('active') ? 'active' : '' %>">
+                  <a href="#theme?apply=<%= theme.cid %>">
+                    <span class="icon"></span><span class="title"><%= theme.get('name') %></span>
+                  </a>
+                </li>
+              <% } %>
+            <% }); %>
+          </ul>
+        </div>
+      <% }); %>
+    </div>
+  </nav>
+</div>
+

@@ -1,0 +1,169 @@
+<div class="tab" id="tab-fonts" style="display: none; ">
+  <form id="fonts_form" class="container" action="#">
+    <div class="section" id="section-fonts-preview">
+      <div class="section-body">
+        <div class="font-select">
+          <label>Title font</label>
+          <a id="title_font" class="selector" href="#" style="font-family: <%= Spraycan.preferences.title_font %>;"><%= Spraycan.preferences.title_font %></a>
+          <div class="font-preview">Quick brown fox</div>
+          <input type="hidden" id="preferred_title_font" name="title_font" value="<%= Spraycan.preferences.title_font %>">
+        </div>
+        <div class="font-select">
+          <label>Body font</label>
+          <a id="body_font" class="selector" href="#" style="font-family: <%= Spraycan.preferences.body_font %>;"><%= Spraycan.preferences.body_font %></a>
+          <div class="font-preview">Quick brown fox</div>
+          <input type="hidden" id="preferred_body_font" name="body_font" value="<%= Spraycan.preferences.body_font %>">
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-header">
+        <h6 class="title">Store</h6>
+      </div>
+      <div class="section-body">
+        <div class="slider-wrap">
+          <div class="title">Store name</div>
+          <div class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" id="slider-store-name"><div class="ui-slider-range ui-widget-header ui-slider-range-min" style="width: 52.38095238095239%; "></div><a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 52.38095238095239%; "></a></div>
+          <div class="value">
+            <input type="text" value="20" id="preferred_store_name_font_size" name="store_name_font_size" value="<%= Spraycan.preferences.store_name_font_size %>">
+            <span class="format">px</span>
+          </div>
+        </div>
+        <div class="slider-wrap">
+          <div class="title">Main navigation</div>
+          <div class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" id="slider-main-navigation"><div class="ui-slider-range ui-widget-header ui-slider-range-min" style="width: 52.38095238095239%; "></div><a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 52.38095238095239%; "></a></div>
+          <div class="value">
+            <input type="text" value="20" id="preferred_" name="store_name_font_size" value="<%= Spraycan.preferences.store_name_font_size %>">
+            <span class="format">px</span>
+          </div>
+        </div>
+        <div class="slider-wrap">
+          <div class="title">Side navigation</div>
+          <div class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" id="slider-side-navigation"><div class="ui-slider-range ui-widget-header ui-slider-range-min" style="width: 52.38095238095239%; "></div><a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 52.38095238095239%; "></a></div>
+          <div class="value">
+            <input type="text" value="20" id="preferred_" name="store_name_font_size" value="<%= Spraycan.preferences.store_name_font_size %>">
+            <span class="format">px</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-header">
+        <h6 class="title">Product List</h6>
+      </div>
+      <div class="section-body">
+        <div class="slider-wrap">
+          <div class="title">Name</div>
+          <div class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" id="slider-product-name"><div class="ui-slider-range ui-widget-header ui-slider-range-min" style="width: 52.38095238095239%; "></div><a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 52.38095238095239%; "></a></div>
+          <div class="value">
+            <input type="text" value="20" id="preferred_" name="store_name_font_size" value="<%= Spraycan.preferences.store_name_font_size %>">
+            <span class="format">px</span>
+          </div>
+        </div>
+        <div class="slider-wrap">
+          <div class="title">Description</div>
+          <div class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" id="slider-product-description"><div class="ui-slider-range ui-widget-header ui-slider-range-min" style="width: 52.38095238095239%; "></div><a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 52.38095238095239%; "></a></div>
+          <div class="value">
+            <input type="text" value="20" id="preferred_" name="store_name_font_size" value="<%= Spraycan.preferences.store_name_font_size %>">
+            <span class="format">px</span>
+          </div>
+        </div>
+        <div class="slider-wrap">
+          <div class="title">Price</div>
+          <div class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" id="slider-product-price"><div class="ui-slider-range ui-widget-header ui-slider-range-min" style="width: 52.38095238095239%; "></div><a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 52.38095238095239%; "></a></div>
+          <div class="value">
+            <input type="text" value="20" id="preferred_" name="store_name_font_size" value="<%= Spraycan.preferences.store_name_font_size %>">
+            <span class="format">px</span>
+          </div>
+        </div>
+        <div class="slider-wrap">
+          <div class="title">Add to cart</div>
+          <div class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" id="slider-product-add-to-cart"><div class="ui-slider-range ui-widget-header ui-slider-range-min" style="width: 52.38095238095239%; "></div><a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 52.38095238095239%; "></a></div>
+          <div class="value">
+            <input type="text" value="20" id="preferred_" name="store_name_font_size" value="<%= Spraycan.preferences.store_name_font_size %>">
+            <span class="format">px</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-header">
+        <h6 class="title">Product Detail</h6>
+      </div>
+      <div class="section-body">
+        <div class="slider-wrap">
+          <div class="title">Name</div>
+          <div class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" id="slider-product-name"><div class="ui-slider-range ui-widget-header ui-slider-range-min" style="width: 52.38095238095239%; "></div><a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 52.38095238095239%; "></a></div>
+          <div class="value">
+            <input type="text" value="20" id="preferred_" name="store_name_font_size" value="<%= Spraycan.preferences.store_name_font_size %>">
+            <span class="format">px</span>
+          </div>
+        </div>
+        <div class="slider-wrap">
+          <div class="title">Description</div>
+          <div class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" id="slider-product-description"><div class="ui-slider-range ui-widget-header ui-slider-range-min" style="width: 52.38095238095239%; "></div><a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 52.38095238095239%; "></a></div>
+          <div class="value">
+            <input type="text" value="20" id="preferred_" name="store_name_font_size" value="<%= Spraycan.preferences.store_name_font_size %>">
+            <span class="format">px</span>
+          </div>
+        </div>
+        <div class="slider-wrap">
+          <div class="title">Price</div>
+          <div class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" id="slider-product-price"><div class="ui-slider-range ui-widget-header ui-slider-range-min" style="width: 52.38095238095239%; "></div><a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 52.38095238095239%; "></a></div>
+          <div class="value">
+            <input type="text" value="20" id="preferred_" name="store_name_font_size" value="<%= Spraycan.preferences.store_name_font_size %>">
+            <span class="format">px</span>
+          </div>
+        </div>
+        <div class="slider-wrap">
+          <div class="title">Add to cart</div>
+          <div class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" id="slider-product-add-to-cart"><div class="ui-slider-range ui-widget-header ui-slider-range-min" style="width: 52.38095238095239%; "></div><a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 52.38095238095239%; "></a></div>
+          <div class="value">
+            <input type="text" value="20" id="preferred_" name="store_name_font_size" value="<%= Spraycan.preferences.store_name_font_size %>">
+            <span class="format">px</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <h6 class="title">Basic</h6>
+      </div>
+      <div class="section-body">
+        <div class="slider-wrap">
+          <div class="title">Links</div>
+          <div class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" id="slider-basic-links"><div class="ui-slider-range ui-widget-header ui-slider-range-min" style="width: 52.38095238095239%; "></div><a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 52.38095238095239%; "></a></div>
+          <div class="value">
+            <input type="text" value="20" id="preferred_" name="store_name_font_size" value="<%= Spraycan.preferences.store_name_font_size %>">
+            <span class="format">px</span>
+          </div>
+        </div>
+        <div class="slider-wrap">
+          <div class="title">Text</div>
+          <div class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" id="slider-basic-text"><div class="ui-slider-range ui-widget-header ui-slider-range-min" style="width: 52.38095238095239%; "></div><a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 52.38095238095239%; "></a></div>
+          <div class="value">
+            <input type="text" value="20" id="preferred_" name="store_name_font_size" value="<%= Spraycan.preferences.store_name_font_size %>">
+            <span class="format">px</span>
+          </div>
+        </div>
+        <div class="slider-wrap">
+          <div class="title">Lists</div>
+          <div class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" id="slider-basic-lists"><div class="ui-slider-range ui-widget-header ui-slider-range-min" style="width: 52.38095238095239%; "></div><a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 52.38095238095239%; "></a></div>
+          <div class="value">
+            <input type="text" value="20" id="preferred_" name="store_name_font_size" value="<%= Spraycan.preferences.store_name_font_size %>">
+            <span class="format">px</span>
+          </div>
+        </div>
+        <div class="slider-wrap">
+          <div class="title">Tables</div>
+          <div class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" id="slider-basic-tables"><div class="ui-slider-range ui-widget-header ui-slider-range-min" style="width: 52.38095238095239%; "></div><a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 52.38095238095239%; "></a></div>
+          <div class="value">
+            <input type="text" value="20" id="preferred_" name="store_name_font_size" value="<%= Spraycan.preferences.store_name_font_size %>">
+            <span class="format">px</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

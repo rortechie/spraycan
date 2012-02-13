@@ -14,7 +14,7 @@ class Spraycan::BootController < Spraycan::BaseController
     else
       @themes = Spraycan::Theme.all
       @palettes = Spraycan::Palette.all
-      render :action => "tweaker", :layout => false
+      render :action => "selector", :layout => false
     end
   end
 

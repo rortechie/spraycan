@@ -7,6 +7,8 @@ class Spraycan::PreferencesController < Spraycan::BaseController
       config.send "#{param[:name]}=".to_sym, param[:value]
     end
 
+    CompileSweeper.expire_compiled
+
     #not sure what to return here
     render :json => { :all => 'good' }.to_json
   end

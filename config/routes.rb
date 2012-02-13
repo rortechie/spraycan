@@ -2,7 +2,7 @@ Spraycan::Engine.routes.draw do
   root :to => 'boot#editor'
   match '/toggle', :to => 'boot#toggle'
 
-  match '/compiled.:action', :controller => :compiler
+  match '/compiled/:digest.:action', :controller => :compiler
 
   resources :themes do
     member do

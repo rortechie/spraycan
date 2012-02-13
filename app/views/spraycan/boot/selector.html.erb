@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Spree Theme Editor</title>
+    <%= javascript_include_tag 'spraycan/selector/all' %>
+    <%= stylesheet_link_tag 'spraycan/selector/all' %>
+    <script type="text/javascript">
+      Spraycan.public_file_path = '/spraycan/';
+    </script>
+    <script type="text/javascript">
+      Spraycan.theme_id = <%= Spraycan::Config.preferred_base_theme_id %>;
+      Spraycan.preload.themes = <%== render(:file => 'spraycan/themes/index.json.rabl') %>;
+      Spraycan.preload.palettes = <%== render(:file => 'spraycan/palettes/index.json.rabl') %>;
+      Spraycan.preferences.favicon_file_name =  '<%= Spraycan::Config[:favicon_file_name] %>';
+      Spraycan.preferences.logo_file_name = '<%= Spraycan::Config[:logo_file_name] %>';
+      Spraycan.preferences.logo_alignment = '<%= Spraycan::Config[:logo_alignment] %>';
+      Spraycan.preferences.background_file_name = '<%= Spraycan::Config[:background_file_name] %>';
+      Spraycan.preferences.background_alignment = '<%= Spraycan::Config[:background_alignment] %>';
+      Spraycan.preferences.background_repeat = '<%= Spraycan::Config[:background_repeat] %>';
+      <%# Spraycan.preferences.title_font = '<%= Spraycan::Config.preferred_title_font || 'Irish Growler' %>';%>
+      <%# Spraycan.preferences.title_font_size = '<%= Spraycan::Config.preferred_title_font_size || 35 %>';%>
+      <%# Spraycan.preferences.body_font = '<%= Spraycan::Config.preferred_body_font || 'Rock Salt' %>';%>
+      <%# Spraycan.preferences.body_font_size = '<%= Spraycan::Config.preferred_body_font_size || 15 %>';%>
+    </script>
+  </head>
+  <body>
+    <div id="spreeworks-editor" class="ui-draggable">
+      <div class="content">
+        <div class="wrap" id="main">
+        </div>
+      </div>
+      <div class="toolbar" style="width: 479px; ">
+        <div class="wrap">
+          <nav class="actions">
+            <ul>
+              <li class="drag">
+                <span class="icon"></span>
+              </li>
+              <li class="show-hide">
+                <span class="icon"></span>
+              </li>
+              <li class="save">
+                <span class="icon"></span>
+              </li>
+            </ul>
+          </nav>
+          <nav class="tabs">
+            <ul>
+              <li class="layouts"><a href="#tab-layouts">Layouts</a></li>
+              <li class="colors"><a href="#tab-colors">Colors</a></li>
+              <li class="fonts"><a href="#tab-fonts">Fonts</a></li>
+              <li class="images"><a href="#tab-images">Images</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+
+    <iframe src="/"></iframe>
+  </body>
+</html>

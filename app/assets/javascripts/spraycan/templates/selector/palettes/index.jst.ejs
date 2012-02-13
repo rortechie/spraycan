@@ -1,0 +1,19 @@
+<div class="tab" id="tab-colors" style="overflow-y: hidden; " tabindex="5001">
+  <ul class="colors-palettes-list inline">
+    <% _.each(palettes, function(palette) { %>
+      <li class="<%= palette.get('active') ? 'active' : '' %>" id="palette-spree">
+        <span class="actions hidden">
+          <a class="delete" href="#palette?delete=<%= palette.cid %>&confirm=<%= palette.id==undefined ? 'true' : 'false' %>#"></a>
+          <a class="edit" href="#palette/<%= palette.cid %>"></a>
+        </span>
+        <a href="#palette?switch=<%= palette.cid %>">
+          <span class="colors"><span class="color" style="background-color: <%= palette.get('preferred_layout_background_color') %>"></span><span class="color" style="background-color: <%= palette.get('preferred_title_text_color') %>"></span><span class="color" style="background-color: <%= palette.get('preferred_body_text_color') %>"></span><span class="color" style="background-color: <%= palette.get('preferred_link_text_color') %>"></span><span class="color" style="background-color: <%= palette.get('preferred_product_background_color') %>"></span><span class="color" style="background-color: <%= palette.get('preferred_title_text_color') %>"></span><span class="color" style="background-color: <%= palette.get('preferred_product_body_text_color') %>"></span><span class="color" style="background-color: <%= palette.get('preferred_link_text_color') %>"></span></span>
+          <span class="title"><%= palette.get('name') %></span>
+        </a>
+      </li>
+    <% }); %>
+
+    <li class="new-palette"><a href="#palette?new">Add new palette</a></li>
+  </ul>
+  <div class="hidden" id="new-palette">New palette</div>
+</div>
