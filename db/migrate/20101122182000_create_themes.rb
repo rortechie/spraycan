@@ -1,3 +1,16 @@
+#need to stub out CompileDigest for now
+module Spraycan
+  class CompileDigest
+    def self.update_stylesheet_digest(*args)
+    end
+
+    def self.update_javascript_digest(*args)
+
+    end
+
+  end
+end
+
 class CreateThemes < ActiveRecord::Migration
   def self.up
     create_table :spraycan_themes do |t|
