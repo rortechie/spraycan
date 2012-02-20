@@ -1,6 +1,8 @@
 /*
  *= require spraycan/selector/jquery-ui.custom
- *= require spraycan/selector/spreeworks-editor
+ *= require spraycan/selector/main
+ *= require spraycan/selector/forms
+ *= require spraycan/selector/font-picker
  *= require spraycan/jquery.jscrollpane
  *= require spraycan/colorpicker
 */

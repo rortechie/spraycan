@@ -1,0 +1,105 @@
+#spreeworks-editor {
+  
+  input[type="submit"], input[type="button"],
+  button, .button {
+    @include background(none, linear-gradient(#0083bf, #005e9e));
+    text-shadow: 1px 1px #003254;
+    border: none;
+    border-top: 1px solid #339ccc;
+    border-bottom: 1px solid #124a72;
+    color: white;
+    text-transform: uppercase;
+    font-family: "PT Sans Narrow", sans-serif;
+    font-weight: bold;
+    padding: 3px 10px;
+    font-size: 13px;
+    cursor: pointer;
+
+    &:active, &.active {
+      @include background(none, linear-gradient(#005e9e, #0083bf));
+    }
+  }
+
+  input[type="text"], input[type="email"],
+  input[type="phone"], input[type="url"],
+  input[type="password"], input[type="search"], 
+  input[type="number"] {
+    @include box-shadow(0 0 5px 0 #1f2124 inset);
+    background-color: #2b2e31;
+    padding: 5px 10px;
+    border: 1px solid #17181b;
+    color: white;
+    font-family: "PT Sans Caption", sans-serif;
+    margin: 0;
+
+    &:active, &:focus{
+      outline: none;
+    }
+  }
+
+  .slider-wrap {
+    input[type="text"] {
+      @include box-shadow(none);
+      font-family: "PT Sans Narrow", sans-serif;
+      background-color: transparent;
+      padding: 0;
+      border: none;
+      font-weight: bold;
+      font-size: 11px;
+      float: left;
+      width: 15px;
+    }
+    span.format {
+      float: left;
+    }
+  }
+
+  .ui-slider {
+    @include border-radius(10px);
+    @include box-shadow(0 0 10px 0 #191c1d inset);
+    background-color: #2b2e31;
+    height: 9px !important;
+    border-bottom: 1px solid #565c5f;
+    border-right: 1px solid #565c5f;
+
+    .ui-slider-range {
+      @include background(none, linear-gradient(#4283d1, #245e8f));
+      @include border-radius(10px);
+      height: 4px !important;
+      border-top: 1px solid #529de1;
+      border-left: 1px solid #529de1;
+      margin-top: 2px;
+      margin-left: 2px;
+    }
+
+    .ui-slider-handle {
+      background: url("/assets/spraycan/selector/toolbar/ui-slider-handle.png") no-repeat center 1px;
+
+      &:active, &:focus {
+        outline: none;
+      }
+    }
+  }
+
+  form#new-palette-form {
+    input[type="button"] {      
+      padding-left: 30px;
+      @include background(url("/assets/spraycan/selector/toolbar/back-button-icon.png") no-repeat 5px 2px, linear-gradient(#0083bf, #005e9e));
+
+      &:active, &.active {
+        @include background(url("/assets/spraycan/selector/toolbar/back-button-icon.png") no-repeat 5px 2px, linear-gradient(#005e9e, #0083bf));
+      }
+    }
+
+    input[type="submit"] {
+      padding-left: 30px;
+      @include background(url("/assets/spraycan/selector/toolbar/toolbar-add-palette-submit.png") no-repeat 5px 1px, linear-gradient(#0083bf, #005e9e));
+
+      &:active, &.active {
+        @include background(url("/assets/spraycan/selector/toolbar/toolbar-add-palette-submit.png") no-repeat 5px 1px, linear-gradient(#005e9e, #0083bf));
+      }
+    }
+  }
+
+}
+

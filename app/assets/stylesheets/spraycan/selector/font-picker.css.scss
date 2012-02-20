@@ -1,0 +1,75 @@
+#spreeworks-editor {
+
+  .font-select {
+    .selector {      
+      @include background(url("/assets/spraycan/selector/toolbar/form-select-icon.png") no-repeat 95% center, linear-gradient(#5b9bd1, #416eb8));
+      text-shadow: 1px 1px #003254;
+      display: block;
+      text-transform: none;
+      border: none;
+      border-top: 1px solid #7cafda;
+      border-bottom: 1px solid #3f4547;
+      color: white;
+      font-weight: normal;
+      padding: 3px 10px;
+      font-size: 13px;
+      cursor: pointer;
+
+      &:active, &.active {
+        @include background(url("/assets/spraycan/selector/toolbar/form-select-icon.png") no-repeat 95% center, linear-gradient(#416eb8, #5b9bd1));
+      }  
+    }
+
+    .font-preview {
+      @include box-shadow(0 0 10px 0 #383e40 inset);
+      margin-top: 10px;
+      padding: 5px 10px;
+      background-color: #464c4f;
+      border: 1px solid #3a3f42;
+      text-transform: none;
+      font-weight: normal;
+    }
+
+    .fontbox {
+      @include background(none, linear-gradient( #565d61, #393e41 ));
+      border: 1px solid #272B2D;
+      text-align: left;
+      width: 167px;
+      height: 100px;
+      overflow: hidden;
+      font-size: 12px;
+      color: white;
+      cursor: pointer;
+      padding: 3px 0;
+
+      .viewport, .scrollbox {
+        height: 90px !important;
+        padding-bottom: 10px;
+      }
+
+      .scrollbox {
+        border: 1px solid #565d61;
+      }
+
+      ul {
+        li {
+          a {    
+            border-bottom: 1px solid transparent;
+            display:block;
+            padding:0 9px;
+            line-height:24px;
+            text-transform: none;
+            font-weight: normal;
+            color: white;
+          }
+          a:hover {
+            @include box-shadow(0 0 10px 0 #191c1d inset);
+            background-color: #2b2e31;
+            border-bottom: 1px solid #565c5f;
+            border-right: 1px solid #565c5f;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,579 @@
+@import "compass";
+@import "compass/typography";
+@import "compass/css3";
+@import "compass/css3/images";
+
+@import url(http://fonts.googleapis.com/css?family=PT+Sans:400,700|PT+Sans+Narrow:400,700&subset=latin,cyrillic);
+
+@import "forms";
+@import "font-picker";
+
+#spreeworks-editor {
+  @include global-reset;
+  font-family: "PT Sans Narrow", sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 13px;
+  color: #d9dde1;
+  text-shadow: 1px 1px #393d41;
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  margin-left: -213px;
+
+  .clearfix {
+    @include pie-clearfix;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .vertical-tabs {
+    ul {
+      float: left;
+
+      li {
+        padding: 6px 0 !important;
+        float: none !important;
+
+        a {
+          float: none !important;
+        }
+
+        &.ui-tabs-selected {
+          // @include box-shadow(0 0 10px 0 #191c1d inset);
+          background-color: #2b2e31;
+          background-position: left center;
+          background-repeat: no-repeat;
+          background-image: url("/assets/spraycan/selector/toolbar/vertical-tabs-active.png")
+        }
+      }
+    }
+
+    .tabs-content {
+      // @include box-shadow(0 0 10px 0 #191c1d inset);
+      float: left;
+      overflow: auto;
+      background-color: #2b2e31;
+    }
+  }
+
+  ul.inline {
+    li {
+      float: left !important;
+    }
+  }
+
+  a {
+    text-decoration: none;
+    color: #d9dde1;
+  }
+
+  nav {
+    ul {
+      li {
+        padding: 10px;
+      }
+    }
+    
+    &.actions, &.tabs {
+      float: left;
+
+      ul {
+        li {
+          float: left;
+          border-right: 1px solid #272b2d;
+          border-left: 1px solid #565b5f;
+          border-top: 1px solid #6f7579;
+
+          &.active {
+            @include box-shadow(0 0 10px 0 #191c1d inset);
+            background-color: #2b2e31;
+            border-left: 1px solid transparent;
+            border-top: 1px solid transparent;
+          }
+
+        }
+      }
+    }
+    
+    &.tabs {
+      li {
+
+        &:last-child {
+          border-right: none;
+        }
+
+        a {
+          padding-left: 28px;
+          background-position: left;
+          background-repeat: no-repeat;
+          display: block;
+        }
+
+        &.layouts a {
+          background-image: url("/assets/spraycan/selector/toolbar/toolbar-layouts.png");
+        }
+        &.colors a {
+          background-image: url("/assets/spraycan/selector/toolbar/toolbar-colors.png");
+        }
+        &.fonts a {
+          background-image: url("/assets/spraycan/selector/toolbar/toolbar-fonts.png");
+        }
+        &.images a {
+          background-image: url("/assets/spraycan/selector/toolbar/toolbar-images.png");
+        }
+      }
+    }
+
+    &.actions {      
+      li:first-child {
+        border-left: none;
+      }
+
+      span.icon {
+        cursor: pointer;
+        display: block;
+        width: 20px;
+        height: 20px;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+
+      .drag span.icon{
+        background-image: url("/assets/spraycan/selector/toolbar/toolbar-drag.png");
+      }
+      .show-hide span.icon{
+        background-image: url("/assets/spraycan/selector/toolbar/toolbar-close.png");
+      }
+      .save span.icon{
+        background-image: url("/assets/spraycan/selector/toolbar/toolbar-save-active.png");
+      }
+    }
+  }
+
+  .toolbar {
+    border: 1px solid #272b2d;
+
+    .wrap {
+      @include background(none, linear-gradient( #565d61, #282c2e ));
+      overflow: auto;
+      border-left: 1px solid #6f7579;
+      border-right: 1px solid #6f7579;
+    }
+  }
+
+  .content {
+    display: none;
+    overflow: auto;
+    background-position: 20px bottom;
+    background-repeat: no-repeat;
+    background-image: url("/assets/spraycan/selector/toolbar/content-panel-down-arrow.png");
+    padding-bottom: 6px;
+
+    &.active-layouts {
+      background-position: 170px bottom;
+    }
+    &.active-colors {
+      background-position: 260px bottom;
+    }
+    &.active-fonts {
+      background-position: 345px bottom;
+    }
+    &.active-images {
+      background-position: 430px bottom;
+    }
+
+    .wrap {
+      @include background(none, linear-gradient( #565d61, #393e41 ));
+      border: 1px solid #272b2d;
+      border-bottom: none;
+      overflow: auto;
+    }
+
+    .tab {
+      border-top: 1px solid #6f7579;
+      border-left: 1px solid #6f7579;
+      border-right: 1px solid #6f7579;
+      display: none;
+      overflow: auto;
+      max-width: 810px;
+      max-height: 200px;
+
+      .section {
+        float: left;
+        border-right: 1px solid #2a2e30;
+
+        &:first-child {
+          border-left: none;
+        }
+        &:last-child {
+          border-right: none;
+        }
+
+        .section-header {
+          padding-bottom: 3px;
+          background: url("/assets/spraycan/selector/toolbar/section-header-arrow.png") no-repeat center bottom;
+          
+          .title {
+            text-align: center;
+            @include box-shadow(0 0 10px 0 #383e40 inset);
+            padding: 5px 10px;
+            background-color: #464c4f; 
+          }
+        }
+
+        .section-body {
+          padding: 5px;
+          border-left: 1px solid #5a5f62;
+          font-size: 12px;
+          color: white;
+        }
+
+      }
+
+    }
+
+    //--------------------------------------------------------
+    // Scrollbar
+    //--------------------------------------------------------
+    .scrollbox, .viewport {
+      overflow: auto;
+      max-width: 650px;
+    }
+
+    .viewport {
+      height: 190px;
+      outline: none;
+    }
+
+    .jspContainer {        
+      height: 200px !important;
+
+      .jspTrack {
+        @include border-radius(10px);
+        @include box-shadow(0 0 10px 0 #191c1d inset);
+        background-color: #2b2e31;
+        width: 6px !important;
+        padding: 2px !important;
+        padding-bottom: 4px !important;
+        padding-right: 3px;
+
+        .jspDrag {
+          @include border-radius(10px);
+          @include background(none, linear-gradient(#ccd2d7, #7b7f82));
+          border: 1px solid #babdbe !important;
+        }
+      }
+    }
+
+    //--------------------------------------------------------
+    // Layouts
+    //--------------------------------------------------------
+    &.active-layouts {
+      width: 640px;
+      overflow: hidden;
+      height: 183px;
+
+
+      .viewport {
+        height: 140px;
+        margin-top: 3px;
+      }
+
+      .tab{
+        overflow: hidden;
+        padding-top: 10px;
+        padding-right: 10px; 
+        padding-bottom: 10px;
+      }
+
+      .vertical-tabs {
+        text-align: right;        
+
+        .tab-links {
+          width: 150px;
+        }        
+      }
+
+      .tabs-content {
+        text-align: center;
+        padding: 0 5px;
+        width: 465px;    
+        height: 160px;
+        overflow: hidden;        
+
+        .ui-tabs-panel {
+          overflow: hidden;
+          height: 150px;
+          
+          .viewport {
+            width: 460px !important;
+          }
+        }
+
+        ul {
+          li {
+            padding-bottom: 5px !important;
+            margin: 10px 5px;
+            max-width: 100px;
+            cursor: pointer;
+            width: 100px;
+
+            span.icon {
+              width: 66px;
+              height: 64px;
+              display: block;
+              margin: 10px auto;              
+              background-repeat: no-repeat;
+              background-image: url("/assets/spraycan/selector/toolbar/layouts-icons.png");
+            }
+
+            &.active {
+              @include box-shadow(0 0 10px 0 #191c1d inset);
+              background-color: #2b2e31;
+            }
+
+            &.layout-left-hand-nav{ 
+              span.icon{
+                background-position: left top;
+              }
+              &.active span.icon{
+                background-position: left -64px;                
+              }
+            }
+            &.layout-right-hand-nav {
+              span.icon {
+                background-position: -66px top;
+              }
+              &.active span.icon{
+                background-position: -66px -64px;                
+              }
+            }
+            &.layout-top-menu-nav {
+              span.icon {
+                background-position: -132px top;
+              }
+              &.active span.icon{
+                background-position: -132px -64px;                
+              }
+            }
+            &.layout-left-side-header {
+              span.icon {
+                background-position: -198px top;
+              }
+              &.active span.icon{
+                background-position: -198px -64px;                
+              }
+            }
+          }
+        }
+      }      
+    }
+
+    //--------------------------------------------------------
+    // Colors
+    //--------------------------------------------------------
+    &.active-colors {
+
+      #tab-colors {        
+        overflow: hidden;
+      }
+
+      ul.colors-palettes-list {
+
+        li {
+          width: 100px;
+          background-color: #232528;
+          margin: 10px;
+          cursor: pointer;
+          position: relative;
+
+          &:hover span.actions {
+            display: block;
+          }
+
+          span.actions {
+            @include background(rgba(35, 37, 40, 0.7));
+            position: absolute;
+            right: 0px;
+            padding: 5px 2px;
+
+            a {
+              display: block;
+              float: right;
+              width: 13px;
+              height: 13px;
+              margin: 1px 5px;
+              background: url("/assets/spraycan/selector/toolbar/edit-delete-palette-icons.png") no-repeat;
+
+              &.edit {
+                background-position: left center;
+              }
+              &.delete {
+                background-position: -13px center;
+              }
+            }
+          }
+
+          span.color {
+            @include inline-block;
+            width: 25px;
+            height: 25px;
+          }
+
+          span.title {
+            display: block;
+            font-size: 14px;
+            padding: 5px 3px;
+            text-transform: none;
+            font-weight: normal;
+            text-align: center;
+          }
+
+          &.active {
+            margin: 0;
+            padding: 10px;
+            @include box-shadow(0 0 10px 0 #191c1d inset);
+            background-color: #2b2e31;
+
+            &:hover span.actions {
+              right: 10px;
+            }
+          }
+
+          &.new-palette {
+            height: 79px;
+
+            a {
+              text-shadow: none;
+              background: url("/assets/spraycan/selector/toolbar/toolbar-add-palette.png") no-repeat center top;
+              padding-top: 30px;
+              display: block;
+              width: 100px;
+              text-align: center; 
+              font-size: 11px;
+              margin-top: 15px;
+            }
+          }
+        }
+      }
+
+      #new-palette {
+        .section {
+
+          .section-body {          
+
+            ul {
+              overflow: auto;
+
+              li {
+                margin: 5px;
+
+                .color-block {
+                  width: 35px;
+                  height: 35px;
+                  margin: 0 auto;
+                  margin-bottom: 5px;
+                  border: 1px solid #CBD0D5;
+                }
+
+                .color-title {
+                  text-shadow: none;
+                  text-transform: none;
+                  font-weight: normal;
+                  font-size: 14px;
+                  color: white;
+                  text-align: center;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    //--------------------------------------------------------
+    // Fonts
+    //--------------------------------------------------------
+    &.active-fonts {
+
+      .tab {
+        overflow: hidden;
+        width: 785px;
+      }
+      
+      .section {
+        float: left;
+        border-right: 1px solid #2a2e30;
+        width: 150px;
+
+        &#section-fonts-preview {
+          width: 180px;
+          height: 200px;
+        }
+
+        &:first-child {
+          border-left: none;
+        }
+        &:last-child {
+          border-right: none;
+        }
+
+        .section-header {
+          padding-bottom: 3px;
+          background: url("/assets/spraycan/selector/toolbar/section-header-arrow.png") no-repeat center bottom;
+          
+          .title {
+            text-align: center;
+            @include box-shadow(0 0 10px 0 #383e40 inset);
+            padding: 5px 10px;
+            background-color: #464c4f; 
+          }
+        }
+
+        .section-body {
+          padding: 5px;
+          border-left: 1px solid #5a5f62;
+          font-size: 12px;
+          color: white;
+
+          .font-select {
+            margin-bottom: 15px;
+          }
+
+          .slider-wrap {
+            margin-bottom: 10px;
+            overflow: hidden;
+
+            .title{
+              margin-left: 10px;  
+              padding-bottom: 3px;
+            }
+
+            .ui-slider {
+              margin-left: 10px;
+              width: 80px;
+              float: left;
+            }
+
+            .value {
+              float: left;
+              width: 30px;
+              text-transform: none;
+              margin-top: -3px;
+              margin-left: 10px;
+            }
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+
+}
+
